@@ -36,7 +36,8 @@ public class LevelRendererMixin {
 			PoseStack pose = new PoseStack();
 			pose.mulPose(positionMatrix);
 
-			Vec3 cam = camera.getPosition();
+				// 1.21.11 mojang mappings: Camera#getPosition() -> Camera#position()
+				Vec3 cam = camera.position();
 			pose.translate(-cam.x, -cam.y, -cam.z);
 
 			RubyCloudRenderer.render(pose, mc.renderBuffers().bufferSource(), cam);

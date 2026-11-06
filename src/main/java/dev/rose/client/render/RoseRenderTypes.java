@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import dev.rose.Rose;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.rendertype.OutputTarget;
 import net.minecraft.client.renderer.rendertype.RenderSetup;
 import net.minecraft.client.renderer.rendertype.RenderType;
 
@@ -22,15 +21,19 @@ public final class RoseRenderTypes {
 			.withFragmentShader(Rose.id("core/ruby_clouds"))
 			.withBlend(BlendFunction.TRANSLUCENT)
 			.withCull(false)
+			.withDepthWrite(false)
 			.withDepthTestFunction(DepthTestFunction.LEQUAL_DEPTH_TEST)
 			.withVertexFormat(DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS)
 			.build()
 	);
 
+	/**
+	 * Drawn straight into the main level framebuffer (no {@code setOutputTarget} on purpose:
+	 * the default target is the main one, and pointing at ITEM_ENTITY_TARGET made the clouds vanish).
+	 */
 	public static final RenderType RUBY_CLOUDS = RenderType.create(
 		"rose:ruby_clouds",
 		RenderSetup.builder(RUBY_CLOUDS_PIPELINE)
-			.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)
 			.createRenderSetup()
 	);
 
