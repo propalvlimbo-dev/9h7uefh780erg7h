@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "rose",
+	"version": "${version}",
+	"name": "Rose",
+	"description": "Rose Client - a Minecraft utility client with a custom glass UI and its own visual effects renderer.",
+	"authors": ["Rose Team"],
+	"license": "All Rights Reserved",
+	"icon": "assets/rose/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["dev.rose.client.RoseClient"]
+	},
+	"mixins": [
+		{
+			"config": "rose.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "~${minecraft_version}",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"key.categories.rose": "Rose",
+	"key.rose.open_gui": "Open ClickGUI",
+	"rose.title.singleplayer": "Singleplayer",
+	"rose.title.multiplayer": "Multiplayer",
+	"rose.title.settings": "Settings",
+	"rose.title.client": "Rose GUI",
+	"rose.title.quit": "Quit Game",
+	"rose.module.custom_sky": "Custom Sky",
+	"rose.module.custom_sky.desc": "Ruby clouds instead of vanilla ones"
+}

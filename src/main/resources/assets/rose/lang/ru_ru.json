@@ -1,0 +1,11 @@
+{
+	"key.categories.rose": "Rose",
+	"key.rose.open_gui": "Открыть ClickGUI",
+	"rose.title.singleplayer": "Одиночная игра",
+	"rose.title.multiplayer": "Сетевая игра",
+	"rose.title.settings": "Настройки",
+	"rose.title.client": "Rose GUI",
+	"rose.title.quit": "Выйти из игры",
+	"rose.module.custom_sky": "Custom Sky",
+	"rose.module.custom_sky.desc": "Рубиновые облака вместо ванильных"
+}
