@@ -19,6 +19,12 @@ JDK 25: `File → Project Structure → SDK → Add SDK → Download JDK → 25`
 `Settings → Build Tools → Gradle → Gradle JVM = 25` и `Java Compiler → target = 25`.
 Gradle сам найдёт установленный JDK 25 (автодетект не отключён).
 
+> **Важно:** в `Settings → Build Tools → Gradle` должно быть
+> `Use Gradle from: 'gradle-wrapper.properties' file` (Gradle 9.5.1).
+> Java 25 для запуска Gradle поддерживается начиная с Gradle 9.1.0 — если IDEA подхватит
+> свой Gradle 8.x, сборка упадёт с `Unsupported class file major version 69`.
+> Wrapper лежит в `gradle/wrapper/` — без этой папки IDEA берёт свой Gradle.
+
 ## Запуск
 
 ```
