@@ -12,6 +12,8 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
+import sg.render.pipeline.UiDrawing;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,16 +102,27 @@ public class MainMenuScreen extends Screen {
             }
         }
 
+        if (button == 0) {
+            MainMenuBackdrop.beginDrag();
+        } else if (button == 1) {
+            MainMenuBackdrop.reset();
+        }
+
         return super.mouseClicked(event, doubleClick);
     }
 
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
+        MainMenuBackdrop.endDrag();
         return super.mouseReleased(event);
     }
 
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
+        if (MainMenuBackdrop.isDragging()) {
+            MainMenuBackdrop.drag(deltaX, deltaY);
+            return true;
+        }
         return super.mouseDragged(event, deltaX, deltaY);
     }
 
@@ -119,6 +132,7 @@ public class MainMenuScreen extends Screen {
         if (this.flag && this.accountManagerPanel.matchesCriteria2((float) mouseX * sf, (float) mouseY * sf, (float) verticalAmount)) {
             return true;
         } else {
+            MainMenuBackdrop.scroll(verticalAmount);
             return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         }
     }
@@ -497,13 +511,15 @@ public class MainMenuScreen extends Screen {
         this.animation.processData(this.flag ? 1.0 : 0.0);
         float animAlt = (float) this.animation.computeDouble();
 
-        // Fullscreen main menu background
-        UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/menu.png", screenW, screenH, 1.0F);
+        // Анимированный процедурный фон в стиле Minecraft.
+        // Управление: ЛКМ-драг — панорама, колесо — зум, ПКМ — сброс, мышь — параллакс.
+        MainMenuBackdrop.render(screenW, screenH, scale, mx, my);
 
         if (this.flag3) {
             float fadeWelcome = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, 100L, 600L));
             if (fadeWelcome < 0.999F) {
-                UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/welcome.png", screenW, screenH, 1.0F - fadeWelcome);
+                UiDrawing.drawRoundedRect(0.0F, 0.0F, Render2D.px(screenW), Render2D.px(screenH), 0.0F,
+                        UiTheme.computeInt(0xFF05030A, (1.0F - fadeWelcome) * 0.55F));
             }
         }
 
@@ -515,7 +531,7 @@ public class MainMenuScreen extends Screen {
         float sidebarW = 329.5F * scale + Math.min(0.0F, sidebarX);
         if (sidebarW > 1.0F) {
             Render2D.renderElement2(drawContext, Math.max(0.0F, sidebarX), 0.0F, sidebarW, screenH);
-            UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/menu_blur.png", screenW, screenH, 1.0F);
+            UiDrawing.drawRoundedRect(0.0F, 0.0F, Render2D.px(screenW), Render2D.px(screenH), 0.0F, 0x4C0A0710);
             Render2D.renderElement(drawContext);
         }
 
