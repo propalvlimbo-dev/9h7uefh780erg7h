@@ -207,6 +207,12 @@ public final class OnnxAimPredictor implements MinecraftAccess, AutoCloseable {
          this.Ял = var2.getMessage();
          this.п.error(ЯПл, this.Я.Д, var2);
          return false;
+      } catch (Throwable var3) {
+         // UnsatisfiedLinkError / ExceptionInInitializerError: native ORT недоступен.
+         this.В_587717f5 = null;
+         this.Ял = var3.toString();
+         this.п.error(ЯПл, this.Я.Д, var3);
+         return false;
       }
    }
 

@@ -20,6 +20,11 @@ public class AiAimbot extends ClientModule {
    public AiAimbot() {
       super(MODULE_NAME, MODULE_DESCRIPTION, ModuleCategory.COMBAT);
       this.onnxAimController = new StandaloneOnnxAim60hz();
-      this.onnxAimController.Йд();
+      try {
+         this.onnxAimController.Йд();
+      } catch (Throwable var2) {
+         // ONNX Runtime — опциональная нативная зависимость, старт клиента из-за неё падать не должен.
+         System.err.println("[Rose] ONNX Runtime недоступен, AiAimbot выключен: " + var2);
+      }
    }
 }
