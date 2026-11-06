@@ -40,15 +40,21 @@ float fbm(vec2 p) {
 
 void main() {
     // slow, natural drift driven by the game clock (seconds)
-    vec2 drift = vec2(GameTime * 5.5, GameTime * 1.9);
+    vec2 drift = vec2(GameTime * 4.5, GameTime * 1.6);
     vec2 p = (vWorld + drift) * 0.0125;
 
     float density = fbm(p);
 
-    // vColor.a carries the coverage threshold (set from the GUI settings)
-    float threshold = 1.0 - clamp(vColor.a, 0.05, 0.95);
-    float mask = smoothstep(threshold, threshold + 0.17, density);
-    if (mask <= 0.003) {
+    // big shapes so the deck is not uniformly filled
+    float patches = fbm(p * 0.33 + vec2(3.7, 8.1));
+    density *= mix(0.62, 1.08, smoothstep(0.25, 0.85, patches));
+
+    // vColor.a carries the coverage setting (0..1) coming from the GUI slider
+    float coverage = clamp(vColor.a, 0.05, 0.95);
+    float threshold = mix(0.78, 0.32, coverage);
+    float mask = smoothstep(threshold, threshold + 0.16, density);
+
+    if (mask <= 0.004) {
         discard;
     }
 
@@ -57,17 +63,22 @@ void main() {
     float dz = fbm(p + vec2(0.0, 0.085)) - density;
     vec3 nrm = normalize(vec3(dx * 9.0, 0.72, dz * 9.0));
     float light = clamp(dot(nrm, normalize(vec3(0.32, 1.0, 0.44))), 0.0, 1.0);
-    light = mix(0.30, 1.05, light);
+    light = mix(0.34, 1.08, light);
 
-    vec3 deep = vColor.rgb * 0.26;
-    vec3 mid = vColor.rgb * 0.85;
-    vec3 col = mix(deep, mid, smoothstep(0.0, 0.55, density)) * light;
+    vec3 ruby = vColor.rgb;
+    vec3 deep = ruby * 0.22;
+    vec3 mid = ruby * 0.78;
+    vec3 col = mix(deep, mid, smoothstep(0.0, 0.52, density)) * light;
 
     // silver lining on the rim of the puffs
-    col += vColor.rgb * pow(mask, 3.0) * 0.75;
+    col += vec3(1.0, 0.72, 0.78) * pow(mask, 3.5) * 0.42;
 
-    // horizon / distance fade
-    float fade = 1.0 - smoothstep(175.0, 330.0, vDist);
+    // keep the ruby from turning into flat neon
+    float luma = dot(col, vec3(0.299, 0.587, 0.114));
+    col = mix(vec3(luma), col, 0.82);
 
-    fragColor = vec4(col * ColorModulator.rgb, mask * fade * 0.9 * ColorModulator.a);
+    // distance fade towards the horizon
+    float fade = 1.0 - smoothstep(150.0, 320.0, vDist);
+
+    fragColor = vec4(col * ColorModulator.rgb, mask * fade * 0.62 * ColorModulator.a);
 }

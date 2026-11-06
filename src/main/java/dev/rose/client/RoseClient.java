@@ -3,6 +3,8 @@ package dev.rose.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import dev.rose.client.config.RoseConfig;
 import dev.rose.client.module.ModuleManager;
+import dev.rose.client.render.font.RoseFont;
+import dev.rose.client.render.gfx.RoseGfx;
 import dev.rose.client.render.RoseRenderTypes;
 import dev.rose.client.screens.RoseClickGui;
 import net.fabricmc.api.ClientModInitializer;
@@ -24,6 +26,8 @@ public final class RoseClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		RoseConfig.load();
 		RoseRenderTypes.init();
+		RoseGfx.init();
+		RoseFont.init();
 
 		openGuiKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
 			"key.rose.open_gui",

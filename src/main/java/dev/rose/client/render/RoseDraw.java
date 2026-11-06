@@ -1,79 +1,67 @@
 package dev.rose.client.render;
 
+import dev.rose.client.render.font.RoseFont;
+import dev.rose.client.render.gfx.RoseGfx;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
-import net.minecraft.client.gui.render.TextureSetup;
-import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.client.renderer.texture.AbstractTexture;
 import net.minecraft.resources.Identifier;
-import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
 
 /**
- * Rose UI drawing primitives on top of {@link GuiGraphics}.
+ * Rose UI drawing primitives.
  *
- * Everything is built from per-vertex coloured quads submitted to the GUI render state,
- * which gives us real gradients, per-vertex alpha and soft glows without any textures.
- * (Textured glass/SDF shaders will replace this in the next milestone.)
+ * <p>Everything is recorded into {@link RoseGfx} and drawn at the end of the GUI frame with our own
+ * shaders, which is what makes the glass, the SDF text and the exact layer order possible.
+ * All coordinates are in GUI units, exactly like {@code GuiGraphics}.
  */
 public final class RoseDraw {
+	/** Base em size of body text. */
+	public static final float TEXT_SIZE = 10.5F;
+
 	private RoseDraw() {
+	}
+
+	private static Matrix4f pose(GuiGraphics g) {
+		return RoseGfx.pose(g.pose());
 	}
 
 	// ------------------------------------------------------------------ quads
 
 	public static void quad(GuiGraphics g, float x1, float y1, float x2, float y2, float x3, float y3, float x4,
 			float y4, int c1, int c2, int c3, int c4) {
-		float minX = Math.min(Math.min(x1, x2), Math.min(x3, x4));
-		float minY = Math.min(Math.min(y1, y2), Math.min(y3, y4));
-		float maxX = Math.max(Math.max(x1, x2), Math.max(x3, x4));
-		float maxY = Math.max(Math.max(y1, y2), Math.max(y3, y4));
+		boolean invisible = (c1 >>> 24) == 0 && (c2 >>> 24) == 0 && (c3 >>> 24) == 0 && (c4 >>> 24) == 0;
 
-		if (maxX - minX < 0.02F && maxY - minY < 0.02F) {
+		if (invisible) {
 			return;
 		}
 
-		if ((c1 >>> 24) == 0 && (c2 >>> 24) == 0 && (c3 >>> 24) == 0 && (c4 >>> 24) == 0) {
-			return;
-		}
-
-		Matrix3x2f pose = new Matrix3x2f(g.pose());
-		ScreenRectangle scissor = g.scissorStack.peek();
-
-		ScreenRectangle bounds = new ScreenRectangle(
-			(int) minX,
-			(int) minY,
-			Math.max(1, (int) Math.ceil(maxX - minX)),
-			Math.max(1, (int) Math.ceil(maxY - minY))
-		).transformMaxBounds(pose);
-
-		if (scissor != null) {
-			bounds = scissor.intersection(bounds);
-			if (bounds == null) {
-				return;
-			}
-		}
-
-		g.guiRenderState.submitGuiElement(new RoseQuad(
-			RenderPipelines.GUI,
-			TextureSetup.noTexture(),
-			pose,
+		RoseGfx.shape(pose(g),
 			new float[] {x1, y1, x2, y2, x3, y3, x4, y4},
-			new int[] {c1, c2, c3, c4},
-			scissor,
-			bounds
-		));
+			new int[] {c1, c2, c3, c4});
 	}
 
 	public static void rect(GuiGraphics g, float x, float y, float w, float h, int color) {
+		if (w <= 0.0F || h <= 0.0F) {
+			return;
+		}
+
 		quad(g, x, y, x + w, y, x + w, y + h, x, y + h, color, color, color, color);
 	}
 
 	public static void gradientV(GuiGraphics g, float x, float y, float w, float h, int top, int bottom) {
+		if (w <= 0.0F || h <= 0.0F) {
+			return;
+		}
+
 		quad(g, x, y, x + w, y, x + w, y + h, x, y + h, top, top, bottom, bottom);
 	}
 
 	public static void gradientH(GuiGraphics g, float x, float y, float w, float h, int left, int right) {
+		if (w <= 0.0F || h <= 0.0F) {
+			return;
+		}
+
 		quad(g, x, y, x + w, y, x + w, y + h, x, y + h, left, right, right, left);
 	}
 
@@ -134,7 +122,7 @@ public final class RoseDraw {
 	}
 
 	private static void cornerFan(GuiGraphics g, float cx, float cy, float r, float a0, float a1, int color) {
-		final int steps = 10;
+		final int steps = 12;
 		float step = (a1 - a0) / steps;
 
 		for (int i = 0; i < steps; i++) {
@@ -145,13 +133,14 @@ public final class RoseDraw {
 			float x1 = cx + (float) Math.cos(s1) * r;
 			float y1 = cy + (float) Math.sin(s1) * r;
 
+			// the fan closes on the centre; the last vertex repeats to keep a clean quad
 			quad(g, cx, cy, x0, y0, x1, y1, x1, y1, color, color, color, color);
 		}
 	}
 
 	private static void arcStroke(GuiGraphics g, float cx, float cy, float r, float a0, float a1, float thickness,
 			int color) {
-		final int steps = 10;
+		final int steps = 12;
 		float step = (a1 - a0) / steps;
 		float outer = r + thickness * 0.5F;
 		float inner = Math.max(0.0F, r - thickness * 0.5F);
@@ -178,7 +167,8 @@ public final class RoseDraw {
 			return;
 		}
 
-		final int steps = 28;
+		final int steps = 32;
+
 		for (int i = 0; i < steps; i++) {
 			float a0 = (float) (Math.PI * 2.0 * i / steps);
 			float a1 = (float) (Math.PI * 2.0 * (i + 1) / steps);
@@ -186,6 +176,7 @@ public final class RoseDraw {
 			float y0 = cy + (float) Math.sin(a0) * r;
 			float x1 = cx + (float) Math.cos(a1) * r;
 			float y1 = cy + (float) Math.sin(a1) * r;
+
 			quad(g, cx, cy, x0, y0, x1, y1, x1, y1, color, color, color, color);
 		}
 	}
@@ -204,9 +195,11 @@ public final class RoseDraw {
 			float t = i / (float) steps;
 			float falloff = (1.0F - t) * (1.0F - t);
 			int a = (int) (baseAlpha * falloff * 0.55F);
+
 			if (a <= 0) {
 				continue;
 			}
+
 			circle(g, cx, cy, radius * t, RoseTheme.withAlpha(color, a));
 		}
 	}
@@ -220,9 +213,11 @@ public final class RoseDraw {
 			float t = i / (float) steps;
 			float grow = spread * t;
 			int a = (int) (baseAlpha * (1.0F - t) * (1.0F - t) * 1.4F);
+
 			if (a <= 0) {
 				continue;
 			}
+
 			int c = RoseTheme.withAlpha(color, a);
 			rrect(g, x - grow, y - grow + spread * 0.25F, w + grow * 2.0F, h + grow * 2.0F, r + grow, c, c);
 		}
@@ -232,76 +227,94 @@ public final class RoseDraw {
 
 	/** The signature Rose glass panel. */
 	public static void panel(GuiGraphics g, float x, float y, float w, float h, float r) {
-		panel(g, x, y, w, h, r, 214);
+		panel(g, x, y, w, h, r, 232);
 	}
 
 	public static void panel(GuiGraphics g, float x, float y, float w, float h, float r, int baseAlpha) {
-		shadow(g, x, y, w, h, r, 14.0F, 0x7A000000, 9);
+		shadow(g, x, y, w, h, r, 16.0F, 0x99000000, 10);
 
-		int top = RoseTheme.withAlpha(0xFF170C12, baseAlpha);
-		int bottom = RoseTheme.withAlpha(0xFF070408, baseAlpha);
+		// glass body: a cold dark ruby that stays readable over any world behind it
+		int top = RoseTheme.withAlpha(0xFF241019, baseAlpha);
+		int bottom = RoseTheme.withAlpha(0xFF0A0509, Math.min(255, baseAlpha + 12));
 		rrect(g, x, y, w, h, r, top, bottom);
 
-		// glass sheen at the top
-		gradientV(g, x + 1.5F, y + 1.5F, w - 3.0F, h * 0.45F,
-			RoseTheme.withAlpha(0xFFFFFFFF, 26), RoseTheme.withAlpha(0xFFFFFFFF, 0));
+		// wide sheen across the upper half, like light hitting the pane
+		gradientV(g, x + 1.5F, y + 1.5F, w - 3.0F, h * 0.5F,
+			RoseTheme.withAlpha(0xFFFFFFFF, 30), RoseTheme.withAlpha(0xFFFFFFFF, 0));
 
 		// ruby light bleeding from the bottom edge
-		gradientV(g, x + r * 0.6F, y + h - 14.0F, w - r * 1.2F, 12.0F,
-			RoseTheme.withAlpha(RoseTheme.RUBY, 0), RoseTheme.withAlpha(RoseTheme.RUBY, 30));
+		gradientV(g, x + r * 0.6F, y + h - 16.0F, w - r * 1.2F, 14.0F,
+			RoseTheme.withAlpha(RoseTheme.RUBY, 0), RoseTheme.withAlpha(RoseTheme.RUBY, 44));
 
-		// hairline border
+		// hairline border + a brighter top edge
 		rrectOutline(g, x + 0.5F, y + 0.5F, w - 1.0F, h - 1.0F, Math.max(1.0F, r - 0.5F), 1.0F,
-			RoseTheme.withAlpha(0xFFFFFFFF, 34));
+			RoseTheme.withAlpha(0xFFFFFFFF, 46));
+		gradientH(g, x + r, y + 0.5F, w - r * 2.0F, 1.0F,
+			RoseTheme.withAlpha(0xFFFFFFFF, 0), RoseTheme.withAlpha(0xFFFFFFFF, 90));
+		gradientH(g, x + r, y + 0.5F, (w - r * 2.0F) * 0.5F, 1.0F,
+			RoseTheme.withAlpha(0xFFFFFFFF, 90), RoseTheme.withAlpha(0xFFFFFFFF, 0));
 	}
 
 	// ------------------------------------------------------------------ text
 
 	public static void text(GuiGraphics g, String s, float x, float y, int color, boolean shadow) {
-		g.drawString(Minecraft.getInstance().font, s, (int) x, (int) y, color, shadow);
+		RoseFont font = RoseFont.regular();
+
+		if (font == null) {
+			g.drawString(Minecraft.getInstance().font, s, (int) x, (int) y, color, shadow);
+			return;
+		}
+
+		font.draw(pose(g), s, x, y, TEXT_SIZE, color, 0.0F);
 	}
 
 	public static void textScaled(GuiGraphics g, String s, float x, float y, float scale, int color,
 			boolean shadow) {
-		g.pose().pushMatrix();
-		g.pose().translate(x, y);
-		g.pose().scale(scale);
-		g.drawString(Minecraft.getInstance().font, s, 0, 0, color, shadow);
-		g.pose().popMatrix();
+		RoseFont font = RoseFont.regular();
+
+		if (font == null) {
+			g.drawString(Minecraft.getInstance().font, s, (int) x, (int) y, color, shadow);
+			return;
+		}
+
+		font.draw(pose(g), s, x, y, TEXT_SIZE * scale, color, 0.0F);
 	}
 
-	/** Scaled text with manual letter spacing (used for the ROSE wordmark). */
+	/** Scaled text with manual letter spacing (used for the ROSE wordmark and section labels). */
 	public static void textSpaced(GuiGraphics g, String s, float x, float y, float scale, float spacing, int color,
 			boolean shadow) {
-		Font font = Minecraft.getInstance().font;
-		float cursor = 0.0F;
+		RoseFont font = RoseFont.semibold();
 
-		for (int i = 0; i < s.length(); i++) {
-			String ch = String.valueOf(s.charAt(i));
-
-			g.pose().pushMatrix();
-			g.pose().translate(x + cursor * scale, y);
-			g.pose().scale(scale);
-			g.drawString(font, ch, 0, 0, color, shadow);
-			g.pose().popMatrix();
-
-			cursor += font.width(ch) + spacing;
+		if (font == null) {
+			g.drawString(Minecraft.getInstance().font, s, (int) x, (int) y, color, shadow);
+			return;
 		}
+
+		font.draw(pose(g), s, x, y, TEXT_SIZE * scale, color, spacing * scale);
 	}
 
 	public static float textSpacedWidth(String s, float scale, float spacing) {
-		Font font = Minecraft.getInstance().font;
-		float cursor = 0.0F;
+		RoseFont font = RoseFont.semibold();
 
-		for (int i = 0; i < s.length(); i++) {
-			cursor += font.width(String.valueOf(s.charAt(i))) + spacing;
+		if (font == null) {
+			return Minecraft.getInstance().font.width(s) * scale;
 		}
 
-		return cursor * scale;
+		return font.width(s, TEXT_SIZE, spacing) * scale;
 	}
 
 	public static int textWidth(String s) {
-		return Minecraft.getInstance().font.width(s);
+		RoseFont font = RoseFont.regular();
+
+		if (font == null) {
+			return Minecraft.getInstance().font.width(s);
+		}
+
+		return (int) Math.ceil(font.width(s, TEXT_SIZE, 0.0F));
+	}
+
+	public static float textHeight() {
+		return RoseFont.lineHeight(TEXT_SIZE);
 	}
 
 	public static void textCentered(GuiGraphics g, String s, float cx, float y, int color, boolean shadow) {
@@ -332,6 +345,15 @@ public final class RoseDraw {
 	}
 
 	public static void image(GuiGraphics g, Identifier texture, float x, float y, int size, int tint) {
-		g.blit(RenderPipelines.GUI_TEXTURED, texture, (int) x, (int) y, 0, 0, size, size, size, size, tint);
+		AbstractTexture abstractTexture = Minecraft.getInstance().getTextureManager().getTexture(texture);
+
+		if (abstractTexture == null) {
+			return;
+		}
+
+		RoseGfx.textured(RoseGfx.IMAGE, pose(g), abstractTexture,
+			new float[] {x, y, x, y + size, x + size, y + size, x + size, y},
+			new float[] {0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F, 1.0F, 0.0F},
+			new int[] {tint, tint, tint, tint});
 	}
 }
