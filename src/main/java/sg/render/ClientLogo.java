@@ -1,6 +1,8 @@
 package sg.render;
 
 import net.minecraft.resources.Identifier;
+import org.joml.Vector4f;
+import org.joml.Vector4i;
 import sg.ec.FontRenderer;
 import sg.render.pipeline.UiBatchDrawing;
 import sg.render.pipeline.UiDrawing;
@@ -13,6 +15,8 @@ public final class ClientLogo {
    public static final float DISTANCE_RANGE = 64.0F;
    public static final float DISPLAY_SCALE = 0.86F;
    public static final Identifier TEXTURE = Identifier.fromNamespaceAndPath("rose", "fonts/client_logo.png");
+   /** Обычная (не SDF) текстура знака — нужна для вращения, меняющего ширину. */
+   public static final Identifier LOGO_TEXTURE = Identifier.fromNamespaceAndPath("rose", "textures/gui/logo_rose.png");
 
    private ClientLogo() { }
 
@@ -35,6 +39,29 @@ public final class ClientLogo {
       height = Math.max(1, Math.round(height * DISPLAY_SCALE));
       UiBatchDrawing.drawText(font(), GLYPH, centerX - width(height) * 0.5F,
          centerY - height * 0.5F, height, color);
+   }
+
+   /**
+    * Вращение знака вокруг вертикальной оси: ширина сжимается по косинусу угла,
+    * высота слегка уменьшается на «ребре» — читается как объёмное вращение.
+    */
+   public static void drawSpin3D(float centerX, float centerY, float size, int color, float angle) {
+      if (size <= 0.0F) {
+         return;
+      }
+      float c = Math.abs((float) Math.cos(angle));
+      float shownWidth = size * ASPECT * (0.14F + 0.86F * c);
+      float shownHeight = size * (1.0F - 0.05F * (1.0F - c));
+      UiDrawing.drawTexture(centerX - shownWidth * 0.5F, centerY - shownHeight * 0.5F,
+         shownWidth, shownHeight, 0.0F, new Vector4f(0.0F, 0.0F, 1.0F, 1.0F),
+         new Vector4i(color), LOGO_TEXTURE);
+   }
+
+   /** То же вращение, но угол берётся из текущего времени — крутится само, вечно. */
+   public static void drawSpin3DByTime(float centerX, float centerY, float size, int color, long periodMs) {
+      long period = periodMs <= 0L ? 4000L : periodMs;
+      float progress = (System.currentTimeMillis() % period) / (float) period;
+      drawSpin3D(centerX, centerY, size, color, progress * 6.2831855F);
    }
 
    private static final class Holder {

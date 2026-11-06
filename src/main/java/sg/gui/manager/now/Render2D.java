@@ -63,8 +63,18 @@ public final class Render2D {
     public static void drawFullscreenTexture(String path, float w, float h, float opacity) {
         drawTexture(path, 0, 0, w, h, UiTheme.computeInt(-1, opacity));
     }
+    /** Полноэкранная картинка с масштабом и сдвигом — для «живого» зума фона. */
+    public static void drawFullscreenTextureZoom(String path, float w, float h, float opacity,
+                                                 float zoomFactor, float offsetX, float offsetY) {
+        float drawnW = w * zoomFactor;
+        float drawnH = h * zoomFactor;
+        float x = (w - drawnW) * 0.5F + offsetX;
+        float y = (h - drawnH) * 0.5F + offsetY;
+        UiDrawing.drawTexture(px(x), px(y), px(drawnW), px(drawnH), 0.0F,
+                applyAlpha(UiTheme.computeInt(-1, opacity)), toIdentifier(path));
+    }
     public static void drawLoadingIndicator(long start, float w, float h) {
-        ClientLogo.drawCentered(px(w / 2.0F), px(h / 2.0F), px(42.0F), applyAlpha(UiTheme.intVal7));
+        ClientLogo.drawSpin3DByTime(px(w / 2.0F), px(h / 2.0F), px(42.0F), applyAlpha(UiTheme.intVal7), 2600L);
         for (int i = 0; i < 3; i++) {
             float phase = (System.currentTimeMillis() - start + i * 180L) % 1000L / 1000.0F;
             processData51(w / 2.0F - 18 + i * 18, h / 2.0F + 40, 6, 6, 3,

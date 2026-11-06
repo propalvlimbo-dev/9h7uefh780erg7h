@@ -12,8 +12,6 @@ import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Util;
 
-import sg.render.pipeline.UiDrawing;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,27 +100,16 @@ public class MainMenuScreen extends Screen {
             }
         }
 
-        if (button == 0) {
-            MainMenuBackdrop.beginDrag();
-        } else if (button == 1) {
-            MainMenuBackdrop.reset();
-        }
-
         return super.mouseClicked(event, doubleClick);
     }
 
     @Override
     public boolean mouseReleased(MouseButtonEvent event) {
-        MainMenuBackdrop.endDrag();
         return super.mouseReleased(event);
     }
 
     @Override
     public boolean mouseDragged(MouseButtonEvent event, double deltaX, double deltaY) {
-        if (MainMenuBackdrop.isDragging()) {
-            MainMenuBackdrop.drag(deltaX, deltaY);
-            return true;
-        }
         return super.mouseDragged(event, deltaX, deltaY);
     }
 
@@ -132,7 +119,6 @@ public class MainMenuScreen extends Screen {
         if (this.flag && this.accountManagerPanel.matchesCriteria2((float) mouseX * sf, (float) mouseY * sf, (float) verticalAmount)) {
             return true;
         } else {
-            MainMenuBackdrop.scroll(verticalAmount);
             return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
         }
     }
@@ -429,14 +415,12 @@ public class MainMenuScreen extends Screen {
     private void drawChrome(float local7251_1, float local7251_2, float local7251_3, float local7251_4, float local7251_5) {
         float local7251_6 = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, this.flag3 ? 260L : 60L, 420L));
         Render2D.processData46(local7251_6);
-        Render2D.processData89(
-                "assets/deluxe/textures/gui/mainmenu/icons/logo.png",
-                local7251_1 + 51.5F * local7251_3,
-                40.0F * local7251_3 - (1.0F - local7251_6) * 8.0F * local7251_3,
-                13.5F * local7251_3,
-                10.5F * local7251_3,
-                0.0F,
-                UiTheme.intVal7
+        sg.render.ClientLogo.drawSpin3DByTime(
+                Render2D.px(local7251_1 + 60.5F * local7251_3),
+                Render2D.px(40.0F * local7251_3 - (1.0F - local7251_6) * 8.0F * local7251_3 + 10.0F * local7251_3),
+                Render2D.px(20.0F * local7251_3),
+                UiTheme.computeInt(UiTheme.intVal7, local7251_6),
+                4000L
         );
         Render2D.updateState();
 
@@ -511,15 +495,19 @@ public class MainMenuScreen extends Screen {
         this.animation.processData(this.flag ? 1.0 : 0.0);
         float animAlt = (float) this.animation.computeDouble();
 
-        // Анимированный процедурный фон в стиле Minecraft.
-        // Управление: ЛКМ-драг — панорама, колесо — зум, ПКМ — сброс, мышь — параллакс.
-        MainMenuBackdrop.render(screenW, screenH, scale, mx, my);
+        // Fullscreen main menu background
+        // Фотография с медленным «дыханием»: зум и сдвиг по замкнутому циклу 60 секунд.
+        double phase = (System.currentTimeMillis() % 60000L) / 60000.0 * Math.PI * 2.0;
+        float photoZoom = 1.035F + 0.025F * (float) Math.sin(phase);
+        float photoShiftX = (float) Math.sin(phase + 1.1) * 9.0F * scale;
+        float photoShiftY = (float) Math.cos(phase * 0.7) * 6.0F * scale;
+        Render2D.drawFullscreenTextureZoom("assets/deluxe/textures/gui/mainmenu/background/menu.png",
+                screenW, screenH, 1.0F, photoZoom, photoShiftX, photoShiftY);
 
         if (this.flag3) {
             float fadeWelcome = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, 100L, 600L));
             if (fadeWelcome < 0.999F) {
-                UiDrawing.drawRoundedRect(0.0F, 0.0F, Render2D.px(screenW), Render2D.px(screenH), 0.0F,
-                        UiTheme.computeInt(0xFF05030A, (1.0F - fadeWelcome) * 0.55F));
+                UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/welcome.png", screenW, screenH, 1.0F - fadeWelcome);
             }
         }
 
@@ -531,7 +519,7 @@ public class MainMenuScreen extends Screen {
         float sidebarW = 329.5F * scale + Math.min(0.0F, sidebarX);
         if (sidebarW > 1.0F) {
             Render2D.renderElement2(drawContext, Math.max(0.0F, sidebarX), 0.0F, sidebarW, screenH);
-            UiDrawing.drawRoundedRect(0.0F, 0.0F, Render2D.px(screenW), Render2D.px(screenH), 0.0F, 0x4C0A0710);
+            UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/menu_blur.png", screenW, screenH, 1.0F);
             Render2D.renderElement(drawContext);
         }
 
