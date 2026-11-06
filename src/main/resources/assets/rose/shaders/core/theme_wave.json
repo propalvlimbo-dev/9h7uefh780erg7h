@@ -1,0 +1,8 @@
+{
+  "vertex": "rose:core/theme_wave",
+  "fragment": "rose:core/theme_wave",
+  "samplers": [ { "name": "Sampler0" }, { "name": "BaseSampler" } ],
+  "uniforms": [
+    { "name": "ThemeWave", "type": "float", "count": 976, "values": [ 0.0 ] }
+  ]
+}

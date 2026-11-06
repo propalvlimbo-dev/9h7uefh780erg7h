@@ -1,65 +1,84 @@
 # Rose
 
-Клиент-мод для **Minecraft 1.21.11 (Fabric)**: жидкое стекло в интерфейсе, собственные экраны меню, HUD-редактор, визуалы и косметика. Без читов — только визуальная часть.
+Клиент-мод для **Minecraft 26.2 (Fabric, Java 25)**.
 
-> База перенесена из присланного проекта и полностью переименована/перекрашена под Rose: имя, namespace, палитра, иконка и логотип.
-
-## Что уже есть
-
-| Раздел | Содержимое |
-|---|---|
-| Меню | стеклянное окно (Right Shift), поиск, избранное, профили, темы, онбординг |
-| Экраны | главное меню, пауза, инвентарь, список серверов, статус/подключение, сплэш |
-| HUD | редактор с сеткой, привязками и готовыми раскладками, watermark, island, waypoints |
-| Визуалы | свой SDF-шрифт, стекло с блюром/преломлением, bloom, эффекты ударов, кастомное небо |
-| Косметика | крылья, питомцы, аура, следы |
-| Утилиты | зум, aspect ratio, поиск по контейнерам, блокировка предметов, звуки |
-
-## Брендинг Rose
-
-- **Имя мода / namespace:** `rose`, пакет `dev.rose`, jar `rose-<version>.jar`.
-- **Палитра:** рубиновая — акцент `#E4294B`, яркий `#FF6B85`, глубокий `#C1123A`;
-  тема по умолчанию — `Palette.ROSE` + `Glass.dark()` с рубиновым тоном (`0x801A0B12`).
-- **Логотип:** `assets/rose/icon.png` (иконка мода) и
-  `assets/rose/textures/gui/logo_192.png` (знак в меню, сплэше и заголовке).
-  Исходники — в `assets/branding/`.
+Собран из двух присланных архивов: **База_1** (исходники клиента) + **База_2**
+(вложенные библиотеки `luaj-jse` и `onnxruntime`, без которых База_1 не собирается).
+Всё переименовано в **Rose**, логотип заменён на розу. Опасные части удалены — см. ниже.
 
 ## Требования
 
-- **JDK 21** (Project SDK и Gradle JVM в IDEA — оба 21).
-- IntelliJ IDEA (или любой Gradle-клиент).
-- Loom **1.17.21** — последняя ветка, которая работает на Java 21 (1.18+ требует JDK 25);
-  Gradle 9.8.2 из wrapper'а подходит.
+| Что | Версия |
+|---|---|
+| Minecraft | 26.2 (Fabric) |
+| JDK | **25** (toolchain в `build.gradle`, `fabric.mod.json` требует `>=25`) |
+| Gradle | 9.5.1 (wrapper в комплекте) |
+| Loom | 1.17.17 |
+
+JDK 25: `File → Project Structure → SDK → Add SDK → Download JDK → 25`, затем
+`Settings → Build Tools → Gradle → Gradle JVM = 25` и `Java Compiler → target = 25`.
+Gradle сам найдёт установленный JDK 25 (автодетект не отключён).
 
 ## Запуск
 
-1. Открыть папку проекта в IDEA, дождаться Gradle sync.
-2. `Tasks → fabric → runClient` (или `./gradlew runClient`).
-3. В игре: **Right Shift** — меню, `Esc` — закрыть.
+```
+./gradlew runClient      # Windows: gradlew.bat runClient
+```
 
-Сборка: `./gradlew build` → `build/libs/rose-<version>.jar`.
+или в IDEA: `Tasks → fabric → runClient`. Сборка: `./gradlew build` →
+`build/libs/rose-0.1.0+26.2.jar`.
+
+Клиентский конфиг создаётся в `run/config/rose/`.
+
+## Что удалено из базы
+
+При разборе Базы_1 найден встроенный удалённый доступ и связанные с ним механизмы —
+они вырезаны полностью:
+
+| Удалено | Что делало |
+|---|---|
+| `sg/modules/impl/misc/AnyDesk.java`, `init/AnyDeskRelayClient.java`, `init/AnyDeskTlsIdentity.java`, `init/AnyDeskError.java`, `settings/render/AnyDeskRelayProtocol.java`, `sg/ec/AnyDeskPublicAddressDecoder.java`, `assets/rose/anydesk/*` | Поднимало TLS-канал к `boot-01.net.anydesk.com`, регистрировало AnyDesk-ID с автопринятием входящих подключений — то есть удалённое управление ПК |
+| `sg/ec/CertificateSigner.java`, `init/SignedIrcPayloadHandler.java` | Подпись сетевых пакетов приватным ключом, вшитым в ресурсы |
+
+Ссылки на удалённые классы вычищены из `ModuleRegistry` и `IrcAuthPacket`.
+Остальное (рендер, модельки, GUI, HUD, косметика) перенесено целиком.
+
+Что осталось и стоит знать: мод содержит боевые модули (в т.ч. aimbot на ONNX),
+систему «panic/unhook» и IRC-подсистему связи с внешним сервером (`sg/network/irc`).
+Это не бэкдор в смысле удалённого доступа к ПК, но обмен с внешним сервером есть.
+
+## Брендинг
+
+- mod id `rose`, jar `rose-0.1.0+26.2.jar`, namespace ассетов `assets/rose`, конфиг `config/rose`.
+- Классы `RoseClient`, `RoseVoicechatPlugin`, `RoseIrc`; строки `dimasik`/`NowDLC` заменены на `rose`/`Rose` (0 остатков).
+- Логотипы: `assets/rose/icon.png` (иконка мода, рубиновая роза),
+  `assets/rose/fonts/client_logo.png` (SDF-атлас глифа логотипа — новая марка),
+  `assets/rose/images/mainmenu/*logo*`, `images/clickgui/logo.png`,
+  `images/hud/killcards/logo.png`, `images/killspray/logo.png` — белые силуэты новой марки.
+- Исходники брендинга — `assets/branding/` (не попадают в jar).
 
 ## Структура
 
 ```
-src/main/java/dev/rose/
-  RoseClient.java          входная точка, тик-цикл, регистрация модулей
-  anim/                    пружины, изинги
-  gui/                     меню (menu/*), экраны (screen/*), виджеты, ввод
-  hud/                     элементы HUD, редактор, раскладки
-  module/                  модули (impl/hud, impl/visual, world, cosmetic)
-  render/                  Theme, Glass, шрифты (SDF), gpu/* (свои пайплайны и проходы)
-  mixin/                   64 клиентских миксина
-src/main/resources/assets/rose/
-  fonts/                   Onest, Unbounded, Lucide (OFL / MIT — лицензии рядом)
-  shaders/core/            liquid_glass, sdf_text, kawawa blur, surface и др.
-  lang/                    en_us, ru_ru
+src/main/java/
+  settings/render/          точка входа (ClientInitializer), ресурсы, локализация
+  sg/client/                ядро (RoseClient, сервисы)
+  sg/render/                рендер: pipeline, шрифты, логотип, аватары
+  sg/gui/                   GUI: click gui, HUD-редактор, меню, косметика
+  sg/modules/               модули (combat, render, misc, hud)
+  sg/mixin/                 125 миксинов + ConditionalMixinPlugin
+  sg/network/irc/           IRC-подсистема (сообщения, пати, синхронизация)
+  com/deluxe/, HdG/         вспомогательные подсистемы из базы
+src/main/resources/
+  fabric.mod.json, rose.mixins.json, rose.accesswidener
+  assets/rose/              89 МБ: fonts, shaders, images, sounds, cosmetics, models
+  assets/minecraft/         оверрайды ванильных моделей/шрифтов
+  META-INF/jars/            luaj-jse-3.0.1.jar, onnxruntime-1.27.0.jar (nested libraries)
 ```
-
-Сторонние шрифты и звуки идут со своими лицензиями (`assets/rose/fonts/*-OFL.txt`, `LUCIDE-LICENSE.txt`, `sounds/credits.txt`) — их удалять нельзя.
 
 ## Дальше
 
-1. Прогнать клиент в игре, отсмотреть палитру и логотип в каждом экране.
-2. Довести рубиновую тему: пресеты `Theme → Builtin`, тона стекла, свечения.
-3. Добавить свои модули (кастомное небо, собственные визуалы) уже поверх этой базы.
+1. Запустить `runClient`, проверить загрузку, меню и HUD.
+2. Отсмотреть новую марку в loading-экране, click gui и kill-эффектах.
+3. Перекрасить палитру под рубиновую (`sg/theme`), если текущая не совпадает с брендом.
+4. Решить судьбу IRC-подсистемы и «unhook».

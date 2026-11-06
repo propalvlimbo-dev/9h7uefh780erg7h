@@ -1,34 +1,41 @@
 {
-	"schemaVersion": 1,
-	"id": "rose",
-	"version": "${version}",
-	"name": "Rose",
-	"description": "Liquid Glass visual mod for Minecraft 1.21.11: glass menus and game screens, HUD editor, visuals and client-side cosmetics. No cheats. Жидкое стекло для Minecraft: меню, экраны, HUD, визуалы и косметика — без читов.",
-	"authors": [
-		"Rose"
-	],
-	"contact": {},
-	"license": "All-Rights-Reserved",
-	"icon": "assets/rose/icon.png",
-	"environment": "client",
-	"entrypoints": {
-		"client": [
-			"dev.rose.RoseClient"
-		],
-		"modmenu": [
-			"dev.rose.compat.RoseModMenu"
-		]
-	},
-	"mixins": [
-		"rose.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.19.5",
-		"minecraft": "1.21.11",
-		"java": ">=21",
-		"fabric-api": "*"
-	},
-	"suggests": {
-		"modmenu": "*"
-	}
+  "schemaVersion": 1,
+  "id": "rose",
+  "version": "0.1.0+26.2",
+  "name": "Rose",
+  "description": "Rose — клиент для Minecraft 26.2: собственный рендер, модельки и интерфейс.",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/rose/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "settings.render.ClientInitializer"
+    ]
+  },
+  "mixins": [
+    {
+      "environment": "client",
+      "config": "rose.mixins.json"
+    }
+  ],
+  "depends": {
+    "fabric-api": "*",
+    "minecraft": "~26.2",
+    "java": ">=25"
+  },
+  "suggests": {
+    "voicechat": "*",
+    "baritone": "*"
+  },
+  "accessWidener": "rose.accesswidener",
+  "jars": [
+    {
+      "file": "META-INF/jars/luaj-jse-3.0.1.jar"
+    },
+    {
+      "file": "META-INF/jars/onnxruntime-1.27.0.jar"
+    }
+  ]
 }

@@ -1,0 +1,23 @@
+{
+  "vertex": "rose:core/world_grade",
+  "fragment": "rose:core/world_grade",
+  "samplers": [
+    { "name": "Sampler0" }
+  ],
+  "uniforms": [
+    {
+      "name": "ColorPlusGrade",
+      "type": "float",
+      "count": 26,
+      "values": [
+        1.0, 1.0,
+        1.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0,
+        0.0, 0.0, 0.0, 0.0
+      ]
+    }
+  ]
+}

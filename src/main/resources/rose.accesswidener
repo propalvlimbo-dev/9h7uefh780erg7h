@@ -1,0 +1,24 @@
+accessWidener v2 official
+accessible method net/minecraft/world/inventory/AbstractContainerMenu addSlot (Lnet/minecraft/world/inventory/Slot;)Lnet/minecraft/world/inventory/Slot;
+accessible method net/minecraft/client/Camera setRotation (FF)V
+accessible method net/minecraft/client/Camera setPosition (Lnet/minecraft/world/phys/Vec3;)V
+accessible method net/minecraft/client/gui/components/CommandSuggestions updateUsageInfo (Lcom/mojang/brigadier/ParseResults;Lcom/mojang/brigadier/suggestion/Suggestions;)V
+accessible method net/minecraft/client/player/KeyboardInput calculateImpulse (ZZ)F
+accessible field net/minecraft/client/player/ClientInput moveVector Lnet/minecraft/world/phys/Vec2;
+accessible field net/minecraft/client/Minecraft rightClickDelay I
+accessible field net/minecraft/world/entity/LivingEntity noJumpDelay I
+accessible field net/minecraft/world/entity/player/Inventory selected I
+accessible method net/minecraft/client/multiplayer/MultiPlayerGameMode ensureHasSentCarriedItem ()V
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
+accessible class net/minecraft/client/multiplayer/ClientCommonPacketListenerImpl$PackConfirmScreen
+accessible method net/minecraft/client/gui/screens/inventory/AbstractContainerScreen getHoveredSlot (DD)Lnet/minecraft/world/inventory/Slot;
+accessible field com/mojang/blaze3d/vertex/BufferBuilder vertices I
+accessible field com/mojang/blaze3d/vertex/BufferBuilder building Z
+accessible method net/minecraft/client/multiplayer/ClientLevel getBlockStatePredictionHandler ()Lnet/minecraft/client/multiplayer/prediction/BlockStatePredictionHandler;
+accessible method net/minecraft/client/Minecraft startAttack ()Z
+accessible class net/minecraft/client/renderer/ItemInHandRenderer$HandRenderSelection
+accessible class net/minecraft/client/renderer/rendertype/RenderSetup$TextureBinding
+accessible method net/minecraft/client/multiplayer/MultiPlayerGameMode startPrediction (Lnet/minecraft/client/multiplayer/ClientLevel;Lnet/minecraft/client/multiplayer/prediction/PredictiveAction;)V
+
+accessible field net/minecraft/client/renderer/GameRenderer guiRenderer Lnet/minecraft/client/gui/render/GuiRenderer;
+

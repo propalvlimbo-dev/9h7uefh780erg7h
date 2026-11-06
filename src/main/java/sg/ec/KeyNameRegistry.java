@@ -1,0 +1,244 @@
+package sg.ec;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import org.lwjgl.glfw.GLFW;
+
+public class KeyNameRegistry {
+   public static final Map<String, Integer> сЦ = new HashMap<>();
+   public static final Map<Integer, String> сч = new HashMap<>();
+   private static final String сlз = "A";
+   private static final String сlц = "B";
+   private static final String сlя = "C";
+   private static final String с8с = "D";
+   private static final String с8В = "E";
+   private static final String с8Я = "F";
+   private static final String с8Х = "G";
+   private static final String с8е = "H";
+   private static final String с8А = "I";
+   private static final String с84 = "J";
+   private static final String с8п = "K";
+   private static final String с8Д = "L";
+   private static final String с8Ъ = "M";
+   private static final String с8т = "N";
+   private static final String с8а = "O";
+   private static final String с8Ю = "P";
+   private static final String с8Ч = "Q";
+   private static final String с8Л = "R";
+   private static final String с8诶 = "S";
+   private static final String с81 = "T";
+   private static final String с8Ь = "U";
+   private static final String с8衣 = "V";
+   private static final String с8ш = "W";
+   private static final String с8И = "X";
+   private static final String с8ь = "Y";
+   private static final String с8ж = "Z";
+   private static final String с8弟 = "0";
+   private static final String с8б = "1";
+   private static final String с8Ы = "2";
+   private static final String с8l = "3";
+   private static final String с88 = "4";
+   private static final String с85 = "5";
+   private static final String с8в = "6";
+   private static final String с8ъ = "7";
+   private static final String с8М = "8";
+   private static final String с8Н = "9";
+   private static final String с8н = "F1";
+   private static final String с8Ц = "F2";
+   private static final String с8ч = "F3";
+   private static final String с8Э = "F4";
+   private static final String с8必 = "F5";
+   private static final String с8щ = "F6";
+   private static final String с8Г = "F7";
+   private static final String с8л = "F8";
+   private static final String с8э = "F9";
+   private static final String с8ю = "F10";
+   private static final String с8Щ = "F11";
+   private static final String с8у = "F12";
+   private static final String с82 = "NUMPAD1";
+   private static final String с8ф = "NUMPAD2";
+   private static final String с8и = "NUMPAD3";
+   private static final String с89 = "NUMPAD4";
+   private static final String с8о = "NUMPAD5";
+   private static final String с8O = "NUMPAD6";
+   private static final String с87 = "NUMPAD7";
+   private static final String с8Р = "NUMPAD8";
+   private static final String с83 = "NUMPAD9";
+   private static final String с8р = "SPACE";
+   private static final String с86 = "ENTER";
+   private static final String с8_ = "ESCAPE";
+   private static final String с8Ш = "HOME";
+   private static final String с8ы = "INSERT";
+   private static final String с8й = "DELETE";
+   private static final String с8Ж = "END";
+   private static final String с8м = "PAGEUP";
+   private static final String с8К = "PAGEDOWN";
+   private static final String с8I = "RIGHT";
+   private static final String с8Т = "LEFT";
+   private static final String с8О = "DOWN";
+   private static final String с8Ф = "UP";
+   private static final String с8Й = "RIGHT_SHIFT";
+   private static final String с8к = "LEFT_SHIFT";
+   private static final String с8г = "RIGHT_CONTROL";
+   private static final String с80 = "LEFT_CONTROL";
+   private static final String с8х = "RIGHT_ALT";
+   private static final String с8У = "LEFT_ALT";
+   private static final String с8З = "RIGHT_SUPER";
+   private static final String с8Е = "LEFT_SUPER";
+   private static final String с8П = "MENU";
+   private static final String с8西 = "CAPS_LOCK";
+   private static final String с8д = "NUM_LOCK";
+   private static final String с8Б = "SCROLL_LOCK";
+   private static final String с8С = "KP_DECIMAL";
+   private static final String с8з = "KP_DIVIDE";
+   private static final String с8ц = "KP_MULTIPLY";
+   private static final String с8я = "KP_SUBTRACT";
+   private static final String с5с = "KP_PLUS";
+   private static final String с5В = "KP_ENTER";
+   private static final String с5Я = "KP_EQUAL";
+   private static final String с5Х = "APOSTROPHE";
+   private static final String с5е = "SLASH";
+   private static final String с5А = "-";
+   private static final String с54 = "+";
+   private static final String с5п = "BACK";
+   private static final String с5Д = "BACKSLASH";
+   private static final String с5Ъ = ".";
+   private static final String с5т = "COMMA";
+   private static final String с5а = "PAUSE";
+   private static final String с5Ю = "M1";
+   private static final String с5Ч = "M2";
+   private static final String с5Л = "M3";
+   private static final String с5诶 = "M4";
+   private static final String с51 = "M5";
+   private static final String с5Ь = "GRAVE";
+
+   private static void щ9() {
+      for (Entry var1 : сЦ.entrySet()) {
+         сч.put((Integer)var1.getValue(), (String)var1.getKey());
+      }
+   }
+
+   private static void щУ() {
+      сЦ.put(сlз, 65);
+      сЦ.put(сlц, 66);
+      сЦ.put(сlя, 67);
+      сЦ.put(с8с, 68);
+      сЦ.put(с8В, 69);
+      сЦ.put(с8Я, 70);
+      сЦ.put(с8Х, 71);
+      сЦ.put(с8е, 72);
+      сЦ.put(с8А, 73);
+      сЦ.put(с84, 74);
+      сЦ.put(с8п, 75);
+      сЦ.put(с8Д, 76);
+      сЦ.put(с8Ъ, 77);
+      сЦ.put(с8т, 78);
+      сЦ.put(с8а, 79);
+      сЦ.put(с8Ю, 80);
+      сЦ.put(с8Ч, 81);
+      сЦ.put(с8Л, 82);
+      сЦ.put(с8诶, 83);
+      сЦ.put(с81, 84);
+      сЦ.put(с8Ь, 85);
+      сЦ.put(с8衣, 86);
+      сЦ.put(с8ш, 87);
+      сЦ.put(с8И, 88);
+      сЦ.put(с8ь, 89);
+      сЦ.put(с8ж, 90);
+      сЦ.put(с8弟, 48);
+      сЦ.put(с8б, 49);
+      сЦ.put(с8Ы, 50);
+      сЦ.put(с8l, 51);
+      сЦ.put(с88, 52);
+      сЦ.put(с85, 53);
+      сЦ.put(с8в, 54);
+      сЦ.put(с8ъ, 55);
+      сЦ.put(с8М, 56);
+      сЦ.put(с8Н, 57);
+      сЦ.put(с8н, 290);
+      сЦ.put(с8Ц, 291);
+      сЦ.put(с8ч, 292);
+      сЦ.put(с8Э, 293);
+      сЦ.put(с8必, 294);
+      сЦ.put(с8щ, 295);
+      сЦ.put(с8Г, 296);
+      сЦ.put(с8л, 297);
+      сЦ.put(с8э, 298);
+      сЦ.put(с8ю, 299);
+      сЦ.put(с8Щ, 300);
+      сЦ.put(с8у, 301);
+      сЦ.put(с82, 321);
+      сЦ.put(с8ф, 322);
+      сЦ.put(с8и, 323);
+      сЦ.put(с89, 324);
+      сЦ.put(с8о, 325);
+      сЦ.put(с8O, 326);
+      сЦ.put(с87, 327);
+      сЦ.put(с8Р, 328);
+      сЦ.put(с83, 329);
+      сЦ.put(с8р, 32);
+      сЦ.put(с86, 257);
+      сЦ.put(с8_, 256);
+      сЦ.put(с8Ш, 268);
+      сЦ.put(с8ы, 260);
+      сЦ.put(с8й, 261);
+      сЦ.put(с8Ж, 269);
+      сЦ.put(с8м, 266);
+      сЦ.put(с8К, 267);
+      сЦ.put(с8I, 262);
+      сЦ.put(с8Т, 263);
+      сЦ.put(с8О, 264);
+      сЦ.put(с8Ф, 265);
+      сЦ.put(с8Й, 344);
+      сЦ.put(с8к, 340);
+      сЦ.put(с8г, 345);
+      сЦ.put(с80, 341);
+      сЦ.put(с8х, 346);
+      сЦ.put(с8У, 342);
+      сЦ.put(с8З, 347);
+      сЦ.put(с8Е, 343);
+      сЦ.put(с8П, 348);
+      сЦ.put(с8西, 280);
+      сЦ.put(с8д, 282);
+      сЦ.put(с8Б, 281);
+      сЦ.put(с8С, 330);
+      сЦ.put(с8з, 331);
+      сЦ.put(с8ц, 332);
+      сЦ.put(с8я, 333);
+      сЦ.put(с5с, 334);
+      сЦ.put(с5В, 335);
+      сЦ.put(с5Я, 336);
+      сЦ.put(с5Х, 39);
+      сЦ.put(с5е, 47);
+      сЦ.put(с5А, 45);
+      сЦ.put(с54, 61);
+      сЦ.put(с5п, 259);
+      сЦ.put(с5Д, 92);
+      сЦ.put(с5Ъ, 46);
+      сЦ.put(с5т, 44);
+      сЦ.put(с5а, 284);
+      сЦ.put(с5Ю, 0);
+      сЦ.put(с5Ч, 1);
+      сЦ.put(с5Л, 2);
+      сЦ.put(с5诶, 3);
+      сЦ.put(с51, 4);
+      сЦ.put(с5Ь, 96);
+   }
+
+   public static int е(String var0) {
+      for (int var1 = 30; var1 < 348; var1++) {
+         String var2 = GLFW.glfwGetKeyName(var1, -1);
+         if (var2 != null && var2.equalsIgnoreCase(var0)) {
+            return var1;
+         }
+      }
+
+      return -1;
+   }
+
+   static {
+      щУ();
+      щ9();
+   }
+}

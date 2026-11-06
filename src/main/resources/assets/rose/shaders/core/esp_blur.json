@@ -1,0 +1,12 @@
+{
+    "vertex": "rose:core/hands_pass",
+    "fragment": "rose:core/esp_blur",
+    "samplers": [
+        { "name": "Sampler0" }
+    ],
+    "uniforms": [
+        { "name": "texelSize", "type": "float", "count": 2, "values": [ 0.0, 0.0 ] },
+        { "name": "direction", "type": "float", "count": 2, "values": [ 1.0, 0.0 ] },
+        { "name": "radius", "type": "float", "count": 1, "values": [ 6.0 ] }
+    ]
+}

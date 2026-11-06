@@ -1,0 +1,8 @@
+{
+  "providers": [
+    {"type":"bitmap","file":"rose:font/roles/admin.png","ascent":7,"height":8,"chars":["ꔂ"]},
+    {"type":"bitmap","file":"rose:font/roles/beta.png","ascent":7,"height":8,"chars":["ꔃ"]},
+    {"type":"bitmap","file":"rose:font/roles/media.png","ascent":7,"height":8,"chars":["ꔆ"]},
+    {"type":"bitmap","file":"rose:font/roles/user.png","ascent":7,"height":8,"chars":["ꔇ"]}
+  ]
+}

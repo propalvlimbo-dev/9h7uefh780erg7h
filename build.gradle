@@ -1,78 +1,115 @@
 plugins {
-	id 'fabric-loom' version "${loom_version}"
-	id 'maven-publish'
+    // Minecraft 26.2 is distributed with readable names and does not use mappings/remapping.
+    id 'net.fabricmc.fabric-loom' version '1.17.17'
 }
 
 version = project.mod_version
 group = project.maven_group
 
 base {
-	archivesName = project.archives_base_name
+    archivesName = project.archives_base_name
 }
 
 repositories {
-	maven {
-		name = "TerraformersMC"
-		url = "https://maven.terraformersmc.com/releases/"
-	}
+    mavenCentral()
+    maven {
+        name = 'Maxhenkel'
+        url = 'https://maven.maxhenkel.de/repository/public'
+        content { includeGroup 'de.maxhenkel.voicechat' }
+    }
+    maven {
+        name = 'Modrinth'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
 }
 
-loom {
-	mods {
-		"rose" {
-			sourceSet sourceSets.main
-		}
-	}
+configurations {
+    viaFabricPlusBundle {
+        canBeConsumed = false
+        canBeResolved = true
+        transitive = false
+    }
+}
+
+// Published ViaFabricPlus keeps its public APIs as nested JARs, which javac cannot read directly.
+def viaCompileApis = providers.provider {
+    def bundle = configurations.viaFabricPlusBundle.singleFile
+    def outputDirectory = layout.buildDirectory.dir("generated/via-apis/${project.viafabricplus_version}").get().asFile
+    outputDirectory.mkdirs()
+    def apiNames = [
+        "viafabricplus-api-${project.viafabricplus_version}.jar",
+        "viaversion-common-${project.viaversion_version}.jar"
+    ]
+    def extracted = []
+    new java.util.zip.ZipFile(bundle).withCloseable { archive ->
+        apiNames.each { name ->
+            def entry = archive.getEntry("META-INF/jars/${name}")
+            if (entry == null) {
+                throw new GradleException("Pinned ViaFabricPlus bundle is missing public API ${name}")
+            }
+            def output = new File(outputDirectory, name)
+            archive.getInputStream(entry).withCloseable { input ->
+                java.nio.file.Files.copy(input, output.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING)
+            }
+            extracted.add(output)
+        }
+    }
+    extracted
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "io.github.llamalad7:mixinextras-fabric:${project.mixinextras_version}"
+
+    // Nested libraries: also embedded into the jar through fabric.mod.json > jars.
+    implementation files('src/main/resources/META-INF/jars/luaj-jse-3.0.1.jar')
+    implementation files('src/main/resources/META-INF/jars/onnxruntime-1.27.0.jar')
+
+    // Optional integrations need their public APIs during compilation.
+    compileOnly "de.maxhenkel.voicechat:voicechat-api:${project.voicechat_api_version}"
+    viaFabricPlusBundle "maven.modrinth:viafabricplus:${project.viafabricplus_version}"
+    compileOnly files(viaCompileApis)
+    compileOnly "org.projectlombok:lombok:${project.lombok_version}"
 }
 
-def buildLinks = [
-	"update_url"   : (project.findProperty("update_url")   ?: ""),
-	"official_page": (project.findProperty("official_page") ?: ""),
-	"author_page"  : (project.findProperty("author_page")  ?: ""),
-	"discord_page" : (project.findProperty("discord_page") ?: ""),
-]
-
-processResources {
-	inputs.properties(buildLinks)
-	inputs.property("version", project.version)
-
-	filteringCharset = "UTF-8"
-
-	filesMatching("fabric.mod.json") {
-		expand("version": project.version)
-	}
-	filesMatching("rose-build.properties") {
-		expand(buildLinks)
-	}
+loom {
+    accessWidenerPath = file('src/main/resources/rose.accesswidener')
+    runs {
+        client {
+            runDir 'run'
+            vmArg '-Xmx3G'
+        }
+    }
 }
 
-tasks.withType(JavaCompile).configureEach {
-	it.options.encoding = "UTF-8"
-	it.options.release = Integer.parseInt(project.java_version as String)
+sourceSets {
+    main {
+        java {
+            exclude 'sg/modules/impl/init/RgExploit.java'
+            exclude 'sg/modules/impl/init/Radius.java'
+        }
+    }
 }
 
 java {
-	withSourcesJar()
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+    withSourcesJar()
 }
 
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archives_base_name
-			from components.java
-		}
-	}
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 25
+    options.compilerArgs.addAll(['-Xmaxerrs', '10000', '-Xmaxwarns', '1000'])
+    // Keep diagnostics in-process: thousands of decompiled sources are heavy for a forked worker.
+    options.fork = false
+}
 
-	repositories {
-	}
+tasks.named('wrapper', Wrapper) {
+    gradleVersion = '9.5.1'
+    distributionType = Wrapper.DistributionType.BIN
 }

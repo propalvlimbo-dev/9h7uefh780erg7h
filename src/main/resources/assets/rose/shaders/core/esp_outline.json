@@ -1,0 +1,16 @@
+{
+    "vertex": "rose:core/hands_pass",
+    "fragment": "rose:core/esp_outline",
+    "samplers": [
+        { "name": "Sampler0" },
+        { "name": "Sampler1" },
+        { "name": "Sampler2" }
+    ],
+    "uniforms": [
+        { "name": "texelSize", "type": "float", "count": 2, "values": [ 0.0, 0.0 ] },
+        { "name": "color", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
+        { "name": "thickness", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "autoColor", "type": "int", "count": 1, "values": [ 0 ] },
+        { "name": "saturation", "type": "float", "count": 1, "values": [ 1.4 ] }
+    ]
+}
