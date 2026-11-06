@@ -28,7 +28,15 @@ public class OnnxAimModel implements AutoCloseable {
    private static final String ЯЮ = "mixture_logits";
    private static final String ЯЧ = "means";
    private static final String ЯЛ = "log_scales";
-   private static final OrtEnvironment В_118c222a = OrtEnvironment.getEnvironment();
+   private static OrtEnvironment В_118c222a;
+
+   /** Ленивая инициализация: нативная библиотека ORT грузится только при реальном использовании модели. */
+   private static OrtEnvironment В_118c222b() {
+      if (В_118c222a == null) {
+         В_118c222a = OrtEnvironment.getEnvironment();
+      }
+      return В_118c222a;
+   }
    @SerializedName("В")
    private final OrtSession В_8a5b57cc;
    @SerializedName("В")
@@ -151,7 +159,7 @@ public class OnnxAimModel implements AutoCloseable {
       this.В_18894945.flip();
 
       try (
-         OnnxTensor var14 = OnnxTensor.createTensor(В_118c222a, this.В_18894945, new long[]{1L, ИЮ, Aim60Schema.Хп});
+         OnnxTensor var14 = OnnxTensor.createTensor(В_118c222b(), this.В_18894945, new long[]{1L, ИЮ, Aim60Schema.Хп});
          Result var15 = this.В_8a5b57cc.run(Map.of(ИЧ, var14));
       ) {
          if (this.В_61a83f3e != OnnxAimModel.OutputMode.BASELINE) {
@@ -187,7 +195,7 @@ public class OnnxAimModel implements AutoCloseable {
       try (SessionOptions var2 = new SessionOptions()) {
          var2.setIntraOpNumThreads(1);
          var2.setInterOpNumThreads(1);
-         this.В_8a5b57cc = В_118c222a.createSession(Files.readAllBytes(var1), var2);
+         this.В_8a5b57cc = В_118c222b().createSession(Files.readAllBytes(var1), var2);
       }
 
       try {
