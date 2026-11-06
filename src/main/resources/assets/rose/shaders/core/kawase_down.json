@@ -1,0 +1,12 @@
+{
+    "vertex": "rose:blit",
+    "fragment": "rose:kawase_down",
+    "samplers": [
+        { "name": "DiffuseSampler" }
+    ],
+    "uniforms": [
+        { "name": "HalfPixel", "type": "float", "count": 2, "values": [ 0.0, 0.0 ] },
+        { "name": "Offset", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "Linearize", "type": "float", "count": 1, "values": [ 0.0 ] }
+    ]
+}

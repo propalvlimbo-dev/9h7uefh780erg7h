@@ -1,0 +1,18 @@
+{
+    "vertex": "rose:gui",
+    "fragment": "rose:black_hole",
+    "samplers": [
+    ],
+    "uniforms": [
+        { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "Extent", "type": "float", "count": 1, "values": [ 6.0 ] },
+        { "name": "Inclination", "type": "float", "count": 1, "values": [ 0.16 ] },
+        { "name": "Time", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "Strength", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "Steps", "type": "float", "count": 1, "values": [ 160.0 ] },
+        { "name": "StarPower", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "HotColor", "type": "float", "count": 4, "values": [ 1.0, 0.88, 0.66, 1.0 ] },
+        { "name": "CoolColor", "type": "float", "count": 4, "values": [ 1.0, 0.33, 0.10, 1.0 ] }
+    ]
+}

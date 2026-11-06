@@ -1,77 +1,65 @@
-# Rose Client
+# Rose
 
-Мод-клиент для **Minecraft Java 1.21.11** (Fabric) с собственным рендером и UI в стиле «рубиновое стекло».
+Клиент-мод для **Minecraft 1.21.11 (Fabric)**: жидкое стекло в интерфейсе, собственные экраны меню, HUD-редактор, визуалы и косметика. Без читов — только визуальная часть.
 
-```
-Minecraft 1.21.11  ·  Fabric Loader 0.20.1  ·  Fabric API 0.141.6+1.21.11
-Loom 1.19-SNAPSHOT  ·  Java 21  ·  официальные Mojang mappings
-```
+> База перенесена из присланного проекта и полностью переименована/перекрашена под Rose: имя, namespace, палитра, иконка и логотип.
 
-## Что уже есть (Milestone 1)
+## Что уже есть
 
-| # | Возможность | Где смотреть |
-|---|---|---|
-| 1 | Замена логотипа и **полностью кастомное главное меню** (анимированное появление, живой фон: небулы, пыль, виньетка) | `client/screens/RoseTitleScreen.java`, `client/mixin/MinecraftMixin.java` |
-| 2 | **ClickGUI** — стеклянное окно, анимации открытия/ховера/переключателей/раскрытия, свои слайдеры | `client/screens/RoseClickGui.java` |
-| 3 | **RoseUI** — собственный слой отрисовки: градиенты, скругления, тени, глоу, hairline, текст — всё на per-vertex квадах через `GuiElementRenderState` | `client/render/RoseDraw.java`, `RoseQuad.java`, `RoseTheme.java` |
-| 4 | **Custom Sky** — процедурные рубиновые облака со своим шейдером и своим `RenderPipeline` | `client/render/RubyCloudRenderer.java`, `RoseRenderTypes.java`, `assets/rose/shaders/core/ruby_clouds.*` |
+| Раздел | Содержимое |
+|---|---|
+| Меню | стеклянное окно (Right Shift), поиск, избранное, профили, темы, онбординг |
+| Экраны | главное меню, пауза, инвентарь, список серверов, статус/подключение, сплэш |
+| HUD | редактор с сеткой, привязками и готовыми раскладками, watermark, island, waypoints |
+| Визуалы | свой SDF-шрифт, стекло с блюром/преломлением, bloom, эффекты ударов, кастомное небо |
+| Косметика | крылья, питомцы, аура, следы |
+| Утилиты | зум, aspect ratio, поиск по контейнерам, блокировка предметов, звуки |
+
+## Брендинг Rose
+
+- **Имя мода / namespace:** `rose`, пакет `dev.rose`, jar `rose-<version>.jar`.
+- **Палитра:** рубиновая — акцент `#E4294B`, яркий `#FF6B85`, глубокий `#C1123A`;
+  тема по умолчанию — `Palette.ROSE` + `Glass.dark()` с рубиновым тоном (`0x801A0B12`).
+- **Логотип:** `assets/rose/icon.png` (иконка мода) и
+  `assets/rose/textures/gui/logo_192.png` (знак в меню, сплэше и заголовке).
+  Исходники — в `assets/branding/`.
 
 ## Требования
 
-- **JDK 21** (Eclipse Temurin / Adoptium). Проверка: `java -version` → `21.x`
-- IntelliJ IDEA (Community или Ultimate)
-- Интернет при первой сборке (Gradle скачает Minecraft, mappings и Fabric API)
+- **JDK 21** (Project SDK и Gradle JVM в IDEA — оба 21).
+- IntelliJ IDEA (или любой Gradle-клиент).
+- Loom **1.17.21** — последняя ветка, которая работает на Java 21 (1.18+ требует JDK 25);
+  Gradle 9.8.2 из wrapper'а подходит.
 
-## Запуск в IntelliJ IDEA
+## Запуск
 
-1. `File → Open…` → выбрать папку проекта (`rose-client`) → **Trust Project**
-2. Дождаться Gradle sync. Если IDEA ругается на wrapper — `Settings → Build, Execution, Deployment → Build Tools → Gradle` → **Distribution: `gradle-wrapper.properties file`** (IDEA сама скачает Gradle 9.8.2).
-3. В правой панели Gradle: `Tasks → fabric → runClient` (или `Tasks → application → runClient`).
-   Либо в терминале:
+1. Открыть папку проекта в IDEA, дождаться Gradle sync.
+2. `Tasks → fabric → runClient` (или `./gradlew runClient`).
+3. В игре: **Right Shift** — меню, `Esc` — закрыть.
 
-```powershell
-.\gradlew.bat runClient
+Сборка: `./gradlew build` → `build/libs/rose-<version>.jar`.
+
+## Структура
+
+```
+src/main/java/dev/rose/
+  RoseClient.java          входная точка, тик-цикл, регистрация модулей
+  anim/                    пружины, изинги
+  gui/                     меню (menu/*), экраны (screen/*), виджеты, ввод
+  hud/                     элементы HUD, редактор, раскладки
+  module/                  модули (impl/hud, impl/visual, world, cosmetic)
+  render/                  Theme, Glass, шрифты (SDF), gpu/* (свои пайплайны и проходы)
+  mixin/                   64 клиентских миксина
+src/main/resources/assets/rose/
+  fonts/                   Onest, Unbounded, Lucide (OFL / MIT — лицензии рядом)
+  shaders/core/            liquid_glass, sdf_text, kawawa blur, surface и др.
+  lang/                    en_us, ru_ru
 ```
 
-## Сборка мода
+Сторонние шрифты и звуки идут со своими лицензиями (`assets/rose/fonts/*-OFL.txt`, `LUCIDE-LICENSE.txt`, `sounds/credits.txt`) — их удалять нельзя.
 
-```powershell
-.\gradlew.bat build
-```
+## Дальше
 
-Готовый jar: `build\libs\rose-0.1.0.jar` → положить в `mods` вместе с **Fabric API** для 1.21.11.
-
-## Управление
-
-- **Right Shift** — открыть/закрыть ClickGUI
-- **Esc** — закрыть ClickGUI
-
-## Как включить облака
-
-1. Right Shift → категория **Visuals** → **Custom Sky** → переключатель справа.
-2. Клик по строке модуля — раскрыть настройки: `Density`, `Altitude`, `Brightness`, `Layers`.
-3. Настройки сохраняются в `config/rose.json`.
-
-## Как это устроено (коротко)
-
-- **GUI**: `RoseDraw` строит всё из 4-вершинных квадов с цветом на вершину и отправляет их в `GuiGraphics.guiRenderState` через собственный `GuiElementRenderState` (`RoseQuad`). Это даёт настоящие градиенты, per-vertex alpha, мягкие тени и глоу без единой текстуры.
-- **Облака**: сетка world-anchored квадов на высоте `altitude`. Вершинный шейдер даёт мировые XZ + дистанцию до камеры, фрагментный — процедурный fbm-шум, псевдо-объёмное освещение по градиенту плотности, серебристую кромку и затухание к горизонту. Дрейф — от `GameTime`. Ванильные облака выключаются через `options.cloudStatus`.
-- **Рендер-хук**: `@Inject` в `LevelRenderer#renderLevel` (RETURN), свой `PoseStack` с камерой, отрисовка через `MultiBufferSource` + собственный `RenderType`/`RenderPipeline`.
-
-## Если что-то не работает
-
-| Симптом | Что делать |
-|---|---|
-| `Dependency requires at least JVM runtime version 25` | Loom 1.18+ требует JDK 25 **для самого Gradle**. В проекте уже запинен `loom_version=1.17.21` (работает на JDK 21). Если поднял Loom выше — переключи / Gradle JVM на JDK 25 |
-| После смены Loom ругается на кэш | `.\.gradlew.bat --stop`, затем `File → Invalidate Caches` или `.\.gradlew.bat build --refresh-dependencies` |
-| Игра падает на старте, в логе `Mixin apply failed` | проверить, что версия MC ровно **1.21.11** и Fabric Loader ≥ 0.20.1 |
-| В логе `Couldn't compile ... ruby_clouds` | шейдер не скомпилировался: смотреть текст ошибки, править `assets/rose/shaders/core/ruby_clouds.fsh` |
-| Модуль включён, ванильных облаков нет, но рубиновых не видно | `RoseRenderTypes.RUBY_CLOUDS` → попробовать убрать `.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)` или сменить на другой target; также проверить `withDepthTestFunction` |
-| Главное меню осталось ванильным | миксин `MinecraftMixin#setScreen` не применился (проверить `rose.mixins.json`) |
-| ClickGUI не открывается | бинд Right Shift занят другим модом → сменить в `Options → Controls → Rose` |
-
-## Документация
-
-- [Исследование и архитектура](docs/00-RESEARCH-AND-ARCHITECTURE.md)
-- [Milestone 1 — что сделано и что дальше](docs/10-MILESTONE-1.md)
-- [Брендинг и стиль-гайд](assets/branding/README.md)
+1. Прогнать клиент в игре, отсмотреть палитру и логотип в каждом экране.
+2. Довести рубиновую тему: пресеты `Theme → Builtin`, тона стекла, свечения.
+3. Добавить свои модули (кастомное небо, собственные визуалы) уже поверх этой базы.

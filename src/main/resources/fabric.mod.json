@@ -3,24 +3,32 @@
 	"id": "rose",
 	"version": "${version}",
 	"name": "Rose",
-	"description": "Rose Client - a Minecraft utility client with a custom glass UI and its own visual effects renderer.",
-	"authors": ["Rose Team"],
-	"license": "All Rights Reserved",
+	"description": "Liquid Glass visual mod for Minecraft 1.21.11: glass menus and game screens, HUD editor, visuals and client-side cosmetics. No cheats. Жидкое стекло для Minecraft: меню, экраны, HUD, визуалы и косметика — без читов.",
+	"authors": [
+		"Rose"
+	],
+	"contact": {},
+	"license": "All-Rights-Reserved",
 	"icon": "assets/rose/icon.png",
 	"environment": "client",
 	"entrypoints": {
-		"client": ["dev.rose.client.RoseClient"]
+		"client": [
+			"dev.rose.RoseClient"
+		],
+		"modmenu": [
+			"dev.rose.compat.RoseModMenu"
+		]
 	},
 	"mixins": [
-		{
-			"config": "rose.mixins.json",
-			"environment": "client"
-		}
+		"rose.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=${loader_version}",
-		"minecraft": "~${minecraft_version}",
+		"fabricloader": ">=0.19.5",
+		"minecraft": "1.21.11",
 		"java": ">=21",
 		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
 	}
 }

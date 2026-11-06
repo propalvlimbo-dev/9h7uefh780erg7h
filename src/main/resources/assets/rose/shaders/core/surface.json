@@ -1,0 +1,25 @@
+{
+    "vertex": "rose:gui",
+    "fragment": "rose:surface",
+    "samplers": [],
+    "uniforms": [
+        { "name": "ModelViewMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "ProjMat", "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "ColorModulator", "type": "float", "count": 4, "values": [ 1.0, 1.0, 1.0, 1.0 ] },
+        { "name": "Size", "type": "float", "count": 2, "values": [ 1.0, 1.0 ] },
+        { "name": "Radius", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
+        { "name": "Corner", "type": "float", "count": 4, "values": [ 2.0, 2.0, 2.0, 2.0 ] },
+        { "name": "Mode", "type": "int", "count": 1, "values": [ 0 ] },
+        { "name": "Thickness", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "Blur", "type": "float", "count": 1, "values": [ 1.0 ] },
+        { "name": "Spread", "type": "float", "count": 1, "values": [ 0.0 ] },
+        { "name": "Offset", "type": "float", "count": 2, "values": [ 0.0, 0.0 ] },
+        { "name": "PaintType", "type": "int", "count": 1, "values": [ 4 ] },
+        { "name": "PaintCount", "type": "int", "count": 1, "values": [ 1 ] },
+        { "name": "PaintLab", "type": "float", "count": 16, "values": [ 0.0 ] },
+        { "name": "PaintPos", "type": "float", "count": 4, "values": [ 0.0, 0.33, 0.66, 1.0 ] },
+        { "name": "PaintDir", "type": "float", "count": 2, "values": [ 1.0, 0.0 ] },
+        { "name": "PaintCenter", "type": "float", "count": 2, "values": [ 0.5, 0.5 ] },
+        { "name": "PaintRadius", "type": "float", "count": 1, "values": [ 1.0 ] }
+    ]
+}
