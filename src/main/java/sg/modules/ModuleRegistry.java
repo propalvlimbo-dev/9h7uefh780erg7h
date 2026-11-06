@@ -611,7 +611,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.dragonFly);
       this.add(this.discordRpc);
       this.add(this.ircModule);
-      this.add(this.anyDesk);
       this.ircModule.enable();
       if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
          this.add(this.aiAimbot);
