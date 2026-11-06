@@ -62,6 +62,8 @@ Loom 1.19-SNAPSHOT  ·  Java 21  ·  официальные Mojang mappings
 
 | Симптом | Что делать |
 |---|---|
+| `Dependency requires at least JVM runtime version 25` | Loom 1.18+ требует JDK 25 **для самого Gradle**. В проекте уже запинен `loom_version=1.17.21` (работает на JDK 21). Если поднял Loom выше — переключи / Gradle JVM на JDK 25 |
+| После смены Loom ругается на кэш | `.\.gradlew.bat --stop`, затем `File → Invalidate Caches` или `.\.gradlew.bat build --refresh-dependencies` |
 | Игра падает на старте, в логе `Mixin apply failed` | проверить, что версия MC ровно **1.21.11** и Fabric Loader ≥ 0.20.1 |
 | В логе `Couldn't compile ... ruby_clouds` | шейдер не скомпилировался: смотреть текст ошибки, править `assets/rose/shaders/core/ruby_clouds.fsh` |
 | Модуль включён, ванильных облаков нет, но рубиновых не видно | `RoseRenderTypes.RUBY_CLOUDS` → попробовать убрать `.setOutputTarget(OutputTarget.ITEM_ENTITY_TARGET)` или сменить на другой target; также проверить `withDepthTestFunction` |
