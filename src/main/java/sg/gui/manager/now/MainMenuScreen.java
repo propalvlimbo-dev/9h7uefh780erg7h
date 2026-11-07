@@ -496,9 +496,16 @@ public class MainMenuScreen extends Screen {
         this.animation.processData(this.flag ? 1.0 : 0.0);
         float animAlt = (float) this.animation.computeDouble();
 
-        // Fullscreen main menu background: звёздный Энд, поверх — святилище кристаллов.
-        Render2D.drawTextureSmooth(BACKGROUND_DIR + "end_void.png", 0.0F, 0.0F, screenW, screenH, -1);
-        EndShrine.render(screenW, screenH, scale);
+        // Fullscreen main menu background: готовое полотно + оживающая поверх него подсветка.
+        long backdropTime = System.currentTimeMillis();
+        float backdropZoom = 1.015F + 0.012F * (float) Math.sin(backdropTime % 9000L / 9000.0 * Math.PI * 2.0);
+        float backdropShiftX = (float) Math.sin(backdropTime * 0.00021) * 6.0F * scale;
+        float backdropShiftY = (float) Math.cos(backdropTime * 0.00017) * 5.0F * scale;
+        Render2D.drawFullscreenTextureZoom(BACKGROUND_DIR + "shrine.png",
+                screenW, screenH, 1.0F, backdropZoom, backdropShiftX, backdropShiftY);
+        int lightFrame = (int) (backdropTime / 90L % 12L);
+        Render2D.drawFullscreenTextureZoom(BACKGROUND_DIR + "shrine_light_" + lightFrame + ".png",
+                screenW, screenH, 1.0F, backdropZoom, backdropShiftX, backdropShiftY);
 
         if (this.flag3) {
             float fadeWelcome = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, 100L, 600L));
@@ -515,7 +522,7 @@ public class MainMenuScreen extends Screen {
         float sidebarW = 329.5F * scale + Math.min(0.0F, sidebarX);
         if (sidebarW > 1.0F) {
             Render2D.renderElement2(drawContext, Math.max(0.0F, sidebarX), 0.0F, sidebarW, screenH);
-            UiTheme.processData6(BACKGROUND_DIR + "end_void_blur.png", screenW, screenH, 1.0F);
+            UiTheme.processData6(BACKGROUND_DIR + "shrine_blur.png", screenW, screenH, 1.0F);
             Render2D.renderElement(drawContext);
         }
 
