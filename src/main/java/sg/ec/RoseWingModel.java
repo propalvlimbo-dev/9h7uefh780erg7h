@@ -2,264 +2,140 @@ package sg.ec;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import sg.render.SimpleWingAnimator;
+import net.minecraft.world.phys.Vec3;
+import sg.render.AvianWingAnimator;
 import sg.render.WingAnimator;
 import sg.render.WingModelPart;
 
 /**
- * Крылья «Роза»: веер из колючих побегов с листьями и маленькими розами на концах.
- * Восемь палитровых блоков текстуры кодируют материал, шейдер rose_cosmetic
- * дорисовывает свечение, блики и искры поверх базовой геометрии.
+ * Крылья «Роза». Анатомия как у дефолтных птичьих крыльев: цепочка из четырёх
+ * сегментов-«костей», на каждом висит пластина-«перо». Кости — колючие побеги
+ * (дерево + шипы), нижние пластины — листва, верхние — лепестки розы, в узлах
+ * сидят маленькие розы. Материал задаётся полосой UV (дерево / листва / лепестки),
+ * цвет, прожилки, блик и искры считает шейдер rose_cosmetic.
  */
 public final class RoseWingModel extends WingModel {
    private final WingModelPart root = createPart(0, 0);
-   private final WingModelPart leftWing = createPart(0, 0);
-   private final WingModelPart rightWing = createPart(0, 0);
-   private final WingModelPart leftWoodDarkPart = createPart(0, 0);
-   private final WingModelPart leftWoodMidPart = createPart(16, 0);
-   private final WingModelPart leftCorePart = createPart(32, 0);
-   private final WingModelPart leftPetalPart = createPart(48, 0);
-   private final WingModelPart leftLeafDarkPart = createPart(0, 16);
-   private final WingModelPart leftLeafLightPart = createPart(16, 16);
-   private final WingModelPart leftPetalLightPart = createPart(32, 16);
-   private final WingModelPart leftThornPart = createPart(48, 16);
-   private final WingModelPart rightWoodDarkPart = createPart(0, 0);
-   private final WingModelPart rightWoodMidPart = createPart(16, 0);
-   private final WingModelPart rightCorePart = createPart(32, 0);
-   private final WingModelPart rightPetalPart = createPart(48, 0);
-   private final WingModelPart rightLeafDarkPart = createPart(0, 16);
-   private final WingModelPart rightLeafLightPart = createPart(16, 16);
-   private final WingModelPart rightPetalLightPart = createPart(32, 16);
-   private final WingModelPart rightThornPart = createPart(48, 16);
+   private final WingModelPart[] leftBones = new WingModelPart[4];
+   private final WingModelPart[] rightBones = new WingModelPart[4];
+   private final WingModelPart[][] leftPlates = new WingModelPart[4][];
+   private final WingModelPart[][] rightPlates = new WingModelPart[4][];
+   private final WingModelPart leftThorns = createPart(0, 28);
+   private final WingModelPart rightThorns = createPart(0, 28);
+   private final WingModelPart leftTwigs = createPart(8, 28);
+   private final WingModelPart rightTwigs = createPart(8, 28);
+   private final WingModelPart leftRoses = createPart(46, 50);
+   private final WingModelPart rightRoses = createPart(46, 50);
+   private static final int[] BONE_TEXTURE_V = new int[]{0, 8, 16, 24};
+   private static final float PLATE_Z = -0.5F;
 
    public RoseWingModel() {
-      this.leftWing.setPivot(0.0F, 2.0F, 2.5F);
-      this.rightWing.setPivot(0.0F, 2.0F, 2.5F);
-      this.buildSide(
-         this.leftWing, this.leftWoodDarkPart, this.leftWoodMidPart, this.leftCorePart, this.leftPetalPart,
-         this.leftLeafDarkPart, this.leftLeafLightPart, this.leftPetalLightPart, this.leftThornPart, 1
-      );
-      this.buildSide(
-         this.rightWing, this.rightWoodDarkPart, this.rightWoodMidPart, this.rightCorePart, this.rightPetalPart,
-         this.rightLeafDarkPart, this.rightLeafLightPart, this.rightPetalLightPart, this.rightThornPart, -1
-      );
-      this.leftWing.addChild(this.leftWoodDarkPart);
-      this.leftWing.addChild(this.leftWoodMidPart);
-      this.leftWing.addChild(this.leftCorePart);
-      this.leftWing.addChild(this.leftPetalPart);
-      this.leftWing.addChild(this.leftLeafDarkPart);
-      this.leftWing.addChild(this.leftLeafLightPart);
-      this.leftWing.addChild(this.leftPetalLightPart);
-      this.leftWing.addChild(this.leftThornPart);
-      this.rightWing.addChild(this.rightWoodDarkPart);
-      this.rightWing.addChild(this.rightWoodMidPart);
-      this.rightWing.addChild(this.rightCorePart);
-      this.rightWing.addChild(this.rightPetalPart);
-      this.rightWing.addChild(this.rightLeafDarkPart);
-      this.rightWing.addChild(this.rightLeafLightPart);
-      this.rightWing.addChild(this.rightPetalLightPart);
-      this.rightWing.addChild(this.rightThornPart);
-      this.root.addChild(this.leftWing);
-      this.root.addChild(this.rightWing);
+      for (int side = 0; side < 2; side++) {
+         int sign = side == 0 ? 1 : -1;
+         WingModelPart[] bones = side == 0 ? this.leftBones : this.rightBones;
+         WingModelPart[][] plates = side == 0 ? this.leftPlates : this.rightPlates;
+
+         bones[0] = bone(0.0F, -1.5F, -1.5F, 5, 3, 3, 1.5F, 5.5F, 2.5F, 0, sign);
+         bones[1] = bone(-0.1F, -1.1F, -2.0F, 7, 3, 4, 4.7F, -0.6F, 0.1F, 1, sign);
+         bones[2] = bone(0.0F, -1.5F, -1.5F, 9, 3, 3, 6.5F, 0.2F, 0.1F, 2, sign);
+         bones[3] = bone(0.0F, -1.0F, -1.0F, 5, 2, 2, 8.5F, 0.0F, 0.0F, 3, sign);
+         bones[0].addChild(bones[1]);
+         bones[1].addChild(bones[2]);
+         bones[2].addChild(bones[3]);
+
+         plates[0] = plate(26, 20, 0.0F, 0.0F, 6, 8, 0.4F, 0.0F, 1.0F, sign);
+         plates[1] = plate(26, 34, 0.0F, 0.0F, 10, 14, 0.0F, 1.5F, 1.0F, sign);
+         plates[2] = plate(46, 20, -2.0F, 0.0F, 11, 12, 0.0F, 1.0F, 0.0F, sign);
+         plates[3] = plate(46, 36, 0.0F, -2.1F, 11, 11, 0.0F, 0.0F, 0.0F, sign);
+         addAll(bones[0], plates[0]);
+         addAll(bones[1], plates[1]);
+         addAll(bones[2], plates[2]);
+         addAll(bones[3], plates[3]);
+
+         WingModelPart thorns = side == 0 ? this.leftThorns : this.rightThorns;
+         WingModelPart twigs = side == 0 ? this.leftTwigs : this.rightTwigs;
+         WingModelPart roses = side == 0 ? this.leftRoses : this.rightRoses;
+         spike(thorns, 1, 4, 2, sign);
+         spike(thorns, 3, 2, 2, sign);
+         spike(thorns, 5, 0, 2, sign);
+         spike(thorns, 7, -1, 1, sign);
+         spike(thorns, 9, -1, 1, sign);
+         twig(twigs, 6, 2, 0, sign);
+         twig(twigs, 10, -2, 0, sign);
+         rose(roses, 3, 5, 1, sign);
+         rose(roses, 7, 1, 1, sign);
+         rose(roses, 11, -2, 1, sign);
+         rose(roses, 14, -1, 0, sign);
+         bones[2].addChild(thorns);
+         bones[2].addChild(roses);
+         bones[1].addChild(twigs);
+
+         this.root.addChild(bones[0]);
+      }
    }
 
-   private void buildSide(
-      WingModelPart wing,
-      WingModelPart woodDarkPart,
-      WingModelPart woodMidPart,
-      WingModelPart corePart,
-      WingModelPart petalPart,
-      WingModelPart leafDarkPart,
-      WingModelPart leafLightPart,
-      WingModelPart petalLightPart,
-      WingModelPart thornPart,
-      int sign
-   ) {
-      // wood_dark
-      box(woodDarkPart, 1, 3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, -1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, -3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, -5, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, -7, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, -9, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 1, 3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 2, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 3, -1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 3, -3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 4, -5, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, -7, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, -9, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 6, -11, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 6, -12, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 2, 3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 3, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 4, -1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, -2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 6, -4, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 8, -6, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 9, -7, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 10, -9, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 11, -11, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 2, 2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 4, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, 0, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 7, -1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 9, -3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 10, -4, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 12, -5, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 13, -6, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 3, 2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 6, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 8, 0, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 10, -1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 12, -2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 14, -3, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 3, 2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 5, 2, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 7, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 9, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 11, 1, 0, 2, 3, 1, sign);
-      box(woodDarkPart, 13, 1, 0, 1, 2, 1, sign);
-      box(woodDarkPart, 4, -11, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 4, -13, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 4, -15, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 8, -10, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 9, -12, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 10, -13, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 12, -8, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 13, -9, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 14, -11, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 13, -4, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 15, -5, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 16, -6, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 13, -1, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 15, -1, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 11, 2, 2, 2, 3, 1, sign);
-      box(woodDarkPart, 13, 2, 2, 1, 2, 1, sign);
-      // wood_mid
-      box(woodMidPart, 0, 0, 1, 1, 1, 1, sign);
-      box(woodMidPart, 2, -2, 1, 1, 1, 1, sign);
-      box(woodMidPart, 4, -1, 1, 1, 1, 1, sign);
-      box(woodMidPart, 6, 0, 1, 1, 1, 1, sign);
-      box(woodMidPart, 5, 2, 1, 1, 1, 1, sign);
-      box(woodMidPart, 6, 2, 1, 1, 1, 1, sign);
-      box(woodMidPart, 1, 3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 2, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 2, -1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 2, -3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 1, -2, 3, 1, 1, 1, sign);
-      box(woodMidPart, 3, -5, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, -7, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, -9, 2, 2, 3, 1, sign);
-      box(woodMidPart, 2, 3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, -1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 4, -3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, -2, 3, 1, 1, 1, sign);
-      box(woodMidPart, 5, -5, 2, 2, 3, 1, sign);
-      box(woodMidPart, 6, -6, 2, 2, 3, 1, sign);
-      box(woodMidPart, 7, -8, 2, 2, 3, 1, sign);
-      box(woodMidPart, 2, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 5, -1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 6, -2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 5, -1, 3, 1, 1, 1, sign);
-      box(woodMidPart, 8, -3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 9, -5, 2, 2, 3, 1, sign);
-      box(woodMidPart, 10, -6, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 4, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 6, 0, 2, 2, 3, 1, sign);
-      box(woodMidPart, 8, -1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 7, 0, 3, 1, 1, 1, sign);
-      box(woodMidPart, 9, -2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 11, -3, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 5, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 7, 1, 2, 2, 3, 1, sign);
-      box(woodMidPart, 6, 2, 3, 1, 1, 1, sign);
-      box(woodMidPart, 9, 0, 2, 2, 3, 1, sign);
-      box(woodMidPart, 11, 0, 2, 2, 3, 1, sign);
-      box(woodMidPart, 3, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 5, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 7, 2, 2, 2, 3, 1, sign);
-      box(woodMidPart, 6, 3, 3, 1, 1, 1, sign);
-      box(woodMidPart, 9, 2, 2, 2, 3, 1, sign);
-      // core
-      box(corePart, 1, -12, 1, 2, 2, 2, sign);
-      box(corePart, 7, -15, 1, 2, 2, 2, sign);
-      box(corePart, 12, -13, 1, 2, 2, 2, sign);
-      box(corePart, 15, -9, 1, 2, 2, 2, sign);
-      box(corePart, 16, -4, 1, 2, 2, 2, sign);
-      box(corePart, 13, 0, 1, 2, 2, 2, sign);
-      box(corePart, 5, -18, 3, 2, 2, 2, sign);
-      box(corePart, 11, -16, 3, 2, 2, 2, sign);
-      box(corePart, 16, -13, 3, 2, 2, 2, sign);
-      box(corePart, 18, -8, 3, 2, 2, 2, sign);
-      box(corePart, 17, -3, 3, 2, 2, 2, sign);
-      box(corePart, 13, 1, 3, 2, 2, 2, sign);
-      // petal
-      box(petalPart, 1, -13, 1, 2, 1, 2, sign);
-      box(petalPart, 7, -16, 1, 2, 1, 2, sign);
-      box(petalPart, 12, -14, 1, 2, 1, 2, sign);
-      box(petalPart, 15, -10, 1, 2, 1, 2, sign);
-      box(petalPart, 16, -5, 1, 2, 1, 2, sign);
-      box(petalPart, 13, -1, 1, 2, 1, 2, sign);
-      box(petalPart, 5, -19, 3, 2, 1, 2, sign);
-      box(petalPart, 11, -17, 3, 2, 1, 2, sign);
-      box(petalPart, 16, -14, 3, 2, 1, 2, sign);
-      box(petalPart, 18, -9, 3, 2, 1, 2, sign);
-      box(petalPart, 17, -4, 3, 2, 1, 2, sign);
-      box(petalPart, 13, 0, 3, 2, 1, 2, sign);
-      // leaf_dark
-      box(leafDarkPart, 2, -10, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 7, -13, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 12, -12, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 14, -7, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 15, -4, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 12, 0, 1, 2, 1, 1, sign);
-      box(leafDarkPart, 5, -17, 2, 1, 2, 1, sign);
-      box(leafDarkPart, 11, -15, 2, 1, 2, 1, sign);
-      box(leafDarkPart, 16, -12, 2, 1, 2, 1, sign);
-      box(leafDarkPart, 18, -7, 2, 1, 2, 1, sign);
-      box(leafDarkPart, 17, -2, 2, 1, 2, 1, sign);
-      // leaf_light
-      box(leafLightPart, 1, -11, 0, 1, 2, 1, sign);
-      box(leafLightPart, 7, -14, 0, 1, 2, 1, sign);
-      box(leafLightPart, 12, -12, 0, 1, 2, 1, sign);
-      box(leafLightPart, 15, -8, 0, 1, 2, 1, sign);
-      box(leafLightPart, 16, -3, 0, 1, 2, 1, sign);
-      box(leafLightPart, 5, -16, 3, 2, 1, 1, sign);
-      box(leafLightPart, 11, -14, 3, 2, 1, 1, sign);
-      box(leafLightPart, 15, -12, 3, 2, 1, 1, sign);
-      box(leafLightPart, 17, -7, 3, 2, 1, 1, sign);
-      box(leafLightPart, 16, -2, 3, 2, 1, 1, sign);
-      box(leafLightPart, 12, 1, 3, 2, 1, 1, sign);
-      // petal_light
-      box(petalLightPart, 1, -12, 0, 2, 2, 1, sign);
-      box(petalLightPart, 7, -15, 0, 2, 2, 1, sign);
-      box(petalLightPart, 12, -13, 0, 2, 2, 1, sign);
-      box(petalLightPart, 15, -9, 0, 2, 2, 1, sign);
-      box(petalLightPart, 16, -4, 0, 2, 2, 1, sign);
-      box(petalLightPart, 13, 0, 0, 2, 2, 1, sign);
-      box(petalLightPart, 5, -18, 2, 2, 2, 1, sign);
-      box(petalLightPart, 11, -16, 2, 2, 2, 1, sign);
-      box(petalLightPart, 16, -13, 2, 2, 2, 1, sign);
-      box(petalLightPart, 18, -8, 2, 2, 2, 1, sign);
-      box(petalLightPart, 17, -3, 2, 2, 2, 1, sign);
-      box(petalLightPart, 13, 1, 2, 2, 2, 1, sign);
-   }
-
-   private static void box(WingModelPart part, int x, int y, int z, int width, int height, int depth, int sign) {
+   private static WingModelPart bone(float x, float y, float z, int width, int height, int depth, float pivotX, float pivotY, float pivotZ, int index, int sign) {
+      WingModelPart part = createPart(0, BONE_TEXTURE_V[index]);
       part.addCuboid(sign > 0 ? x : -(x + width), y, z, width, height, depth);
+      part.setPivot(sign > 0 ? pivotX : -pivotX, pivotY, pivotZ);
+      return part;
+   }
+
+   /** «Перо»: полоса из узких лепестков разной длины — кромка получается рваной, как у птичьих крыльев. */
+   private static WingModelPart[] plate(int textureU, int textureV, float x, float y, int width, int height, float pivotX, float pivotY, float pivotZ, int sign) {
+      int strips = Math.max(2, width / 2);
+      WingModelPart[] parts = new WingModelPart[strips];
+      float step = (float)width / strips;
+
+      for (int strip = 0; strip < strips; strip++) {
+         float offset = strip * step;
+         float wave = (float)Math.sin((strip + 1) * 1.9F + width * 0.7F);
+         float taper = 1.0F - 0.32F * Math.abs((float)strip / Math.max(1, strips - 1) - 0.42F) * 2.0F;
+         int stripHeight = Math.max(3, Math.round(height * taper * (0.86F + 0.16F * wave)));
+         float minX = sign > 0 ? x + offset : -(x + offset + step);
+         ExtrudedWingModelPart part = ExtrudedWingModelPart.create(minX, y, PLATE_Z, Math.max(1, (int)step), stripHeight, textureU, textureV, 64, 64);
+         part.setPivot(sign > 0 ? pivotX : -pivotX, pivotY, pivotZ);
+         parts[strip] = part;
+      }
+
+      return parts;
+   }
+
+   private static void addAll(WingModelPart parent, WingModelPart[] children) {
+      for (WingModelPart child : children) {
+         parent.addChild(child);
+      }
+   }
+
+   private static void spike(WingModelPart part, int x, int y, int z, int sign) {
+      part.addCuboid(sign > 0 ? x : -(x + 1), y, z, 1, 1, 1);
+   }
+
+   private static void twig(WingModelPart part, int x, int y, int z, int sign) {
+      part.addCuboid(sign > 0 ? x : -(x + 3), y, z, 3, 1, 1);
+   }
+
+   private static void rose(WingModelPart part, int x, int y, int z, int sign) {
+      part.addCuboid(sign > 0 ? x : -(x + 2), y, z, 2, 2, 2);
+      part.addCuboid(sign > 0 ? x : -(x + 2), y - 1, z, 2, 1, 2);
+      part.addCuboid(sign > 0 ? x - 1 : -(x + 1), y, z, 1, 2, 2);
    }
 
    @Override
    public void render(WingAnimator animator, float partialTick, PoseStack matrices, VertexConsumer vertices, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-      SimpleWingAnimator simpleAnimator = (SimpleWingAnimator)animator;
-      applyMirroredRotationDegrees(this.leftWing, this.rightWing, simpleAnimator.getRotationDegrees(partialTick));
+      AvianWingAnimator avianAnimator = (AvianWingAnimator)animator;
+
+      Vec3 secondary;
+
+      for (int index = 0; index < this.leftBones.length; index++) {
+         applyMirroredRotationDegrees(this.leftBones[index], this.rightBones[index], avianAnimator.getPrimaryRotationDegrees(index, partialTick));
+         secondary = avianAnimator.getSecondaryRotationDegrees(index, partialTick);
+
+         for (int strip = 0; strip < this.leftPlates[index].length; strip++) {
+            applyMirroredRotationDegrees(this.leftPlates[index][strip], this.rightPlates[index][strip], secondary);
+         }
+      }
+
       this.root.render(matrices, vertices, packedLight, packedOverlay, red, green, blue, alpha);
    }
 }

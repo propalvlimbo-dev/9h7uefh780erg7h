@@ -33,82 +33,65 @@ float rose_fbm(vec2 p) {
 }
 
 void main() {
-    vec2 block = floor(vUv * vec2(4.0, 8.0));
-    vec2 local = fract(vUv * vec2(4.0, 8.0));
-    float material = block.x + (block.y >= 1.5 ? 4.0 : 0.0);
-
     float time = GameTime;
     vec3 n = normalize(vNormal);
     vec3 eye = normalize(-vViewPos);
     float ndv = clamp(abs(dot(n, eye)), 0.0, 1.0);
-    float fresnel = pow(1.0 - ndv, 3.2);
-    float softFresnel = pow(1.0 - ndv, 1.3);
+    float fresnel = pow(1.0 - ndv, 3.0);
+    float softFresnel = pow(1.0 - ndv, 1.35);
 
-    vec3 woodDark = vec3(0.105, 0.070, 0.052);
-    vec3 woodMid = vec3(0.290, 0.185, 0.098);
-    vec3 roseCore = vec3(0.560, 0.055, 0.150);
+    vec3 woodDark = vec3(0.115, 0.078, 0.058);
+    vec3 woodMid = vec3(0.330, 0.215, 0.110);
+    vec3 leafDark = vec3(0.085, 0.260, 0.130);
+    vec3 leafLight = vec3(0.230, 0.520, 0.270);
+    vec3 roseCore = vec3(0.520, 0.045, 0.130);
     vec3 rosePetal = vec3(0.895, 0.165, 0.295);
-    vec3 leafDark = vec3(0.100, 0.290, 0.150);
-    vec3 leafLight = vec3(0.200, 0.480, 0.240);
-    vec3 petalLight = vec3(1.000, 0.430, 0.540);
-    vec3 thorn = vec3(0.640, 0.520, 0.310);
-    vec3 accent = vec3(1.000, 0.330, 0.450);
+    vec3 petalLight = vec3(1.000, 0.500, 0.600);
 
-    vec3 base = woodDark;
-    float emissive = 0.0;
+    float v = vUv.y;
+    float u = vUv.x;
+    vec3 base;
     vec3 emissiveColor = rosePetal;
+    float emissive = 0.0;
 
-    if (material < 0.5) {
-        float grain = rose_fbm(vec2(local.x * 9.0, local.y * 2.0 + vUv.y * 40.0));
-        base = woodDark * (0.78 + grain * 0.55);
-    } else if (material < 1.5) {
-        float grain = rose_fbm(vec2(local.x * 7.0, local.y * 2.4 + vUv.y * 32.0));
-        base = woodMid * (0.80 + grain * 0.52);
-    } else if (material < 2.5) {
-        float swirl = rose_fbm(local * 6.0 + vec2(time * 0.06, -time * 0.04));
-        base = mix(roseCore, rosePetal, 0.25 + swirl * 0.45);
-        emissive = 0.95;
-        emissiveColor = rosePetal;
-    } else if (material < 3.5) {
-        float swirl = rose_fbm(local * 5.0 + vec2(-time * 0.05, time * 0.03));
-        base = mix(rosePetal, petalLight, 0.20 + swirl * 0.55);
-        emissive = 0.62;
-        emissiveColor = petalLight;
-    } else if (material < 4.5) {
-        float veins = rose_fbm(vec2(local.x * 4.0, local.y * 11.0));
-        base = leafDark * (0.82 + veins * 0.48);
-    } else if (material < 5.5) {
-        float veins = rose_fbm(vec2(local.x * 4.5, local.y * 12.0));
-        base = leafLight * (0.84 + veins * 0.46);
-        emissive = 0.16;
+    if (u < 0.405) {
+        float grain = rose_fbm(vec2(vUv.x * 26.0, v * 7.0));
+        base = mix(woodDark, woodMid, clamp(v * 1.25, 0.0, 1.0)) * (0.80 + grain * 0.45);
+    } else if (u < 0.690) {
+        float veins = rose_fbm(vec2(vUv.x * 34.0, v * 9.0));
+        float veinLines = pow(max(sin((vUv.x * 120.0 + veins * 6.0)), 0.0), 14.0);
+        base = mix(leafDark, leafLight, clamp(v * 1.15, 0.0, 1.0)) * (0.84 + veins * 0.40 + veinLines * 0.30);
+        emissive = 0.18;
         emissiveColor = leafLight;
-    } else if (material < 6.5) {
-        base = petalLight * 0.92;
-        emissive = 0.78;
-        emissiveColor = petalLight;
+        float autumn = smoothstep(0.86, 1.0, v);
+        base = mix(base, rosePetal * 0.85, autumn * 0.75);
+        emissive += autumn * 0.35;
     } else {
-        base = thorn * (0.86 + rose_fbm(local * 8.0) * 0.30);
-        emissive = 0.20;
-        emissiveColor = petalLight;
+        float swirl = rose_fbm(vec2(vUv.y * 9.0 + time * 0.05, vUv.x * 40.0 - time * 0.04));
+        float core = smoothstep(0.62, 0.0, v);
+        base = mix(petalLight, rosePetal, smoothstep(0.0, 0.55, v));
+        base = mix(base, roseCore, core * 0.85);
+        base *= 0.86 + swirl * 0.42;
+        emissive = 0.85 + core * 0.35;
+        emissiveColor = mix(rosePetal, petalLight, 0.35 + 0.35 * sin(time * 1.4 + vUv.y * 5.0));
     }
 
-    float light = mix(0.62, 1.10, clamp(vLight.y, 0.0, 1.0));
+    float light = mix(0.66, 1.08, clamp(vLight.y, 0.0, 1.0));
     vec3 color = base * light;
 
-    float flow = sin(vUv.y * 42.0 - time * 3.4 + vUv.x * 9.0);
-    float band = pow(max(flow, 0.0), 6.0);
-    color += accent * band * 0.22;
+    float flow = sin(vUv.y * 26.0 - time * 2.6 + vUv.x * 7.0);
+    color += rosePetal * pow(max(flow, 0.0), 8.0) * 0.18;
 
-    float sparkleSeed = rose_hash21(floor(vUv * 190.0));
-    float twinkle = step(0.988, sparkleSeed) * (0.55 + 0.45 * sin(time * 9.0 + sparkleSeed * 90.0));
-    color += vec3(1.0, 0.86, 0.90) * twinkle * 1.35;
+    float sparkleSeed = rose_hash21(floor(vUv * 220.0));
+    float twinkle = step(0.9905, sparkleSeed) * (0.5 + 0.5 * sin(time * 8.0 + sparkleSeed * 80.0));
+    color += vec3(1.0, 0.88, 0.92) * twinkle * (u > 0.69 ? 1.35 : 0.55);
 
-    float pulse = 0.62 + 0.38 * sin(time * 2.1 + vUv.y * 7.0);
-    color += emissiveColor * (emissive * pulse * (0.30 + fresnel * 1.25 + softFresnel * 0.35));
-    color += accent * fresnel * 0.55;
+    float pulse = 0.62 + 0.38 * sin(time * 1.9 + vUv.y * 6.0);
+    color += emissiveColor * (emissive * pulse * (0.22 + fresnel * 0.95 + softFresnel * 0.28));
+    color += rosePetal * fresnel * 0.35;
 
-    color = clamp(color, vec3(0.0), vec3(1.6));
-    float alpha = vColor.a * clamp(0.90 + fresnel * 0.10 + emissive * 0.05, 0.0, 1.0);
+    color = clamp(color, vec3(0.0), vec3(1.55));
+    float alpha = vColor.a * clamp(0.94 + fresnel * 0.06, 0.0, 1.0);
     if (alpha <= 0.004) {
         discard;
     }

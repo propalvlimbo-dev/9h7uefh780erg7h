@@ -50,7 +50,8 @@ public enum AnimatedWingVariant {
    public WingAnimator createAnimator() {
       return switch (this.modelFamily) {
          case AVIAN, ALLAY -> new AvianWingAnimator();
-         case INSECTOID, KAGUNE, ROSE -> new SimpleWingAnimator();
+         case INSECTOID, KAGUNE -> new SimpleWingAnimator();
+         case ROSE -> new AvianWingAnimator();
       };
    }
 
