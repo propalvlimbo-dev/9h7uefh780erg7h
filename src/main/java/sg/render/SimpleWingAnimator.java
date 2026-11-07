@@ -14,9 +14,20 @@ public final class SimpleWingAnimator implements WingAnimator {
    private static final double Y_ROTATION_AMPLITUDE_DEGREES = 35.0;
    private static final double Y_ROTATION_OFFSET_DEGREES = 42.0;
    private static final float PHASE_STEP_SMOOTHING_FACTOR = 0.4F;
+   private static final double X_ROTATION_AMPLITUDE_DEGREES = 4.5;
+   private static final double X_ROTATION_FREQUENCY = 0.53;
+   private static final double Z_ROTATION_AMPLITUDE_DEGREES = 3.5;
+   private static final double Z_ROTATION_FREQUENCY = 0.37;
+   private static final double Z_ROTATION_OFFSET_DEGREES = 4.0;
 
    public Vec3 getRotationDegrees(float partialTick) {
-      return new Vec3(0.0, Math.sin(WingAnimationMath.lerpClamped(this.previousPhase, this.phase, partialTick)) * Y_ROTATION_AMPLITUDE_DEGREES - Y_ROTATION_OFFSET_DEGREES, 0.0);
+      double interpolatedPhase = WingAnimationMath.lerpClamped(this.previousPhase, this.phase, partialTick);
+      double breathingPhase = interpolatedPhase * (X_ROTATION_FREQUENCY / (double)1.0F);
+      return new Vec3(
+         Math.sin(breathingPhase) * X_ROTATION_AMPLITUDE_DEGREES,
+         Math.sin(interpolatedPhase) * Y_ROTATION_AMPLITUDE_DEGREES - Y_ROTATION_OFFSET_DEGREES,
+         Math.cos(interpolatedPhase * Z_ROTATION_FREQUENCY) * Z_ROTATION_AMPLITUDE_DEGREES + Z_ROTATION_OFFSET_DEGREES
+      );
    }
 
    @Override

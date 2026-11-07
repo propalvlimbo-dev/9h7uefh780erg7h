@@ -96,6 +96,33 @@ public class WingModelPart {
       this.addTexturedFace(new float[][]{corner001, corner101, corner111, corner011}, uBackStart, vSideStart, uBackEnd, vSideEnd, new Vector3f(0.0F, 0.0F, 1.0F));
    }
 
+   /**
+    * Плоскость (двусторонняя) с произвольной UV-развёрткой — для HD-арта крыльев,
+    * который кладётся на один плоский прямоугольник, как в Lunar Client.
+    */
+   public void addPlane(float x0, float y0, float x1, float y1, float z, float u0, float v0, float u1, float v1) {
+      float textureUStart = u0 * this.textureWidth;
+      float textureUEnd = u1 * this.textureWidth;
+      float textureVStart = v0 * this.textureHeight;
+      float textureVEnd = v1 * this.textureHeight;
+      this.addTexturedFace(
+         new float[][]{{x1, y0, z}, {x0, y0, z}, {x0, y1, z}, {x1, y1, z}},
+         textureUStart,
+         textureVStart,
+         textureUEnd,
+         textureVEnd,
+         new Vector3f(0.0F, 0.0F, NEGATIVE_Z_NORMAL_COMPONENT)
+      );
+      this.addTexturedFace(
+         new float[][]{{x0, y0, z}, {x1, y0, z}, {x1, y1, z}, {x0, y1, z}},
+         textureUStart,
+         textureVStart,
+         textureUEnd,
+         textureVEnd,
+         new Vector3f(0.0F, 0.0F, 1.0F)
+      );
+   }
+
    public void addChild(WingModelPart child) {
       this.children.add(child);
    }

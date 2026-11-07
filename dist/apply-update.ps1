@@ -12,11 +12,11 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '1827151a'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = '677d3519'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '3cf93851'; s = 5476 }
-  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '9b73f9aa'; s = 10885 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '4fa8416d'; s = 2458 }
   @{ p = 'src/main/java/sg/ec/WingAnimationMath.java'; v = 'efba952f'; s = 1576 }
   @{ p = 'src/main/java/sg/ec/WingModel.java'; v = 'd9cc7adf'; s = 1141 }
   @{ p = 'src/main/java/sg/ec/WingPreviewRenderState.java'; v = 'da620a65'; s = 1005 }
-  @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = 'f4e26b51'; s = 5304 }
+  @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = 'd7f6a2d7'; s = 5645 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '8af92fcf'; s = 104670 }
   @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '2aa673a2'; s = 71987 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiCategory.java'; v = '4c583ed0'; s = 1161 }
@@ -99,11 +99,11 @@ $Files = @(
   @{ p = 'src/main/java/sg/render/RoseBatchedItemAtlas.java'; v = '21f947b1'; s = 15960 }
   @{ p = 'src/main/java/sg/render/ScriptParticleFactory.java'; v = 'f8c22488'; s = 5165 }
   @{ p = 'src/main/java/sg/render/ScriptedParticle.java'; v = '5f4f32b5'; s = 14324 }
-  @{ p = 'src/main/java/sg/render/SimpleWingAnimator.java'; v = '93319009'; s = 1906 }
+  @{ p = 'src/main/java/sg/render/SimpleWingAnimator.java'; v = 'c104f905'; s = 2558 }
   @{ p = 'src/main/java/sg/render/UiProjectionBuffer.java'; v = 'a9242490'; s = 1045 }
   @{ p = 'src/main/java/sg/render/WeaponSkinVariant.java'; v = '190097f1'; s = 7471 }
   @{ p = 'src/main/java/sg/render/WingAnimator.java'; v = 'a8193ca9'; s = 198 }
-  @{ p = 'src/main/java/sg/render/WingModelPart.java'; v = '8ff28dbc'; s = 8354 }
+  @{ p = 'src/main/java/sg/render/WingModelPart.java'; v = '85b24bb8'; s = 9470 }
   @{ p = 'src/main/java/sg/render/WingMotionState.java'; v = 'f8021e48'; s = 4874 }
   @{ p = 'src/main/java/sg/render/WingOutlineQueue.java'; v = '4e82ce78'; s = 2725 }
   @{ p = 'src/main/java/sg/render/WingPreview.java'; v = '6637688a'; s = 3663 }
@@ -188,8 +188,8 @@ $Files = @(
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/model.geo.json'; v = 'b57c0ec0'; s = 46862 }
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/texture.png'; v = 'bea645b1'; s = 189 }
   @{ p = 'src/main/resources/assets/rose/images/mainmenu/gavs_loading_background.png'; v = 'b132975a'; s = 283635 }
-  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings.png'; v = '36c5cf3f'; s = 2219 }
-  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings_preview.png'; v = '731443b8'; s = 38430 }
+  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings.png'; v = 'a3c37721'; s = 349439 }
+  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings_preview.png'; v = '47015256'; s = 50618 }
   @{ p = 'src/main/resources/rose.mixins.json'; v = 'fda2c525'; s = 5314 }
 )
 

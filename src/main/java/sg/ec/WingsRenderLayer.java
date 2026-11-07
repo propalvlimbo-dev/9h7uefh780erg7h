@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -66,11 +67,15 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                         boolean hasOutline = state.outlineColor != 0;
                         boolean invisible = state.isInvisible;
                         if (!invisible) {
-                           RenderType wingRenderType = RenderTypes.entityCutout(variant.getTextureId());
+                           boolean rose = variant == AnimatedWingVariant.ROSE;
+                           RenderType wingRenderType = rose
+                              ? RenderTypes.entityTranslucent(variant.getTextureId())
+                              : RenderTypes.entityCutout(variant.getTextureId());
+                           int wingLight = rose ? LightTexture.FULL_BRIGHT : packedLight;
                            collector.submitCustomGeometry(matrices, wingRenderType, (geometryPose, geometryVertices) -> {
                               PoseStack geometryMatrices = new PoseStack();
                               geometryMatrices.mulPose(geometryPose.pose());
-                              variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
+                              variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, wingLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
                            });
                         }
 
