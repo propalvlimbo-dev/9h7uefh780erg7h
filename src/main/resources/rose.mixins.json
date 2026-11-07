@@ -6,6 +6,7 @@
     "MinecraftLifecycleEventsMixin",
     "BossHealthOverlayAccessor",
     "ChatComponentAccessor",
+    "GuiGraphicsExtractorAccessor",
     "EndCrystalRendererAccessor",
     "BlockStatePredictionHandlerAccessor",
     "MultiPlayerGameModeAccessor",

@@ -5,23 +5,20 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.resources.Identifier;
-import sg.render.pipeline.UiDrawing;
+import sg.ec.WingPreviewRenderState;
 
+/** Collects animated 3D wing models and submits them through Minecraft's GUI PiP renderer. */
 public final class WingPreviewQueue {
-   private final @com.google.gson.annotations.SerializedName("衣")  Map<WingSelection, WingPreviewQueue.PreviewAnimator> previewAnimators = new EnumMap<>(WingSelection.class);
-   private final @com.google.gson.annotations.SerializedName("И")  List<WingPreviewQueue.PreviewEntry> previews = new ArrayList<>();
-   private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
-   private static final float VERTICAL_CENTER_FACTOR = 0.5F;
-   private static final float SPRITE_FACTOR = 0.86F;
-   /** Готовые 3D-рендеры моделей: показываются вместо UV-атласа, чтобы в ячейке читался силуэт. */
-   private static final Map<WingSelection, Identifier> PREVIEW_SPRITES = Map.of(
-      WingSelection.ROSE, Identifier.fromNamespaceAndPath("rose", "textures/wings/rose_wings_preview.png")
-   );
+   private static final long TICK_INTERVAL_NANOS = 50_000_000L;
+   private final Map<WingSelection, PreviewAnimator> previewAnimators = new EnumMap<>(WingSelection.class);
+   private final List<PreviewEntry> previews = new ArrayList<>();
 
    public void queuePreview(WingSelection wings, float x, float y, float width, float height, float alpha) {
-      WingPreviewQueue.PreviewAnimator previewAnimator = this.previewAnimators.computeIfAbsent(wings, variant -> new WingPreviewQueue.PreviewAnimator(variant.getAnimatedVariant().createAnimator()));
-      this.previews.add(new WingPreviewQueue.PreviewEntry(wings, previewAnimator, x + width * HORIZONTAL_CENTER_FACTOR, y + height * VERTICAL_CENTER_FACTOR, width, height, alpha));
+      PreviewAnimator animator = this.previewAnimators.computeIfAbsent(wings, variant -> new PreviewAnimator(variant.getAnimatedVariant().createAnimator()));
+      GuiPreviewUtil.Rect screenRect = GuiPreviewUtil.transformRect(x, y, width, height);
+      this.previews.add(
+         new PreviewEntry(wings, animator, screenRect.centerX(), screenRect.centerY(), screenRect.width(), screenRect.height(), alpha)
+      );
    }
 
    public void clearPreviews() {
@@ -29,24 +26,49 @@ public final class WingPreviewQueue {
    }
 
    public void submitPreviews(GuiGraphicsExtractor graphics, float clipX, float clipY, float clipWidth, float clipHeight) {
-      for (WingPreviewQueue.PreviewEntry preview : this.previews) {
-         int alpha = Math.clamp(Math.round(preview.alpha * 255.0F), 0, 255);
-         if (alpha <= 0) {
+      if (this.previews.isEmpty() || clipWidth <= 0.0F || clipHeight <= 0.0F) {
+         return;
+      }
+
+      GuiPreviewUtil.Rect viewport = GuiPreviewUtil.transformRect(clipX, clipY, clipWidth, clipHeight);
+      int x0 = GuiPreviewUtil.floor(viewport.x());
+      int y0 = GuiPreviewUtil.floor(viewport.y());
+      int x1 = GuiPreviewUtil.ceil(viewport.x() + viewport.width());
+      int y1 = GuiPreviewUtil.ceil(viewport.y() + viewport.height());
+      List<WingPreviewRenderState.WingDraw> draws = new ArrayList<>(this.previews.size());
+      for (PreviewEntry preview : this.previews) {
+         float alpha = Math.clamp(preview.alpha, 0.0F, 1.0F);
+         if (alpha <= 0.0F) {
             continue;
          }
 
-         float side = Math.min(preview.width, preview.height) * SPRITE_FACTOR;
-         float spriteX = clipX + preview.x - side * 0.5F;
-         float spriteY = clipY + preview.y - side * 0.5F;
-         Identifier sprite = PREVIEW_SPRITES.getOrDefault(preview.wing, preview.wing.getAnimatedVariant().getTextureId());
-         UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, sprite);
+         draws.add(
+            new WingPreviewRenderState.WingDraw(
+               preview.wing.getAnimatedVariant(),
+               preview.animator.animator,
+               preview.animator.advanceAndGetPartialTick(),
+               alpha,
+               preview.x - x0,
+               preview.y - y0,
+               preview.width,
+               preview.height
+            )
+         );
       }
+
+      if (draws.isEmpty()) {
+         return;
+      }
+
+      GuiPreviewUtil.submit(
+         graphics,
+         new WingPreviewRenderState(List.copyOf(draws), x0, y0, x1, y1, 1.0F, null)
+      );
    }
 
    private static final class PreviewAnimator {
-      private final @com.google.gson.annotations.SerializedName("Я")  WingAnimator animator;
-      private @com.google.gson.annotations.SerializedName("еЛ")  long lastTickNanos = System.nanoTime();
-      private static final long TICK_INTERVAL_NANOS = 50000000L;
+      private final WingAnimator animator;
+      private long lastTickNanos = System.nanoTime();
 
       private PreviewAnimator(WingAnimator animator) {
          this.animator = animator;
@@ -55,17 +77,15 @@ public final class WingPreviewQueue {
 
       private float advanceAndGetPartialTick() {
          long nowNanos = System.nanoTime();
-         long tickIntervalNanos = TICK_INTERVAL_NANOS;
-
-         while (nowNanos - this.lastTickNanos >= tickIntervalNanos) {
+         while (nowNanos - this.lastTickNanos >= TICK_INTERVAL_NANOS) {
             this.animator.tick();
-            this.lastTickNanos += tickIntervalNanos;
+            this.lastTickNanos += TICK_INTERVAL_NANOS;
          }
 
-         return Math.min(1.0F, (float)(nowNanos - this.lastTickNanos) / (float)tickIntervalNanos);
+         return Math.min(1.0F, (float)(nowNanos - this.lastTickNanos) / (float)TICK_INTERVAL_NANOS);
       }
    }
 
-   private record PreviewEntry(WingSelection wing, WingPreviewQueue.PreviewAnimator preview, float x, float y, float width, float height, float alpha) {
+   private record PreviewEntry(WingSelection wing, PreviewAnimator animator, float x, float y, float width, float height, float alpha) {
    }
 }
