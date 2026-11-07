@@ -18,11 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MainMenuScreen extends Screen {
-    /** Ракурсы Энда: при каждом открытии меню выбирается один из них. */
-    private static final String[] BACKGROUNDS = {"end_dragon", "end_islands", "end_city"};
     private static final String BACKGROUND_DIR = "assets/deluxe/textures/gui/mainmenu/background/";
     private static final String COMMUNITY_URL = "https://t.me/Rose";
-    private String backgroundName;
     private final AccountManagerPanel accountManagerPanel = new AccountManagerPanel();
     private boolean flag = false;
     private final AnimatedValue animation = new AnimatedValue(260L);
@@ -64,9 +61,6 @@ public class MainMenuScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        if (this.backgroundName == null) {
-            this.backgroundName = BACKGROUNDS[java.util.concurrent.ThreadLocalRandom.current().nextInt(BACKGROUNDS.length)];
-        }
         if (System.currentTimeMillis() - this.timeMillis > 600L) {
             this.timeMillis = System.currentTimeMillis();
             this.flag3 = false;
@@ -502,16 +496,9 @@ public class MainMenuScreen extends Screen {
         this.animation.processData(this.flag ? 1.0 : 0.0);
         float animAlt = (float) this.animation.computeDouble();
 
-        // Fullscreen main menu background: Энд, живой зум по замкнутому циклу 60 секунд.
-        if (this.backgroundName == null) {
-            this.backgroundName = BACKGROUNDS[0];
-        }
-        double phase = (System.currentTimeMillis() % 60000L) / 60000.0 * Math.PI * 2.0;
-        float photoZoom = 1.030F + 0.020F * (float) Math.sin(phase);
-        float photoShiftX = (float) Math.sin(phase + 1.1) * 7.0F * scale;
-        float photoShiftY = (float) Math.cos(phase * 0.7) * 5.0F * scale;
-        Render2D.drawFullscreenTextureZoom(BACKGROUND_DIR + this.backgroundName + ".png",
-                screenW, screenH, 1.0F, photoZoom, photoShiftX, photoShiftY);
+        // Fullscreen main menu background: звёздный Энд, поверх — святилище кристаллов.
+        Render2D.drawTextureSmooth(BACKGROUND_DIR + "end_void.png", 0.0F, 0.0F, screenW, screenH, -1);
+        EndShrine.render(screenW, screenH, scale);
 
         if (this.flag3) {
             float fadeWelcome = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, 100L, 600L));
@@ -528,7 +515,7 @@ public class MainMenuScreen extends Screen {
         float sidebarW = 329.5F * scale + Math.min(0.0F, sidebarX);
         if (sidebarW > 1.0F) {
             Render2D.renderElement2(drawContext, Math.max(0.0F, sidebarX), 0.0F, sidebarW, screenH);
-            UiTheme.processData6(BACKGROUND_DIR + this.backgroundName + "_blur.png", screenW, screenH, 1.0F);
+            UiTheme.processData6(BACKGROUND_DIR + "end_void_blur.png", screenW, screenH, 1.0F);
             Render2D.renderElement(drawContext);
         }
 
