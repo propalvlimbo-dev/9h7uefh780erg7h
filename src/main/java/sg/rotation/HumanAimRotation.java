@@ -13,7 +13,6 @@ import org.joml.Vector2f;
 import settings.render.AimFeatureSampler;
 import sg.ec.Aim60Schema;
 import sg.ec.Aim60SchemaValidator;
-import sg.modules.impl.combat.Aura;
 import sg.client.RoseClient;
 import sg.rotation.RotationStrategy;
 import sg.util.input.MouseSensitivityMath;
@@ -218,8 +217,7 @@ public class HumanAimRotation extends RotationStrategy {
 
    private Vector2f updatePolicyRotation(Vector2f currentRotation) {
       if (this.policy != null && MINECRAFT_CLIENT.player != null && MINECRAFT_CLIENT.level != null) {
-         Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-         LivingEntity target = aura.Ж_95bedd6e();
+         LivingEntity target = null;
          if (!this.isValidTarget(target)) {
             this.resetTargetAndEpisode();
             return new Vector2f(currentRotation.x, currentRotation.y);

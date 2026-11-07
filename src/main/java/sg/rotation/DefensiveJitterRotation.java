@@ -12,7 +12,6 @@ import net.minecraft.world.phys.HitResult.Type;
 import org.joml.Vector2f;
 import sg.util.input.MouseSensitivityMath;
 import sg.client.RoseClient;
-import sg.modules.impl.combat.Aura;
 import sg.rotation.RotationStrategy;
 
 public class DefensiveJitterRotation extends RotationStrategy {
@@ -24,6 +23,7 @@ public class DefensiveJitterRotation extends RotationStrategy {
    private static final String JITTER_STEP_OPTION = "Джиттер";
    private static final float MIN_INPUT_PITCH = -90.0F;
    private static final float MAX_INPUT_PITCH = 90.0F;
+   private static final float TRACKING_PREDICTION_TICKS = 1.0F;
    private static final float TRACKING_WAVE_TIME_DIVISOR = 2.1F;
    private static final double TRACKING_WAVE_NORMALIZER = 2.0;
    private static final double MIN_EYE_HEIGHT_FACTOR = 0.1;
@@ -85,30 +85,14 @@ public class DefensiveJitterRotation extends RotationStrategy {
       }
    }
 
-   private Aura getAuraModuleOrNull() {
-      return RoseClient.getInstance() != null && RoseClient.getInstance().getServices() != null && RoseClient.getInstance().getServices().getModules() != null
-         ? RoseClient.getInstance().getServices().getModules().getAura()
-         : null;
-   }
-
    @Override
    public Vector2f getTargetRotation() {
-      Aura aura = this.getAuraModuleOrNull();
-      LivingEntity target = aura != null ? aura.Ж_95bedd6e() : null;
-      if (aura != null && target != null && MINECRAFT_CLIENT.player != null) {
-         if (aura.Г_f1816549().isSelected(DEFENSIVE_OPTION)) {
-            return this.calculateDefensiveTargetRotation(target);
-         } else {
-            return aura.Г_f1816549().isSelected(JITTER_TARGET_OPTION) ? this.calculateJitterTargetRotation(target) : this.calculateTrackingRotation(aura, target);
-         }
-      } else {
-         return super.getTargetRotation();
-      }
+      return super.getTargetRotation();
    }
 
-   private Vector2f calculateTrackingRotation(Aura aura, LivingEntity target) {
+   private Vector2f calculateTrackingRotation(LivingEntity target) {
       Vec3 eyePosition = MINECRAFT_CLIENT.player.getEyePosition();
-      float predictionTicks = aura.Ц_989fed9a().getValue();
+      float predictionTicks = TRACKING_PREDICTION_TICKS;
       double predictedX = target.getX() + (target.getX() - target.xo) * predictionTicks;
       double predictedZ = target.getZ() + (target.getZ() - target.zo) * predictionTicks;
       float oscillationDivisor = TRACKING_WAVE_TIME_DIVISOR;
@@ -135,13 +119,8 @@ public class DefensiveJitterRotation extends RotationStrategy {
 
    @Override
    public Vector2f calculateRotation(Vector2f currentRotation, Vector2f targetRotation) {
-      Aura aura = this.getAuraModuleOrNull();
-      if (aura != null && aura.Г_f1816549().isSelected(JITTER_STEP_OPTION)) {
-         LivingEntity target = aura.Ж_95bedd6e();
-         return this.calculateJitterStep(currentRotation, targetRotation, target != null && this.hasLineOfSightToTarget(target));
-      } else {
-         return this.quantizeRotation(currentRotation, this.unwrapYaw(currentRotation.x, targetRotation.x), Mth.clamp(targetRotation.y, MIN_INPUT_PITCH, MAX_INPUT_PITCH));
-      }
+      return this.quantizeRotation(currentRotation, this.unwrapYaw(currentRotation.x, targetRotation.x),
+         Mth.clamp(targetRotation.y, MIN_INPUT_PITCH, MAX_INPUT_PITCH));
    }
 
    private float nextDefensivePitch() {

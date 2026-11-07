@@ -22,8 +22,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import sg.ec.UnhookState;
-import sg.modules.impl.init.ArrowSwapScreen;
-import sg.modules.impl.init.AutoSwapScreen;
 import sg.modules.impl.init.AutoInventoryScreen;
 import sg.client.RoseClient;
 import sg.modules.impl.init.PotionSwapScreen;
@@ -77,9 +75,7 @@ public class HudCustomizationMixin {
 
             if (Minecraft.getInstance().gui.screen() instanceof ClickGuiScreen
                || Minecraft.getInstance().gui.screen() instanceof com.deluxe.gui.DeluxeClickGUI
-               || Minecraft.getInstance().gui.screen() instanceof PotionSwapScreen
-               || Minecraft.getInstance().gui.screen() instanceof AutoSwapScreen
-               || Minecraft.getInstance().gui.screen() instanceof ArrowSwapScreen) {
+               || Minecraft.getInstance().gui.screen() instanceof PotionSwapScreen) {
                var3.cancel();
             }
 

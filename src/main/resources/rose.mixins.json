@@ -37,7 +37,6 @@
     "FireworkRocketEntityBoostMixin",
     "LivingEntityMovementSwingMixin",
     "PlayerDamageInteractionEventsMixin",
-    "ProjectileUtilHitBoxMixin",
     "ItemFeatureRendererQuadAnimationMixin",
     "ItemStackRenderStateHmiCleanupMixin",
     "JavaClassLuaMemberNamesMixin",

@@ -10,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
-import sg.modules.impl.combat.Aura;
 import sg.client.RoseClient;
 import sg.rotation.RotationStrategy;
 
@@ -497,8 +496,7 @@ public final class HumanizedRotation extends RotationStrategy {
    }
 
    private boolean isAuraReadyToAttack(Entity target) {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      return aura != null && aura.Ж_95bedd6e() != null && aura.Ж_95bedd6e().equals(target) ? aura.ОС() : false;
+      return false;
    }
 
    private double randomDouble(double minimum, double maximum) {
@@ -638,8 +636,7 @@ public final class HumanizedRotation extends RotationStrategy {
 
    @Override
    public Vector2f calculateRotation(Vector2f currentRotation, Vector2f targetRotation) {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      LivingEntity target = aura.Ж_95bedd6e();
+      LivingEntity target = null;
       if (currentRotation == null || targetRotation == null) {
          return currentRotation != null ? currentRotation : targetRotation;
       }
@@ -909,8 +906,7 @@ public final class HumanizedRotation extends RotationStrategy {
 
    @Override
    public Vector2f getTargetRotation() {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      LivingEntity target = aura.Ж_95bedd6e();
+      LivingEntity target = null;
       if (target != null && MINECRAFT_CLIENT.player != null) {
          AABB targetBox = target.getBoundingBox();
          Vec3 eyePosition = MINECRAFT_CLIENT.player.getEyePosition();

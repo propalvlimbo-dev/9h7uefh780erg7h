@@ -27,7 +27,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.settings.FloatSetting;
 import sg.modules.impl.init.StrafeSpeedCalculator;
 
@@ -145,8 +144,7 @@ public class TargetStrafe extends ClientModule {
    }
 
    private LivingEntity а_95bedd6e() {
-      Aura var1 = RoseClient.getInstance().getServices().getModules().getAura();
-      return var1 != null && var1.isEnabled() ? var1.Ж_95bedd6e() : null;
+      return null;
    }
 
    private double Л(LivingEntity var1, double var2, double var4) {
@@ -207,8 +205,7 @@ public class TargetStrafe extends ClientModule {
    }
 
    private boolean Ц(LivingEntity var1) {
-      Aura var2 = RoseClient.getInstance().getServices().getModules().getAura();
-      return this.Вл.getValue() && var1 != null && this.ЯХ != null && var2 != null && var2.isEnabled();
+      return this.Вл.getValue() && var1 != null && this.ЯХ != null;
    }
 
    private void г(PacketSendEvent var1) {

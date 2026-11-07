@@ -271,7 +271,7 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
     private boolean searchFocused;
     private String searchQuery = "";
 
-   private ThirdGuiCategory category = ThirdGuiCategory.COMBAT;
+   private ThirdGuiCategory category = ThirdGuiCategory.MOVEMENT;
    private boolean allCollapsed;
    private boolean initialized;
    private boolean closing;

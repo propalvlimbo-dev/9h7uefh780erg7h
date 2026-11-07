@@ -19,7 +19,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.settings.ChoiceOption;
 import sg.events.impl.PlayerMovementSyncEvent;
 import sg.settings.FloatSetting;
@@ -191,8 +190,7 @@ public class Strafe extends ClientModule {
    }
 
    private float УБ() {
-      Aura var1 = this.С();
-      return this.Вц.getValue() && var1 != null && var1.isEnabled() && var1.Ж_95bedd6e() != null ? this.ь(var1.Ж_95bedd6e()) : MINECRAFT_CLIENT.player.getYRot();
+      return MINECRAFT_CLIENT.player.getYRot();
    }
 
    private void гв(PlayerTickEvent var1) {
@@ -360,8 +358,7 @@ public class Strafe extends ClientModule {
    }
 
    private LivingEntity А_95bedd6e() {
-      Aura var1 = this.С();
-      return var1 != null && var1.isEnabled() ? var1.Ж_95bedd6e() : null;
+      return null;
    }
 
    public void Р(PlayerMovementSyncEvent var1) {
@@ -492,9 +489,4 @@ public class Strafe extends ClientModule {
       return var5;
    }
 
-   private Aura С() {
-      return RoseClient.getInstance() != null && RoseClient.getInstance().getServices() != null && RoseClient.getInstance().getServices().getModules() != null
-         ? RoseClient.getInstance().getServices().getModules().getAura()
-         : null;
-   }
 }

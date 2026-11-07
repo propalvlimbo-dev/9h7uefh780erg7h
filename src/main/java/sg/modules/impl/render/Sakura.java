@@ -36,7 +36,6 @@ import settings.render.ClientResourceIds;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.render.pipeline.RenderPipelineBuilder;
 import sg.render.pipeline.SharedGeometryBuffer;
 import sg.settings.BooleanSetting;
@@ -163,8 +162,7 @@ public final class Sakura extends ClientModule {
    }
 
    private boolean isDrivenByAura() {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      return aura != null && aura.isEnabled() && aura.isSakuraTargetVisualSelected();
+      return false;
    }
 
    private int currentColor() {
@@ -172,8 +170,7 @@ public final class Sakura extends ClientModule {
    }
 
    /**
-    * Renders the vortex around an externally supplied target. Used both by this module and by Aura's
-    * target display ("Сакура") so the visual always follows Aura's current target.
+    * Renders the vortex around an externally supplied target.
     */
    public void renderTarget(WorldEffectsEvent event, LivingEntity target, int color, boolean throughWalls) {
       if (MINECRAFT_CLIENT.level == null || MINECRAFT_CLIENT.player == null) {

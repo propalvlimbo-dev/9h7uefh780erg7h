@@ -28,9 +28,9 @@ public final class SpookyTimeSmoothMode extends RotationStrategy {
    }
 
    @Override public Vector2f getTargetRotation() {
-      LivingEntity entity = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+      LivingEntity entity = null;
       if (entity == null || MINECRAFT_CLIENT.player == null) return super.getTargetRotation();
-      // Base Backtrack delays the entity itself; its current position/bounds are already delayed.
+      // Точка прицела берётся из текущего положения сущности.
       double yExpand = Mth.clamp(entity.getEyeY() - entity.getY() - 0.3, 0.0, entity.getBbHeight());
       Vec3 direction = entity.position().add(0.0, yExpand, 0.0).subtract(MINECRAFT_CLIENT.player.getEyePosition());
       return new Vector2f((float)Math.toDegrees(Math.atan2(-direction.x, direction.z)),
@@ -43,7 +43,7 @@ public final class SpookyTimeSmoothMode extends RotationStrategy {
          this.attackPauseTicks--;
          return new Vector2f(this.attackPauseAngle);
       }
-      LivingEntity entity = this.returningToCamera ? null : RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+      LivingEntity entity = null;
       float speedYaw = randomLerp(45.0F, 60.0F);
       float speedPitch = randomLerp(8.0F, 14.0F);
       if (entity != null && this.rayIntersects(current, entity)) {

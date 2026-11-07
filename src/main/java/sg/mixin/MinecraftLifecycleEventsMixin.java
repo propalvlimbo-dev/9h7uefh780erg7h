@@ -33,7 +33,6 @@ import sg.events.impl.ItemUseStartEvent;
 import sg.ec.PredicateBlockRaycast;
 import sg.events.impl.Frame60Event;
 import sg.events.impl.ClientTickEvent;
-import sg.modules.impl.combat.CrystalAura;
 import sg.events.impl.RotationFrameEvent;
 import sg.client.RoseClient;
 import sg.modules.impl.misc.OpenWalls;
@@ -95,14 +94,6 @@ public class MinecraftLifecycleEventsMixin {
          }
       } else {
          return (InteractionResult)var5.call(var1, var2, var3, var4);
-      }
-   }
-
-   @Inject(method = "continueAttack", at = @At("HEAD"), cancellable = true)
-   private void retainCrystalMining(boolean var1, CallbackInfo var2) {
-      CrystalAura var3 = RoseClient.getInstance().getServices().getModules().getCrystalAura();
-      if (var3 != null && var3.У3()) {
-         var2.cancel();
       }
    }
 

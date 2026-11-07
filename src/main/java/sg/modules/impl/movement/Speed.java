@@ -39,7 +39,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.settings.ChoiceOption;
 import sg.events.impl.PlayerMovementSyncEvent;
 import sg.settings.FloatSetting;
@@ -399,8 +398,7 @@ public class Speed extends ClientModule {
    }
 
    private double[] method__(double var1, double var3) {
-      Aura var5 = RoseClient.getInstance().getServices().getModules().getAura();
-      return var5 != null && var5.method_5I() ? var5.Б(var1, var3) : new double[]{var1, var3};
+      return new double[]{var1, var3};
    }
 
    @Override

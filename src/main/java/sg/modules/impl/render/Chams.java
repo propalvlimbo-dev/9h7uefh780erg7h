@@ -230,10 +230,6 @@ public class Chams extends ClientModule {
       }
 
       if ((MINECRAFT_CLIENT.level == null ? null : MINECRAFT_CLIENT.level.getEntity(entityId)) instanceof Player player) {
-         if (RoseClient.getInstance().getServices().getModules().getAntiBot().detectedBots.contains(player)) {
-            return false;
-         }
-
          if (this.isFriend(player)) {
             return this.targets.isSelected(FRIEND_TARGET_KEY);
          }

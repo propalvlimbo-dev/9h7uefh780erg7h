@@ -25,7 +25,6 @@ import sg.render.pipeline.UiBatchDrawing;
 import sg.settings.BooleanSetting;
 import sg.hud.InventoryHudElement;
 import sg.hud.Keybinds;
-import sg.hud.PvPAssist;
 import sg.util.time.ColorMath;
 import sg.hud.StaffList;
 import sg.hud.TimerHudElement;
@@ -64,8 +63,6 @@ public class HudElementRegistry extends ArrayList<HudElement> {
    private final TargetHud targetHud;
    @SerializedName("В")
    private final Potions potions;
-   @SerializedName("В")
-   private final PvPAssist pvpAssist;
    @SerializedName("В")
    private final LootTrackerHudElement lootTracker;
    @SerializedName("В")
@@ -408,7 +405,6 @@ public class HudElementRegistry extends ArrayList<HudElement> {
          this.forEach(element -> RoseClient.getInstance().getEventBus().register(element));
          RoseClient.getInstance().getEventBus().register(this.targetHud.method_6_10d41d08());
          RoseClient.getInstance().getEventBus().register(this.potions.ш_10d41d08());
-         RoseClient.getInstance().getEventBus().register(this.pvpAssist.method_8_10d41d08());
          RoseClient.getInstance().getEventBus().register(this.lootTracker.и_10d41d08());
          RoseClient.getInstance().getEventBus().register(this.itemIndicator.method_1());
          RoseClient.getInstance().getEventBus().register(this.notifications.method_9());
@@ -467,7 +463,6 @@ public class HudElementRegistry extends ArrayList<HudElement> {
          this.enabled = false;
          this.targetHud.method_6_10d41d08().сС();
          this.potions.ш_10d41d08().сС();
-         this.pvpAssist.method_8_10d41d08().сС();
          this.lootTracker.и_10d41d08().сС();
          this.itemIndicator.method_1().сС();
          this.notifications.Б5();
@@ -476,7 +471,6 @@ public class HudElementRegistry extends ArrayList<HudElement> {
          this.forEach(element -> RoseClient.getInstance().getEventBus().unregister(element));
          RoseClient.getInstance().getEventBus().unregister(this.targetHud.method_6_10d41d08());
          RoseClient.getInstance().getEventBus().unregister(this.potions.ш_10d41d08());
-         RoseClient.getInstance().getEventBus().unregister(this.pvpAssist.method_8_10d41d08());
          RoseClient.getInstance().getEventBus().unregister(this.lootTracker.и_10d41d08());
          RoseClient.getInstance().getEventBus().unregister(this.itemIndicator.method_1());
          RoseClient.getInstance().getEventBus().unregister(this.notifications.method_9());
@@ -611,8 +605,6 @@ public class HudElementRegistry extends ArrayList<HudElement> {
       this.itemIndicator = new ItemIndicator(itemIndicatorScale);
       this.add(this.itemIndicator);
       this.add(new InventoryHudElement());
-      this.pvpAssist = new PvPAssist(pvpAssistScale);
-      this.add(this.pvpAssist);
       this.lootTracker = new LootTrackerHudElement(lootTrackerScale);
       this.add(this.lootTracker);
       this.killCards = new KillCardsHudElement();

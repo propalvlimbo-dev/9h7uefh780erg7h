@@ -41,7 +41,6 @@ import sg.events.impl.SceneEffectsEvent;
 import sg.events.impl.WorldGeometryBuffer;
 import sg.events.impl.WorldEffectsEvent;
 import sg.modules.ModuleRegistry;
-import sg.modules.impl.combat.Aura;
 import sg.modules.impl.init.RoseXrayLines;
 import sg.modules.impl.render.FullBright;
 import sg.modules.impl.render.Hands;
@@ -283,11 +282,6 @@ public class GameRendererWorldEffectsMixin implements WorldEffectsRendererAccess
                }
 
                TargetEspMask.beginDeferredRender();
-               Aura aura = null;
-               if (RoseClient.getInstance().getServices() != null && RoseClient.getInstance().getServices().getModules() != null) {
-                  aura = RoseClient.getInstance().getServices().getModules().getAura();
-               }
-
                PoseStack poseStack = new PoseStack();
                poseStack.mulPose(new Matrix4f(viewRotationMatrix));
                WorldGeometryBuffer.StagedBuffer geometryBuffer = WorldGeometryBuffer.getShared();
@@ -308,9 +302,7 @@ public class GameRendererWorldEffectsMixin implements WorldEffectsRendererAccess
                   geometryBuffer.flush(RoseXrayLines.QUADS);
                   geometryBuffer.flush(Invoker.Я_at_5266f6df);
                   geometryBuffer.flush(Invoker.Х_at_5266f6df);
-                  if (aura != null && !aura.isEnabled()) {
-                     TargetEspMask.renderFadingTarget(worldEvent);
-                  }
+                  TargetEspMask.renderFadingTarget(worldEvent);
                } finally {
                   modelViewStack.popMatrix();
                }

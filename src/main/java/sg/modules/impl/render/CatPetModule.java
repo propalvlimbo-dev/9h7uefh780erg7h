@@ -26,8 +26,6 @@ import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
 import sg.modules.ModuleRegistry;
-import sg.modules.impl.combat.Aura;
-import sg.modules.impl.combat.Aimbot;
 import sg.events.impl.AttackEntityEvent;
 import sg.modules.impl.init.CatPetAnimator;
 import sg.modules.impl.init.CatPetMovement;
@@ -239,18 +237,8 @@ public final class CatPetModule extends ClientModule {
    }
 
    private LivingEntity Р_95bedd6e() {
-      if (RoseClient.getInstance() != null && RoseClient.getInstance().getServices() != null) {
-         ModuleRegistry var1 = RoseClient.getInstance().getServices().getModules();
-         if (var1 == null) {
-            return null;
-         }
-
-         Aimbot var2 = var1.getAimbot();
-         Aura var3 = var1.getAura();
-         return var3 != null && var3.isEnabled() && this.method_8(var3.Ж_95bedd6e()) ? var3.Ж_95bedd6e() : null;
-      } else {
-         return null;
-      }
+      // Combat-модули удалены: питомец больше не охотится на цель ауры.
+      return null;
    }
 
    private void о(WorldEffectsEvent var1) {

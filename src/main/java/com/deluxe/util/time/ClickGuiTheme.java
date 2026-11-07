@@ -58,7 +58,6 @@ public final class ClickGuiTheme {
 
    public static String categoryIcon(ModuleCategory category) {
       return switch (category) {
-         case COMBAT -> ("clickgui/cat_combat");
          case MOVEMENT -> ("clickgui/cat_movement");
          case RENDER -> ("clickgui/cat_visuals");
          case MISC -> ("clickgui/cat_misc");

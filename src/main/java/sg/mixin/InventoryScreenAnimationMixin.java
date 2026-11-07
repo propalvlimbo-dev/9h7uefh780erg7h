@@ -17,8 +17,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import sg.events.impl.UiAnimationEvents;
-import sg.gui.ArrowSelectorScreen;
-import sg.gui.SwapItemSelectorScreen;
 import sg.client.RoseClient;
 import sg.modules.impl.render.ShulkerView;
 import sg.util.time.Stopwatch;
@@ -52,7 +50,7 @@ public abstract class InventoryScreenAnimationMixin extends AbstractContainerScr
 
    @Inject(method = "init", at = @At("TAIL"))
    private void addDropAllButton(CallbackInfo var1) {
-      if (!((Object)this instanceof SwapItemSelectorScreen) && !((Object)this instanceof ArrowSelectorScreen)) {
+      {
          this.dropAllButton = Button.builder(Component.literal(ВOя), var1x -> {
             this.shouldDropItems = true;
             this.dropTimer.ВД();

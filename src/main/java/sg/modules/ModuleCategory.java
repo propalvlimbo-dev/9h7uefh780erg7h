@@ -4,7 +4,6 @@ import lombok.Generated;
 import sg.animation.FloatAnimation;
 
 public enum ModuleCategory {
-   COMBAT("Combat", "b"),
    MOVEMENT("Movement", "c"),
    RENDER("Render", "d"),
    MISC("Misc", "f"),

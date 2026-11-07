@@ -6,7 +6,6 @@ import sg.modules.ModuleCategory;
  * Module entries followed by a separate group of client editors in the Third dock.
  */
 public enum ThirdGuiCategory {
-   COMBAT(ModuleCategory.COMBAT, "Combat", ThirdGuiIcons.sword()),
    MOVEMENT(ModuleCategory.MOVEMENT, "Movement", ThirdGuiIcons.sneaker()),
    VISUALS(ModuleCategory.RENDER, "Visuals", ThirdGuiIcons.sparkle()),
    MISC(ModuleCategory.MISC, "Misc", ThirdGuiIcons.dots()),

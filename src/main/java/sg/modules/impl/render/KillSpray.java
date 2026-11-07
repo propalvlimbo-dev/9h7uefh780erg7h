@@ -46,7 +46,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.AttackEntityEvent;
 import sg.settings.FloatSetting;
 
@@ -203,14 +202,6 @@ public class KillSpray extends ClientModule {
 
    private void а(PlayerTickEvent var1) {
       if (MINECRAFT_CLIENT.level != null && MINECRAFT_CLIENT.player != null) {
-         try {
-            Aura var2 = RoseClient.getInstance().getServices().getModules().getAura();
-            if (var2 != null && var2.isEnabled() && var2.Ж_95bedd6e() != null && var2.Ж_95bedd6e().isAlive()) {
-               this.т(var2.Ж_95bedd6e());
-            }
-         } catch (Throwable var8) {
-         }
-
          long var9 = System.currentTimeMillis();
          Iterator var4 = this.field_0_2571477d_at_9653152b.iterator();
 

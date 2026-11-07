@@ -5,7 +5,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import sg.client.RoseClient;
-import sg.modules.impl.combat.Aura;
 
 /** Recoin FunTime smoothing adapted to the base's tick-driven rotation strategy. */
 public final class FunTimeSmoothMode extends RotationStrategy {
@@ -22,8 +21,7 @@ public final class FunTimeSmoothMode extends RotationStrategy {
       float pitchDelta = target.y - current.y;
       float distance = (float)Math.hypot(yawDelta, pitchDelta);
       if (distance < 1.0E-6F) return new Vector2f(current);
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      boolean canAttack = !this.returningToCamera && aura.Ж_95bedd6e() != null && aura.и(0) == 0;
+      boolean canAttack = false;
       double phase = System.currentTimeMillis() / 50.0;
       float yawNoise = canAttack || this.returningToCamera ? 0.0F : (float)(this.randomLerp(14.0F, 18.0F) * Math.sin(phase));
       float pitchNoise = canAttack || this.returningToCamera ? 0.0F : (float)(this.randomLerp(6.0F, 8.0F) * Math.cos(phase));

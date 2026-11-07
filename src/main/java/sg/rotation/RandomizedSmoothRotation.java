@@ -8,7 +8,6 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
 import sg.util.input.MouseSensitivityMath;
 import sg.client.RoseClient;
-import sg.modules.impl.combat.Aura;
 import sg.rotation.RotationStrategy;
 import sg.rotation.SpacedRandomFloat;
 import sg.modules.impl.init.TickTimer;
@@ -82,7 +81,7 @@ public class RandomizedSmoothRotation extends RotationStrategy {
 
    @Override
    public Vector2f getTargetRotation() {
-      LivingEntity auraTarget = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+      LivingEntity auraTarget = null;
       float offsetX = (float)(Math.random() - OFFSET_X_CENTER) * MINECRAFT_CLIENT.player.getBbWidth() * OFFSET_X_WIDTH_FACTOR;
       float offsetY = (float)(Math.random() - OFFSET_Y_CENTER) * MINECRAFT_CLIENT.player.getBbHeight() * OFFSET_Y_HEIGHT_FACTOR;
       float offsetZ = (float)(Math.random() - OFFSET_Z_CENTER) * MINECRAFT_CLIENT.player.getBbWidth() * OFFSET_Z_WIDTH_FACTOR;
@@ -98,7 +97,6 @@ public class RandomizedSmoothRotation extends RotationStrategy {
 
    @Override
    public Vector2f calculateRotation(Vector2f currentRotation, Vector2f targetRotation) {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
       Minecraft minecraft = Minecraft.getInstance();
       float targetYaw = targetRotation.x;
       float targetPitch = targetRotation.y;

@@ -247,8 +247,6 @@ public class SkeletonESP extends ClientModule {
    private boolean method_2(Player var1) {
       if (!var1.isAlive() || var1.isRemoved()) {
          return false;
-      } else if (RoseClient.getInstance().getServices().getModules().getAntiBot().detectedBots.contains(var1)) {
-         return false;
       } else {
          return var1 == MINECRAFT_CLIENT.player ? !MINECRAFT_CLIENT.options.getCameraType().isFirstPerson() : true;
       }

@@ -251,6 +251,6 @@ public class ESP extends ClientModule {
    }
 
    private boolean isMarkedBot(Player player) {
-      return RoseClient.getInstance().getServices().getModules().getAntiBot().detectedBots.contains(player);
+      return false;
    }
 }

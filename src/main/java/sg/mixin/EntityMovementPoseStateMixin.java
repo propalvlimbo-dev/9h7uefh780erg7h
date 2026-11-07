@@ -18,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import sg.events.impl.RelativeMovementEvent;
 import sg.events.impl.PlayerMoveCancelEvent;
-import sg.modules.impl.combat.Aura;
-import sg.modules.impl.combat.HitBox;
 import sg.client.RoseClient;
 import sg.modules.impl.movement.NoPush;
 import sg.events.impl.CollisionBypassQuery;
@@ -104,11 +102,6 @@ public class EntityMovementPoseStateMixin implements ResolvedEntityPoseAccess, E
             if ((Object)this == var3.player || var1 == var3.player) {
                var2.cancel();
             }
-         } else {
-            Aura var5 = RoseClient.getInstance().getServices().getModules().getAura();
-            if (var5 != null && (var5.е(var1) || var5.е((Entity)(Object)this)) && ((Object)this == var3.player || var1 == var3.player)) {
-               var2.cancel();
-            }
          }
       }
    }
@@ -165,17 +158,6 @@ public class EntityMovementPoseStateMixin implements ResolvedEntityPoseAccess, E
       RoseClient.getInstance().getEventBus().post(var3);
       if (var3.isCancelled()) {
          var2.setReturnValue(var1);
-      }
-   }
-
-   @Inject(method = "getBoundingBox", at = @At("RETURN"), cancellable = true)
-   private void dimas$visibleHitBox(CallbackInfoReturnable<AABB> var1) {
-      if (RoseClient.getInstance() != null && RoseClient.getInstance().getServices() != null && RoseClient.getInstance().getServices().getModules() != null) {
-         HitBox var2 = RoseClient.getInstance().getServices().getModules().getHitBox();
-         if (var2 != null) {
-            Entity var3 = (Entity)(Object)this;
-            var1.setReturnValue(var2.Ц(var3, (AABB)var1.getReturnValue()));
-         }
       }
    }
 

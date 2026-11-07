@@ -15,7 +15,6 @@ import sg.events.EventListener;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.CameraRotationEvent;
 import sg.settings.ChoiceOption;
 import sg.settings.MultiChoiceSetting;
@@ -141,8 +140,7 @@ public class AimingItems extends ClientModule {
 
    private boolean чВ() {
       if (MINECRAFT_CLIENT.player != null && MINECRAFT_CLIENT.level != null && !MINECRAFT_CLIENT.isPaused() && this.В != null && !this.В.isRemoved() && this.В.level() == MINECRAFT_CLIENT.level) {
-         Aura var1 = RoseClient.getInstance().getServices().getModules().getAura();
-         return (var1 == null || var1.Ж_95bedd6e() == null) && !RoseClient.getInstance().getServices().getModules().getFreeCam().isEnabled();
+         return !RoseClient.getInstance().getServices().getModules().getFreeCam().isEnabled();
       } else {
          return false;
       }

@@ -27,8 +27,7 @@ public class AutoSprint extends ClientModule {
    }
 
    private boolean вг() {
-      boolean var1 = RoseClient.getInstance().getServices().getModules().getAura().isEnabled()
-         && RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e() != null;
+      boolean var1 = false;
       boolean var2 = MINECRAFT_CLIENT.player.isInWater() || MINECRAFT_CLIENT.player.isSuppressingSlidingDownLadder() || MINECRAFT_CLIENT.player.isInLava();
       boolean var3 = RoseClient.getInstance().getServices().getModules().getGuiMove().isEnabled()
          && RoseClient.getInstance().getServices().getModules().getGuiMove().Ь().isSelected(сЧ4)

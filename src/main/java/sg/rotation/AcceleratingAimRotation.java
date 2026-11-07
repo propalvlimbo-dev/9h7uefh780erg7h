@@ -6,7 +6,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
-import sg.modules.impl.combat.Aura;
 import sg.client.RoseClient;
 import sg.rotation.RotationStrategy;
 import sg.util.input.MouseSensitivityMath;
@@ -43,7 +42,6 @@ public class AcceleratingAimRotation extends RotationStrategy {
 
    @Override
    public Vector2f calculateRotation(Vector2f var1, Vector2f var2) {
-      Aura var3 = RoseClient.getInstance().getServices().getModules().getAura();
       double var4 = Mth.wrapDegrees(var2.x - var1.x);
       double var6 = var2.y - var1.y;
       float var11 = (ACCELERATION_BASE + ((float)Math.random() * ACCELERATION_RANDOM_RANGE - ACCELERATION_RANDOM_CENTER)) * ACCELERATION_SCALE;
@@ -52,7 +50,7 @@ public class AcceleratingAimRotation extends RotationStrategy {
       float var10 = this.accelerationProgress;
       float var12 = 0.0F;
       float var13 = 0.0F;
-      LivingEntity var14 = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+      LivingEntity var14 = null;
       if (MINECRAFT_CLIENT.hitResult instanceof EntityHitResult var15 && var15.getEntity() == var14 && !this.returningToCamera) {
          this.accelerationProgress = 0.0F;
          var10 = 0.0F;

@@ -442,7 +442,7 @@ public class SwingAnimations extends ClientModule {
             float var3 = Mth.clamp(var1.swingProgress, 0.0F, 1.0F);
             float var4 = this.Яи.getValue() ? И西(var3) : var3;
             float var5 = (float)Math.sin(var4 * 西6);
-            if (!this.Я9.getValue() || RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e() != null) {
+            if (!this.Я9.getValue()) {
                var1.poses.scale(this.еи.getValue(), this.еи.getValue(), this.еи.getValue());
                if (var1.arm == MINECRAFT_CLIENT.player.getMainArm()) {
                   switch (this.сГ.getSelectedOption().getName()) {
@@ -640,7 +640,7 @@ public class SwingAnimations extends ClientModule {
    public void method_2(SwingDurationEvent var1) {
       if (!this.сГ.isSelected(Бщ)) {
          if (this.Чг()) {
-            if (!this.Я9.getValue() || RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e() != null) {
+            if (!this.Я9.getValue()) {
                if (var1.getHand() == InteractionHand.MAIN_HAND && this.Яф.getValue()) {
                   var1.setDurationControlValue(this.ео.getValue().intValue());
                   var1.setCancelled(true);

@@ -9,7 +9,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.ElytraTarget;
 import sg.settings.FloatSetting;
 
 public class ElytraMotion extends ClientModule {
@@ -27,18 +26,7 @@ public class ElytraMotion extends ClientModule {
    private static final double Хвэ = 2.0;
 
    private void Э(GlidingVelocityEvent var1) {
-      LivingEntity var2 = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
-      ElytraTarget var3 = RoseClient.getInstance().getServices().getModules().getElytraTarget();
-      if (var2 != null
-         && MINECRAFT_CLIENT.player.isFallFlying()
-         && MINECRAFT_CLIENT.player.getEyePosition().distanceTo(var2.getBoundingBox().getCenter().add(0.0, (var2.getY() - var2.yo) * Хвэ, 0.0)) < this.см.getValue().floatValue()
-         && (AimGeometryMath.getEntityMovementPerSecond(var2) < var3.РР().getValue().floatValue() || !var3.е_3276742a().getValue())) {
-         if (this.сХ.getValue() && this.М == null) {
-            this.М = var1.getVelocity();
-         }
-
-         var1.setVelocity(Vec3.ZERO);
-      } else if (this.сХ.getValue() && this.М != null) {
+      if (this.сХ.getValue() && this.М != null) {
          var1.setVelocity(this.М);
          this.М = null;
       }

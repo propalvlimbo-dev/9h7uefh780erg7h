@@ -376,7 +376,6 @@ public final class HoleESP extends ClientModule {
          if (var5 != MINECRAFT_CLIENT.player
             && var5.isAlive()
             && !var5.isSpectator()
-            && !RoseClient.getInstance().getServices().getModules().getAntiBot().detectedBots.contains(var5)
             && !(var5.distanceTo(MINECRAFT_CLIENT.player) > var3)) {
             if (RoseClient.getInstance().getServices().getFriends().О(var5.getName().getString())) {
                var2.add(var5);

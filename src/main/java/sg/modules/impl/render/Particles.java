@@ -64,7 +64,6 @@ import sg.util.time.EntityModelPointSampler;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.settings.ActionSetting;
 import sg.events.impl.AttackEntityEvent;
 import sg.settings.ChoiceOption;
@@ -614,14 +613,6 @@ public class Particles extends ClientModule {
    }
 
    private void method_2ь() {
-      try {
-         Aura var1 = RoseClient.getInstance().getServices().getModules().getAura();
-         if (var1 != null && var1.isEnabled() && var1.Ж_95bedd6e() != null && var1.Ж_95bedd6e().isAlive()) {
-            this.ф(var1.Ж_95bedd6e(), false);
-         }
-      } catch (Throwable var5) {
-      }
-
       Iterator var6 = this.trackedVictims.iterator();
 
       while (var6.hasNext()) {

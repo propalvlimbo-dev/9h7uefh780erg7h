@@ -20,7 +20,6 @@ import sg.settings.BooleanSetting;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.AttackEntityEvent;
 
 public class KillMessage extends ClientModule {
@@ -165,19 +164,6 @@ public class KillMessage extends ClientModule {
 
    private void method_0З(PlayerTickEvent var1) {
       if (MINECRAFT_CLIENT.level != null && MINECRAFT_CLIENT.player != null) {
-         try {
-            Aura var2 = RoseClient.getInstance().getServices().getModules().getAura();
-            if (var2 != null && var2.isEnabled() && var2.Ж_95bedd6e() instanceof Player var3 && var3.isAlive()) {
-               this.ж(var3, false);
-            }
-         } catch (Throwable var7) {
-         }
-
-         Aura var8 = RoseClient.getInstance().getServices().getModules().getAura();
-         if (var8.isEnabled() && var8.Ж_95bedd6e() != null && var8.Ж_95bedd6e() != this.ш) {
-            this.ш = var8.Ж_95bedd6e();
-         }
-
          Iterator var9 = this.с_.iterator();
 
          while (var9.hasNext()) {
@@ -355,7 +341,6 @@ public class KillMessage extends ClientModule {
          if (var1.getPacket() instanceof ClientboundEntityEventPacket var2) {
             if (var2.getEntity(MINECRAFT_CLIENT.level) instanceof Player var4 && var4 != MINECRAFT_CLIENT.player) {
                if (this.Ы(var4)) {
-                  Aura var5 = RoseClient.getInstance().getServices().getModules().getAura();
                   if (var2.getEventId() == 35) {
                      if (!this.Вы.getValue()) {
                         return;

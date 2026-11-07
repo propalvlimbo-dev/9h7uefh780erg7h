@@ -82,10 +82,10 @@ public class CommandRegistry extends ArrayList<ClientCommand> {
    private static final String FRIEND_LIST_HELP = "Показать друзей и их отображаемые ники";
    private static final String FRIEND_CLEAR_SYNTAX = "clear";
    private static final String FRIEND_CLEAR_HELP = "Очистить список друзей";
-   private static final String TARGET_DESCRIPTION = "Фиксирует Aura на одном игроке и красит его неймтег";
+   private static final String TARGET_DESCRIPTION = "Фиксирует цель на одном игроке и красит его неймтег";
    private static final String TARGET_DEFAULT_HELP = "Показать текущую цель";
    private static final String TARGET_NAME_SYNTAX = "<ник>";
-   private static final String TARGET_NAME_HELP = "Зафиксировать Aura только на этом игроке";
+   private static final String TARGET_NAME_HELP = "Зафиксировать цель только на этом игроке";
    private static final String TARGET_OFF_SYNTAX = "off";
    private static final String TARGET_OFF_HELP = "Снять фиксацию цели";
    private static final String MACRO_DESCRIPTION = "Создаёт и удаляет макросы на клавиши";

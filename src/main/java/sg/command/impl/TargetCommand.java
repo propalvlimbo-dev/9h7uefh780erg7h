@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Player;
 import sg.ec.MinecraftAccess;
 import sg.ec.ForcedPlayerTarget;
-import sg.modules.impl.combat.Aura;
 import sg.client.RoseClient;
 import sg.command.argument.PlayerNameArgumentType;
 import sg.command.ClientCommand;
@@ -26,7 +25,7 @@ public final class TargetCommand extends ClientCommand implements MinecraftAcces
    private static final String CLEAR_TARGET_USAGE_DESCRIPTION = " — снять.";
    private static final String CURRENT_TARGET_MESSAGE_PREFIX = "Текущая цель: ";
    private static final String CLEAR_TARGET_KEYWORD = "off";
-   private static final String TARGET_FIXED_MESSAGE_PREFIX = "Aura зафиксирована на ";
+   private static final String TARGET_FIXED_MESSAGE_PREFIX = "Цель зафиксирована на ";
    private static final String TARGET_ALREADY_CLEARED_MESSAGE = "Цель уже снята.";
    private static final String TARGET_CLEARED_MESSAGE_PREFIX = "Цель снята: ";
    private static final String NAME_ARGUMENT_KEY = "name";
@@ -35,7 +34,6 @@ public final class TargetCommand extends ClientCommand implements MinecraftAcces
       String resolvedName = this.resolvePlayerName(playerName.trim());
       if (!resolvedName.isEmpty() && !resolvedName.equalsIgnoreCase(CLEAR_TARGET_KEYWORD)) {
          ForcedPlayerTarget.ло_de5a6f78(resolvedName);
-         this.clearMismatchedAuraTarget();
          ClientChat.З(
             Component.literal(TARGET_FIXED_MESSAGE_PREFIX)
                .setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY))
@@ -103,13 +101,6 @@ public final class TargetCommand extends ClientCommand implements MinecraftAcces
 
    public TargetCommand() {
       super(COMMAND_NAME);
-   }
-
-   private void clearMismatchedAuraTarget() {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      if (!(aura.Ж_95bedd6e() instanceof Player currentPlayerTarget && ForcedPlayerTarget.ю(currentPlayerTarget))) {
-         aura.Т(null);
-      }
    }
 
    private int clearTarget() {

@@ -7,7 +7,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector2f;
-import sg.modules.impl.combat.Aura;
 import sg.client.RoseClient;
 import sg.rotation.RotationStrategy;
 import sg.util.input.MouseSensitivityMath;
@@ -152,8 +151,7 @@ public final class SnapAimRotation extends RotationStrategy {
 
    @Override
    public Vector2f calculateRotation(Vector2f currentRotation, Vector2f targetRotation) {
-      Aura var3 = RoseClient.getInstance().getServices().getModules().getAura();
-      LivingEntity var4 = var3.Ж_95bedd6e();
+      LivingEntity var4 = null;
       if (currentRotation != null && targetRotation != null && var4 != null && MINECRAFT_CLIENT.player != null) {
          this.updateYawOscillation();
 
@@ -321,11 +319,13 @@ public final class SnapAimRotation extends RotationStrategy {
          this.yawOscillationEasing = this.randomEasingCurve();
       }
 
-      LivingEntity var1 = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+      LivingEntity var1 = null;
       this.yawOscillationTicks = Math.min(this.yawOscillationTicks + 1, this.yawOscillationDurationTicks);
       float var2 = Mth.clamp((float)this.yawOscillationTicks / this.yawOscillationDurationTicks, 0.0F, 1.0F);
       float var3 = this.evaluateEasing(this.yawOscillationEasing, var2);
-      this.yawOffset = Mth.lerp(var3, this.yawOffsetStart, this.yawOffsetTarget) * Math.clamp(YAW_OFFSET_DISTANCE_SCALE / var1.distanceTo(MINECRAFT_CLIENT.player), 0.0F, 1.0F);
+      this.yawOffset = var1 == null ? 0.0F
+         : Mth.lerp(var3, this.yawOffsetStart, this.yawOffsetTarget)
+            * Math.clamp(YAW_OFFSET_DISTANCE_SCALE / var1.distanceTo(MINECRAFT_CLIENT.player), 0.0F, 1.0F);
       if (this.yawOscillationTicks >= this.yawOscillationDurationTicks) {
          this.yawOffsetStart = this.yawOffsetTarget;
          this.yawOffsetTarget = this.yawOffsetTarget <= 0.0F ? NEXT_POSITIVE_YAW_OFFSET : NEXT_NEGATIVE_YAW_OFFSET;

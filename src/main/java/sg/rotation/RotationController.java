@@ -11,7 +11,6 @@ import sg.events.impl.PlayerTickEvent;
 import sg.events.EventListener;
 import sg.events.impl.Frame60Event;
 import sg.client.RoseClient;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.CameraRotationEvent;
 import sg.events.impl.PlayerMovementSyncEvent;
 import sg.events.impl.PlayerTurnEvent;
@@ -159,22 +158,14 @@ public class RotationController extends ClientService {
    }
 
    private void onCameraRotation(CameraRotationEvent event) {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      if (aura != null && aura.method_5В()) {
-         float partialTick = MINECRAFT_CLIENT.getDeltaTracker().getGameTimeDeltaPartialTick(true);
-         aura.я(partialTick);
-         event.setYaw(aura.Б西());
-         event.setPitch(aura.Бц());
-      } else {
-         RotationStrategy cameraStrategy = this.currentStrategy != null ? this.currentStrategy : RoseClient.getInstance().getServices().getRotations().getActiveStrategy();
-         if (cameraStrategy != null) {
-            if (cameraStrategy.usesVanillaCameraRotation()) {
-               return;
-            }
-
-            event.setYaw(this.cameraRotation.x);
-            event.setPitch(this.cameraRotation.y);
+      RotationStrategy cameraStrategy = this.currentStrategy != null ? this.currentStrategy : RoseClient.getInstance().getServices().getRotations().getActiveStrategy();
+      if (cameraStrategy != null) {
+         if (cameraStrategy.usesVanillaCameraRotation()) {
+            return;
          }
+
+         event.setYaw(this.cameraRotation.x);
+         event.setPitch(this.cameraRotation.y);
       }
    }
 
@@ -244,10 +235,9 @@ public class RotationController extends ClientService {
    }
 
    private boolean isSnapRotationMode() {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
       RotationRegistry rotationRegistry = RoseClient.getInstance().getServices().getRotations();
       SnapAimRotation snapStrategy = rotationRegistry.getSnapAimRotation();
-      return aura != null && aura.isEnabled() && aura.method_8_f1816549().isSelected(FUNTIME_SNAP_MODE) || this.currentStrategy == snapStrategy || rotationRegistry.getActiveStrategy() == snapStrategy;
+      return this.currentStrategy == snapStrategy || rotationRegistry.getActiveStrategy() == snapStrategy;
    }
 
    public void releaseStrategy(RotationStrategy strategy) {
@@ -267,7 +257,6 @@ public class RotationController extends ClientService {
    }
 
    private void updateFrameSnapRotation() {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
       RotationRegistry rotationRegistry = RoseClient.getInstance().getServices().getRotations();
       rotationRegistry.tickScheduledRotation();
       RotationStrategy activeStrategy = rotationRegistry.getActiveStrategy();
@@ -301,29 +290,24 @@ public class RotationController extends ClientService {
    }
 
    private void onPlayerTurn(PlayerTurnEvent event) {
-      Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-      if (aura != null && aura.method_5В()) {
-         event.setCancelled(true);
-      } else {
-         RotationStrategy cameraStrategy = this.currentStrategy != null ? this.currentStrategy : RoseClient.getInstance().getServices().getRotations().getActiveStrategy();
-         if (cameraStrategy != null) {
-            if (cameraStrategy.usesVanillaCameraRotation()) {
-               return;
-            }
-
-            this.cameraRotation.x = this.cameraRotation.x + event.getYawDelta() * CAMERA_YAW_MOUSE_SCALE;
-            this.cameraRotation.y = this.cameraRotation.y + event.getPitchDelta() * CAMERA_PITCH_MOUSE_SCALE;
-            this.cameraRotation.y = Math.clamp(this.cameraRotation.y, MIN_CAMERA_PITCH, MAX_CAMERA_PITCH);
-            event.setCancelled(true);
-         } else {
-            this.cameraRotation.set(MINECRAFT_CLIENT.player.getYRot(), MINECRAFT_CLIENT.player.getXRot());
-            this.appliedRotation.set(MINECRAFT_CLIENT.player.getYRot(), MINECRAFT_CLIENT.player.getXRot());
+      RotationStrategy cameraStrategy = this.currentStrategy != null ? this.currentStrategy : RoseClient.getInstance().getServices().getRotations().getActiveStrategy();
+      if (cameraStrategy != null) {
+         if (cameraStrategy.usesVanillaCameraRotation()) {
+            return;
          }
 
-         this.handRotation.x = this.handRotation.x + event.getYawDelta() * HAND_YAW_MOUSE_SCALE;
-         this.handRotation.y = this.handRotation.y + event.getPitchDelta() * HAND_PITCH_MOUSE_SCALE;
-         this.handRotation.y = Math.clamp(this.cameraRotation.y, MIN_HAND_PITCH, MAX_HAND_PITCH);
+         this.cameraRotation.x = this.cameraRotation.x + event.getYawDelta() * CAMERA_YAW_MOUSE_SCALE;
+         this.cameraRotation.y = this.cameraRotation.y + event.getPitchDelta() * CAMERA_PITCH_MOUSE_SCALE;
+         this.cameraRotation.y = Math.clamp(this.cameraRotation.y, MIN_CAMERA_PITCH, MAX_CAMERA_PITCH);
+         event.setCancelled(true);
+      } else {
+         this.cameraRotation.set(MINECRAFT_CLIENT.player.getYRot(), MINECRAFT_CLIENT.player.getXRot());
+         this.appliedRotation.set(MINECRAFT_CLIENT.player.getYRot(), MINECRAFT_CLIENT.player.getXRot());
       }
+
+      this.handRotation.x = this.handRotation.x + event.getYawDelta() * HAND_YAW_MOUSE_SCALE;
+      this.handRotation.y = this.handRotation.y + event.getPitchDelta() * HAND_PITCH_MOUSE_SCALE;
+      this.handRotation.y = Math.clamp(this.cameraRotation.y, MIN_HAND_PITCH, MAX_HAND_PITCH);
    }
 
    @Generated

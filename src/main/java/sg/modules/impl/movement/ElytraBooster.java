@@ -17,7 +17,6 @@ import sg.util.time.ColorMath;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.ElytraTarget;
 import sg.settings.ChoiceOption;
 import sg.events.impl.FireworkBoostEvent;
 import sg.settings.FloatSetting;
@@ -490,8 +489,6 @@ public class ElytraBooster extends ClientModule {
    }
 
    public void М(FireworkBoostEvent var1) {
-      ElytraTarget var2 = RoseClient.getInstance().getServices().getModules().getElytraTarget();
-      LivingEntity var3 = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
       float var4 = Mth.wrapDegrees(MINECRAFT_CLIENT.player.getYRot());
       float var5 = MINECRAFT_CLIENT.player.getXRot();
       float var6 = this.О7(var4);

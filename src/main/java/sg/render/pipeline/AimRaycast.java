@@ -11,7 +11,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.HitResult.Type;
 import sg.ec.MinecraftAccess;
-import sg.modules.impl.combat.HitBox;
 import sg.client.RoseClient;
 
 public final class AimRaycast implements MinecraftAccess {
@@ -25,13 +24,6 @@ public final class AimRaycast implements MinecraftAccess {
       Vec3 var7 = method_2(var1, var0);
       Vec3 var8 = var6.add(var7.scale(var2));
       AABB var9 = var4.getBoundingBox();
-      if (RoseClient.getInstance() != null && RoseClient.getInstance().getServices() != null && RoseClient.getInstance().getServices().getModules() != null) {
-         HitBox var10 = RoseClient.getInstance().getServices().getModules().getHitBox();
-         if (var10 != null) {
-            var9 = var10.й(var4, var9);
-         }
-      }
-
       boolean var13 = var9.contains(var6) || var9.clip(var6, var8).isPresent();
       if (!var13) {
          return false;

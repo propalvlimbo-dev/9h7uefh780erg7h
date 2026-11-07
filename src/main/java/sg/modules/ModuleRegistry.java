@@ -8,7 +8,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import sg.modules.impl.misc.AutoRespawn;
 import sg.modules.impl.misc.PacketDebug;
 import sg.modules.impl.misc.NoInteract;
-import sg.modules.impl.combat.NoEntityTrace;
 import sg.modules.impl.movement.NoWebController;
 import sg.modules.impl.misc.AutoPotionSwap;
 import sg.modules.impl.render.BlockEsp;
@@ -17,7 +16,6 @@ import sg.modules.impl.misc.ScoreboardHealth;
 import sg.modules.impl.render.ItemPhysics;
 import sg.modules.impl.misc.IrcModule;
 import sg.modules.impl.misc.InventorySort;
-import sg.modules.impl.combat.NoFriendDamage;
 import sg.modules.impl.render.Cursor;
 import sg.modules.impl.render.Ambience;
 import sg.modules.impl.render.BlockOverlay;
@@ -28,31 +26,7 @@ import sg.modules.impl.render.HitMarkers;
 import sg.modules.impl.render.JumpCircle;
 import sg.modules.impl.render.Trails;
 import sg.modules.impl.autobuy.FunTime;
-import sg.modules.impl.combat.AiAimbot;
-import sg.modules.impl.combat.AiTester;
-import sg.modules.impl.combat.AntiBot;
-import sg.modules.impl.combat.AntiThors;
-import sg.modules.impl.combat.ArrowSwap;
-import sg.modules.impl.combat.Aura;
-import sg.modules.impl.combat.AutoAnchor;
-import sg.modules.impl.combat.AutoExplosion;
-import sg.modules.impl.combat.AutoShift;
-import sg.modules.impl.combat.AutoSwap;
-import sg.modules.impl.combat.AutoTotem;
-import sg.modules.impl.combat.AutoWebTrap;
-import sg.modules.impl.combat.Backtrack;
-import sg.modules.impl.combat.Blocker;
-import sg.modules.impl.combat.Criticals;
-import sg.modules.impl.combat.CrystalAura;
-import sg.modules.impl.combat.CrystalOptimizer;
-import sg.modules.impl.combat.ElytraTarget;
-import sg.modules.impl.combat.FastBow;
-import sg.modules.impl.combat.PvPHelper;
-import sg.modules.impl.combat.TargetPearl;
-import sg.modules.impl.combat.Velocity;
 import sg.modules.impl.misc.AhHelper;
-import sg.modules.impl.combat.AimAssist;
-import sg.modules.impl.combat.Aimbot;
 import sg.modules.impl.misc.AppleFarmer;
 import sg.modules.impl.render.ArmorDurability;
 import sg.modules.impl.misc.AutoAccept;
@@ -60,8 +34,6 @@ import sg.modules.impl.misc.AutoContract;
 import sg.modules.impl.misc.AutoDuel;
 import sg.modules.impl.misc.AutoInventory;
 import sg.modules.impl.misc.AutoLeave;
-import sg.modules.impl.combat.AutoPotion;
-import sg.modules.impl.combat.AutoThrow;
 import sg.modules.impl.misc.AutoWarden;
 import sg.modules.impl.render.Beautiful;
 import sg.modules.impl.render.CatPetModule;
@@ -71,7 +43,6 @@ import sg.modules.impl.render.CustomCrystal;
 import sg.modules.impl.misc.EcExploit;
 import sg.modules.impl.render.FakePlayer;
 import sg.modules.impl.render.FireworkESP;
-import sg.modules.impl.combat.HitBox;
 import sg.modules.impl.render.HitWave;
 import sg.modules.impl.render.HoleESP;
 import sg.modules.impl.render.ImpactNova;
@@ -86,7 +57,6 @@ import sg.modules.impl.render.ShulkerView;
 import sg.modules.impl.render.TNTEffect;
 import sg.modules.impl.render.TNTTimer;
 import sg.modules.impl.render.TrapIndicator;
-import sg.modules.impl.combat.TriggerBot;
 import sg.modules.impl.misc.UseTracker;
 import sg.modules.impl.render.ViewModel;
 import sg.modules.impl.render.VoidButterflies;
@@ -199,17 +169,11 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final PearlBoost pearlBoost = new PearlBoost();
    @SerializedName("В")
-   private final Aura aura = new Aura();
    @SerializedName("В")
-   private final Backtrack backtrack = new Backtrack();
    @SerializedName("В")
-   private final HitBox hitBox = new HitBox();
    @SerializedName("В")
-   private final Aimbot aimbot = new Aimbot();
    @SerializedName("В")
-   private final AimAssist aimAssist = new AimAssist();
    @SerializedName("В")
-   private final TargetPearl targetPearl = new TargetPearl();
    @SerializedName("В")
    private final PacketDebug packetDebug = new PacketDebug();
    @SerializedName("В")
@@ -241,15 +205,10 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final FreeCam freeCam = new FreeCam();
    @SerializedName("В")
-   private final Criticals criticals = new Criticals();
    @SerializedName("В")
-   private final TriggerBot triggerBot = new TriggerBot();
    @SerializedName("В")
-   private final AutoShift autoShift = new AutoShift();
    @SerializedName("В")
-   private final AutoWebTrap autoWebTrap = new AutoWebTrap();
    @SerializedName("В")
-   private final AntiBot antiBot = new AntiBot();
    @SerializedName("В")
    private final NoWeb noWeb = new NoWeb();
    @SerializedName("В")
@@ -287,9 +246,7 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final Removals removals = new Removals();
    @SerializedName("В")
-   private final NoFriendDamage noFriendDamage = new NoFriendDamage();
    @SerializedName("В")
-   private final NoEntityTrace noEntityTrace = new NoEntityTrace();
    @SerializedName("В")
    private final TapeMouse tapeMouse = new TapeMouse();
    @SerializedName("В")
@@ -329,14 +286,11 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final GuiMove guiMove = new GuiMove();
    @SerializedName("В")
-   private final AutoSwap autoSwap = new AutoSwap();
    @SerializedName("В")
-   private final ArrowSwap arrowSwap = new ArrowSwap();
    @SerializedName("В")
    private final FogAtmosphere fogAtmosphere = new FogAtmosphere();
    @SerializedName("В")
    private final ShaderMist shaderMist = new ShaderMist();
-   private final @com.google.gson.annotations.SerializedName("е")  PvPHelper pvpHelper = new PvPHelper();
    @SerializedName("В")
    private final Arrows arrows = new Arrows();
    @SerializedName("В")
@@ -380,19 +334,14 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final NoInteract noInteract = new NoInteract();
    @SerializedName("В")
-   private final ElytraTarget elytraTarget = new ElytraTarget();
    @SerializedName("Я")
-   private final AutoTotem autoTotem = new AutoTotem();
    @SerializedName("В")
-   private final AutoPotion autoPotion = new AutoPotion();
    @SerializedName("В")
-   private final AutoThrow autoThrow = new AutoThrow();
    @SerializedName("В")
    private final ElytraSwap elytraSwap = new ElytraSwap();
    @SerializedName("В")
    private final HeadSwap headSwap = new HeadSwap();
    @SerializedName("В")
-   private final AutoExplosion autoExplosion = new AutoExplosion();
    @SerializedName("В")
    private final GrimGlide grimGlide = new GrimGlide();
    @SerializedName("В")
@@ -422,11 +371,8 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final WardenESP wardenEsp = new WardenESP();
    @SerializedName("В")
-   private final AiAimbot aiAimbot = new AiAimbot();
    @SerializedName("В")
-   private final AiTester aiTester = new AiTester();
    @SerializedName("В")
-   private final Blocker blocker = new Blocker();
    @SerializedName("В")
    private final Picture picture = new Picture();
    @SerializedName("В")
@@ -436,19 +382,14 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("Я")
    private final InventorySort inventorySort = new InventorySort();
    @SerializedName("В")
-   private final Velocity velocity = new Velocity();
    @SerializedName("В")
    private final AutoRespawn autoRespawn = new AutoRespawn();
    @SerializedName("В")
-   private final FastBow fastBow = new FastBow();
    @SerializedName("В")
    private final AutoMessage autoMessage = new AutoMessage();
    @SerializedName("Я")
-   private final CrystalAura crystalAura = new CrystalAura();
    @SerializedName("В")
-   private final AutoAnchor autoAnchor = new AutoAnchor();
    @SerializedName("В")
-   private final CrystalOptimizer crystalOptimizer = new CrystalOptimizer();
    @SerializedName("В")
    private final EcExploit ecExploit = new EcExploit();
    @SerializedName("В")
@@ -458,7 +399,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final HitWave hitWave = new HitWave();
    @SerializedName("В")
-   private final AntiThors antiThors = new AntiThors();
    @SerializedName("В")
    private final KeyFinder keyFinder = new KeyFinder();
    @SerializedName("В")
@@ -556,19 +496,10 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    private final EntityESP entityEsp = new EntityESP();
 
    @Generated
-   public AiAimbot getAiAimbot() {
-      return this.aiAimbot;
-   }
 
    @Generated
-   public FastBow getFastBow() {
-      return this.fastBow;
-   }
 
    public ModuleRegistry() {
-      this.add(this.aura);
-      this.add(this.backtrack);
-      this.add(this.hitBox);
       this.add(this.musicPlayer);
       this.add(this.ghostHit);
       this.add(this.hitEffect);
@@ -579,9 +510,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.tpLoot);
       this.add(this.ecExploit);
       this.add(this.hitWave);
-      this.add(this.aimbot);
-      this.add(this.aimAssist);
-      this.add(this.targetPearl);
       this.add(this.fastBreak);
       this.add(this.autoRespawn);
       this.add(this.grimGlide);
@@ -590,7 +518,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.blockEsp);
       this.add(this.blockOverlay);
       this.add(this.customCrystal);
-      this.add(this.fastBow);
       this.add(this.noDelay);
       this.add(this.autoPotionSwap);
       this.add(this.noClip);
@@ -606,7 +533,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.chestStealer);
       this.add(this.appleFarmer);
       this.add(this.autoWarden);
-      this.add(this.blocker);
       this.add(this.wardenEsp);
       this.add(this.dragonFly);
       this.add(this.discordRpc);
@@ -614,8 +540,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.ircModule);
       this.ircModule.enable();
       if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-         this.add(this.aiAimbot);
-         this.add(this.aiTester);
       }
 
       this.add(this.noPush);
@@ -629,13 +553,8 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.rwFixer);
       this.rwFixer.enable();
       this.add(this.autoSprint);
-      this.add(this.autoSwap);
-      this.add(this.arrowSwap);
       this.add(this.prediction);
-      this.add(this.elytraTarget);
-      this.add(this.noEntityTrace);
       this.add(this.fakePlayer);
-      this.add(this.noFriendDamage);
       this.add(this.leaveTracker);
       this.add(this.useTracker);
       this.add(this.autoLeave);
@@ -648,7 +567,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.itemScroller);
       this.add(this.clickGui);
       this.add(this.airStuck);
-      this.add(this.pvpHelper);
       this.add(this.trails);
       this.add(this.freeLook);
       this.add(this.spider);
@@ -679,20 +597,12 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.strafe);
       this.add(this.targetStrafe);
       this.add(this.airJump);
-      this.add(this.autoTotem);
-      this.add(this.autoPotion);
-      this.add(this.autoThrow);
       this.add(this.worldParticles);
       this.add(this.voidButterflies);
       this.add(this.cubes);
       this.add(this.particles);
       this.add(this.impactNova);
       this.add(this.freeCam);
-      this.add(this.criticals);
-      this.add(this.triggerBot);
-      this.add(this.autoShift);
-      this.add(this.antiBot);
-      this.add(this.autoWebTrap);
       this.add(this.noWeb);
       this.add(this.noWebController);
       this.add(this.noSlow);
@@ -708,13 +618,7 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.holyWorldHelper);
       this.add(this.rwHelper);
       this.add(this.funtimeHelper);
-      this.add(this.autoExplosion);
-      this.add(this.velocity);
-      this.add(this.crystalAura);
-      this.add(this.autoAnchor);
-      this.add(this.crystalOptimizer);
       this.add(this.autoTool);
-      this.add(this.antiThors);
       this.add(this.timerModule);
       this.add(this.catPetModule);
       this.add(this.chinaHat);
@@ -774,9 +678,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public CrystalOptimizer getCrystalOptimizer() {
-      return this.crystalOptimizer;
-   }
 
    @Generated
    public KillSpray getKillSpray() {
@@ -784,9 +685,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public PvPHelper getPvPHelper() {
-      return this.pvpHelper;
-   }
 
    @Generated
    public AspectRatio getAspectRatio() {
@@ -819,9 +717,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AutoThrow getAutoThrow() {
-      return this.autoThrow;
-   }
 
    @Generated
    public HitEffect getHitEffect() {
@@ -855,9 +750,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
 
 
    @Generated
-   public AutoSwap getAutoSwap() {
-      return this.autoSwap;
-   }
 
    @Generated
    public FireworkESP getFireworkESP() {
@@ -895,9 +787,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AntiThors getAntiThors() {
-      return this.antiThors;
-   }
 
    @Generated
    public AntiServerSwap getAntiServerSwap() {
@@ -930,14 +819,8 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public CrystalAura getCrystalAura() {
-      return this.crystalAura;
-   }
 
    @Generated
-   public NoFriendDamage getNoFriendDamage() {
-      return this.noFriendDamage;
-   }
 
    @Generated
    public LongJump getLongJump() {
@@ -955,9 +838,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AimAssist getAimAssist() {
-      return this.aimAssist;
-   }
 
    @Generated
    public ShaderMist getShaderMist() {
@@ -991,9 +871,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
 
 
    @Generated
-   public AutoExplosion getAutoExplosion() {
-      return this.autoExplosion;
-   }
 
    @Generated
    public TPLoot getTPLoot() {
@@ -1046,9 +923,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Blocker getBlocker() {
-      return this.blocker;
-   }
 
    @Generated
    public ElytraFly getElytraFly() {
@@ -1066,9 +940,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AiTester getAiTester() {
-      return this.aiTester;
-   }
 
    @Generated
    public Optimization getOptimization() {
@@ -1081,9 +952,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Velocity getVelocity() {
-      return this.velocity;
-   }
 
    @Generated
    public GroundLoot getGroundLoot() {
@@ -1116,9 +984,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AutoTotem getAutoTotem() {
-      return this.autoTotem;
-   }
 
    @Generated
    public AutoTool getAutoTool() {
@@ -1211,9 +1076,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public NoEntityTrace getNoEntityTrace() {
-      return this.noEntityTrace;
-   }
 
    @Generated
    public AutoDuel getAutoDuel() {
@@ -1246,9 +1108,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public TargetPearl getTargetPearl() {
-      return this.targetPearl;
-   }
 
    @Generated
    public TargetStrafe getTargetStrafe() {
@@ -1256,9 +1115,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AutoWebTrap getAutoWebTrap() {
-      return this.autoWebTrap;
-   }
 
    @Generated
    public Ambience getAmbience() {
@@ -1341,9 +1197,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Aimbot getAimbot() {
-      return this.aimbot;
-   }
 
    @Generated
    public AirJump getAirJump() {
@@ -1386,9 +1239,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public TriggerBot getTriggerBot() {
-      return this.triggerBot;
-   }
 
    @Generated
    public AutoContract getAutoContract() {
@@ -1401,9 +1251,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Backtrack getBacktrack() {
-      return this.backtrack;
-   }
 
    @Generated
    public SkeletonESP getSkeletonESP() {
@@ -1446,9 +1293,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Criticals getCriticals() {
-      return this.criticals;
-   }
 
    @Generated
    public KitHelper getKitHelper() {
@@ -1511,14 +1355,8 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public HitBox getHitBox() {
-      return this.hitBox;
-   }
 
    @Generated
-   public AutoShift getAutoShift() {
-      return this.autoShift;
-   }
 
    @Generated
    public SwingAnimations getSwingAnimations() {
@@ -1541,9 +1379,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AutoPotion getAutoPotion() {
-      return this.autoPotion;
-   }
 
    @Generated
    public UseTracker getUseTracker() {
@@ -1556,9 +1391,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public ArrowSwap getArrowSwap() {
-      return this.arrowSwap;
-   }
 
    @Generated
    public AimingItems getAimingItems() {
@@ -1581,9 +1413,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public ElytraTarget getElytraTarget() {
-      return this.elytraTarget;
-   }
 
    @Generated
    public AutoMessage getAutoMessage() {
@@ -1591,9 +1420,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public Aura getAura() {
-      return this.aura;
-   }
 
    @Generated
    public Hands getHands() {
@@ -1615,9 +1441,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AntiBot getAntiBot() {
-      return this.antiBot;
-   }
 
    @Generated
    public MusicPlayer getMusicPlayer() {
@@ -1635,9 +1458,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
    @Generated
-   public AutoAnchor getAutoAnchor() {
-      return this.autoAnchor;
-   }
 
    @Generated
    public NoInteract getNoInteract() {

@@ -67,7 +67,7 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
    private static final int Ю_a83dd0cc = 7;
    private static final float щ = 20.0F;
    private static final float Г = 14.0F;
-   private static ModuleCategory В_e0c4705a = ModuleCategory.COMBAT;
+   private static ModuleCategory В_e0c4705a = ModuleCategory.MOVEMENT;
    private static final EnumMap<ModuleCategory, Float> В_03947583 = new EnumMap<>(ModuleCategory.class);
    @SerializedName("В")
    private final CopyOnWriteArrayList<ModuleKeybindWidget> В_b1d77d5c = new CopyOnWriteArrayList<>();
@@ -934,7 +934,7 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
       this.Ч_bbeebd87 = true;
       this.В_98dcdd56.Хл();
       if (this.Я_e0c4705a == ModuleCategory.COSMETICS) {
-         this.Я_e0c4705a = ModuleCategory.COMBAT;
+         this.Я_e0c4705a = ModuleCategory.MOVEMENT;
       }
 
       this.updateCoordinates();
@@ -2458,7 +2458,7 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
    private void saveCategoryScroll() {
       this.Я_03947583.put(this.Я_e0c4705a, this.O);
       В_03947583.put(this.Я_e0c4705a, this.O);
-      В_e0c4705a = this.Я_e0c4705a == ModuleCategory.COSMETICS ? ModuleCategory.COMBAT : this.Я_e0c4705a;
+      В_e0c4705a = this.Я_e0c4705a == ModuleCategory.COSMETICS ? ModuleCategory.MOVEMENT : this.Я_e0c4705a;
    }
 
    public boolean areSettingsPinned() {
@@ -2478,13 +2478,12 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
 
    private float categoryButtonY(ModuleCategory var1) {
       return this.у + switch (var1) {
-         case COMBAT -> сЕ1;
-         case MOVEMENT -> сЕЬ;
-         case RENDER -> сЕ衣;
-         case MISC -> сЕш;
-         case AUTOBUY -> сЕИ;
-         case COSMETICS -> сЕь;
-         case THEMES -> сЕж;
+         case MOVEMENT -> сЕ1;
+         case RENDER -> сЕЬ;
+         case MISC -> сЕ衣;
+         case AUTOBUY -> сЕш;
+         case COSMETICS -> сЕИ;
+         case THEMES -> сЕь;
       };
    }
 
@@ -2518,7 +2517,7 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
          this.saveCategoryScroll();
          this.Я_e0c4705a = var1;
          this.ш = false;
-         В_e0c4705a = var1 == ModuleCategory.COSMETICS ? ModuleCategory.COMBAT : var1;
+         В_e0c4705a = var1 == ModuleCategory.COSMETICS ? ModuleCategory.MOVEMENT : var1;
          this.updateCoordinates();
          this.restoreCategoryScroll();
          this.М_6da43b94 = System.nanoTime();

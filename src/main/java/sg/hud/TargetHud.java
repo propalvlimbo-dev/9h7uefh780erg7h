@@ -841,7 +841,7 @@ public class TargetHud extends HudElement implements InteractiveHudElement {
          this.Хэ = var2;
          float var4 = this.getX();
          float var5 = this.getY();
-         LivingEntity var6 = RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e();
+         LivingEntity var6 = null;
          Entity var7 = this.Я_f553a72a(var6);
          float var8 = var7 != null ? 1.0F : 0.0F;
          if ((var7 != null ? var7 : this.Ъ) instanceof LivingEntity var10) {
@@ -925,7 +925,7 @@ public class TargetHud extends HudElement implements InteractiveHudElement {
        long now = System.nanoTime();
        float dt = this.Хэ == 0L ? 0.016F : Math.clamp((now - this.Хэ) / 1.0E9F, 0.0F, 0.1F);
        this.Хэ = now;
-       LivingEntity target = this.catlavan.update(RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e(), dt);
+       LivingEntity target = this.catlavan.update(((net.minecraft.world.entity.LivingEntity) null), dt);
        if (target == null) {
           this.setWidth(0.0F);
           this.setHeight(0.0F);

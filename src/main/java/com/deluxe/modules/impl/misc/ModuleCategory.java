@@ -1,7 +1,6 @@
 package com.deluxe.modules.impl.misc;
 
 public enum ModuleCategory {
-   COMBAT("Combat"),
    MOVEMENT("Movement"),
    RENDER("Visuals"),
    MISC("Misc"),
@@ -33,7 +32,6 @@ public enum ModuleCategory {
 
    public static ModuleCategory fromClientCategory(sg.modules.ModuleCategory category) {
       return switch (category) {
-         case COMBAT -> COMBAT;
          case MOVEMENT -> MOVEMENT;
          case RENDER -> RENDER;
          case AUTOBUY -> AUTOBUY;

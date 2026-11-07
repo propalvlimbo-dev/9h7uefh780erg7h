@@ -959,7 +959,7 @@ public abstract class ItemInHandRendererAnimationMixin {
          } else if (var2.сГ.isSelected(счЛ)) {
             return true;
          } else {
-            return !var2.Чг() ? false : !var2.Я9.getValue() || RoseClient.getInstance().getServices().getModules().getAura().Ж_95bedd6e() != null;
+            return !var2.Чг() && !var2.Я9.getValue();
          }
       } else {
          return false;

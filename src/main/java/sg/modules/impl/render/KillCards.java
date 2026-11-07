@@ -27,8 +27,6 @@ import sg.animation.FloatAnimation;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.AntiBot;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.AttackEntityEvent;
 import sg.events.impl.HudRenderEvent;
 import sg.hud.KillCardsHudElement;
@@ -262,14 +260,6 @@ public class KillCards extends ClientModule {
 
    private void ХХ(PlayerTickEvent var1) {
       if (MINECRAFT_CLIENT.level != null && MINECRAFT_CLIENT.player != null) {
-         try {
-            Aura var2 = RoseClient.getInstance().getServices().getModules().getAura();
-            if (var2 != null && var2.isEnabled() && var2.Ж_95bedd6e() instanceof LivingEntity var3 && var3.isAlive()) {
-               this.о(var3, true);
-            }
-         } catch (Throwable var6) {
-         }
-
          Iterator var7 = this.сХ.iterator();
 
          while (var7.hasNext()) {
@@ -352,16 +342,7 @@ public class KillCards extends ClientModule {
    }
 
    private boolean В(LivingEntity var1) {
-      if (var1 instanceof Player var2) {
-         try {
-            AntiBot var3 = RoseClient.getInstance().getServices().getModules().getAntiBot();
-            return var3 != null && var3.isEnabled() && var3.detectedBots.contains(var2);
-         } catch (Throwable var4) {
-            return false;
-         }
-      } else {
-         return false;
-      }
+      return false;
    }
 
    private void method_9(float var1, float var2, float var3, int var4, boolean var5, int var6, float var7, boolean var8, float var9) {

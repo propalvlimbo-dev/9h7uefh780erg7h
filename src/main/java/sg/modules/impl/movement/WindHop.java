@@ -209,7 +209,7 @@ public class WindHop extends ClientModule {
    }
 
    private boolean Ы7() {
-      return RoseClient.getInstance().getServices().getModules().getAura().ОО();
+      return false;
    }
 
    private void ая() {

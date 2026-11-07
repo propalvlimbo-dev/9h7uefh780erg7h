@@ -32,7 +32,6 @@ import sg.events.EventListener;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.settings.ChoiceOption;
 import sg.events.impl.PlayerMovementSyncEvent;
 import sg.settings.FloatSetting;
@@ -302,13 +301,7 @@ public class Jesus extends ClientModule {
                this.method_3(var1, 0.0, 0.0);
             }
 
-            Aura var4 = RoseClient.getInstance().getServices().getModules().getAura();
-            if (MINECRAFT_CLIENT.options.keyUp.isDown() && var4 != null && var4.Ж_95bedd6e() != null && var4.method_8_f1816549().isSelected(сЭь)) {
-               double[] var5 = this.method_3(var4.Ж_95bedd6e());
-               this.method_3(var1, var5[0] * var2, var5[1] * var2);
-            } else {
-               this.method_3(var1, var2);
-            }
+            this.method_3(var1, var2);
          }
       }
    }

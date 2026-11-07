@@ -63,7 +63,6 @@ import sg.util.time.ColorMath;
 import sg.client.RoseClient;
 import sg.modules.ClientModule;
 import sg.modules.ModuleCategory;
-import sg.modules.impl.combat.Aura;
 import sg.events.impl.AttackEntityEvent;
 import sg.settings.ChoiceOption;
 import sg.settings.ColorSetting;
@@ -432,14 +431,6 @@ public class KillEffects extends ClientModule {
 
    private void onPlayerTick(PlayerTickEvent event) {
       if (MINECRAFT_CLIENT.level != null && MINECRAFT_CLIENT.player != null) {
-         try {
-            Aura aura = RoseClient.getInstance().getServices().getModules().getAura();
-            if (aura != null && aura.isEnabled() && aura.Ж_95bedd6e() != null && aura.Ж_95bedd6e().isAlive()) {
-               this.trackVictim(aura.Ж_95bedd6e(), false);
-            }
-         } catch (Throwable ignoredAuraLookupFailure) {
-         }
-
          Iterator victimIterator = this.trackedVictims.iterator();
 
          while (victimIterator.hasNext()) {
