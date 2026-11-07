@@ -22,7 +22,7 @@ public final class SimpleWingAnimator implements WingAnimator {
 
    public Vec3 getRotationDegrees(float partialTick) {
       double interpolatedPhase = WingAnimationMath.lerpClamped(this.previousPhase, this.phase, partialTick);
-      double breathingPhase = interpolatedPhase * (X_ROTATION_FREQUENCY / (double)1.0F);
+      double breathingPhase = interpolatedPhase * X_ROTATION_FREQUENCY;
       return new Vec3(
          Math.sin(breathingPhase) * X_ROTATION_AMPLITUDE_DEGREES,
          Math.sin(interpolatedPhase) * Y_ROTATION_AMPLITUDE_DEGREES - Y_ROTATION_OFFSET_DEGREES,

@@ -15,8 +15,8 @@ import sg.render.WingModelPart;
 public final class RoseWingModel extends WingModel {
    private static final float SPINE_INSET = 1.0F;
    private static final float WING_TIP = 27.0F;
-   private static final float WING_TOP = 6.0F;
-   private static final float WING_BOTTOM = -22.0F;
+   private static final float WING_TOP = 10.0F;
+   private static final float WING_BOTTOM = -18.0F;
    private static final float WING_Z = 0.0F;
 
    private final WingModelPart root = createPart(0, 0);

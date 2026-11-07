@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +29,7 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
    private static final float MIN_VISIBLE_ALPHA = 0.01F;
    private static final double WING_Y_OFFSET = -0.0625;
    private static final double CHEST_EQUIPMENT_Z_OFFSET = 0.0625;
+   private static final int FULL_BRIGHT_PACKED_LIGHT = 15728880;
 
    public void submit(PoseStack matrices, SubmitNodeCollector collector, int packedLight, AvatarRenderState state, float yRot, float xRot) {
       Minecraft client = Minecraft.getInstance();
@@ -71,7 +71,7 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                            RenderType wingRenderType = rose
                               ? RenderTypes.entityTranslucent(variant.getTextureId())
                               : RenderTypes.entityCutout(variant.getTextureId());
-                           int wingLight = rose ? LightTexture.FULL_BRIGHT : packedLight;
+                           int wingLight = rose ? FULL_BRIGHT_PACKED_LIGHT : packedLight;
                            collector.submitCustomGeometry(matrices, wingRenderType, (geometryPose, geometryVertices) -> {
                               PoseStack geometryMatrices = new PoseStack();
                               geometryMatrices.mulPose(geometryPose.pose());
