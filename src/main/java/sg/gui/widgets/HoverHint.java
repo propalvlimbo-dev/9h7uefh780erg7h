@@ -16,8 +16,8 @@ public final class HoverHint {
    private static final float PADDING = 8.0F;
    private static final float LINE_HEIGHT = 12.0F;
    private static final float TITLE_LINE = 13.0F;
-   private static final float TITLE_SIZE = 13.0F;
-   private static final float BODY_SIZE = 12.0F;
+   private static final int TITLE_SIZE = 13;
+   private static final int BODY_SIZE = 12;
    private static final float MAX_WIDTH = 190.0F;
    private static final long DELAY_MS = 200L;
    private static final float FADE_SPEED = 130.0F;
