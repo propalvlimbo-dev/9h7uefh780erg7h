@@ -9,7 +9,7 @@ public final class HatPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("сч")  List<HatPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
-   private static final float SPRITE_FACTOR = 1.85F;
+   private static final float SPRITE_FACTOR = 0.92F;
 
    public void clearPreviews() {
       this.previews.clear();
@@ -22,7 +22,7 @@ public final class HatPreviewQueue {
             continue;
          }
 
-         float side = Math.max(preview.width, preview.height) * SPRITE_FACTOR;
+         float side = Math.min(preview.width, preview.height) * SPRITE_FACTOR;
          float spriteX = clipX + preview.x - side * 0.5F;
          float spriteY = clipY + preview.y - side * 0.5F;
          UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, preview.hat.texture());

@@ -63,7 +63,7 @@ public final class WingPreview extends PictureInPictureRenderer<WingPreviewRende
          GeometryBoundsConsumer.orient(matrices, PREVIEW_X_ROTATION_DEGREES, PREVIEW_Y_ROTATION_DEGREES, false);
          collector.submitCustomGeometry(
             matrices,
-            variant == AnimatedWingVariant.ROSE ? CosmeticRoseShader.RENDER_TYPE : RenderTypes.entityTranslucent(variant.getTextureId()),
+            RenderTypes.entityTranslucent(variant.getTextureId()),
             (geometryPose, geometryVertices) -> {
             PoseStack geometryMatrices = new PoseStack();
             geometryMatrices.last().set(geometryPose);

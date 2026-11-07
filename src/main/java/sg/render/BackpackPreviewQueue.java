@@ -9,7 +9,7 @@ public final class BackpackPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("В")  List<BackpackPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
-   private static final float SPRITE_FACTOR = 1.85F;
+   private static final float SPRITE_FACTOR = 0.92F;
 
    public void submitPreviews(GuiGraphicsExtractor graphics, float clipX, float clipY, float clipWidth, float clipHeight) {
       for (BackpackPreviewQueue.PreviewEntry preview : this.previews) {
@@ -18,7 +18,7 @@ public final class BackpackPreviewQueue {
             continue;
          }
 
-         float side = Math.max(preview.width, preview.height) * SPRITE_FACTOR;
+         float side = Math.min(preview.width, preview.height) * SPRITE_FACTOR;
          float spriteX = clipX + preview.x - side * 0.5F;
          float spriteY = clipY + preview.y - side * 0.5F;
          int red = Math.clamp(Math.round(preview.variant.getRedComponent() * 255.0F), 0, 255);

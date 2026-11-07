@@ -66,9 +66,7 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                         boolean hasOutline = state.outlineColor != 0;
                         boolean invisible = state.isInvisible;
                         if (!invisible) {
-                           RenderType wingRenderType = variant == AnimatedWingVariant.ROSE
-                              ? sg.render.CosmeticRoseShader.RENDER_TYPE
-                              : RenderTypes.entityCutout(variant.getTextureId());
+                           RenderType wingRenderType = RenderTypes.entityCutout(variant.getTextureId());
                            collector.submitCustomGeometry(matrices, wingRenderType, (geometryPose, geometryVertices) -> {
                               PoseStack geometryMatrices = new PoseStack();
                               geometryMatrices.mulPose(geometryPose.pose());

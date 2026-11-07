@@ -65,45 +65,54 @@ def strip_plate(parent, x, y, z, w, h, tu, tv, pivot, sign):
         parent.children.append(p)
 
 
+MATS = {'wood': (0, 0), 'wood_light': (48, 16), 'thorn': (16, 0), 'leaf': (32, 0),
+        'leaf_dark': (48, 0), 'rose_core': (0, 16), 'rose_petal': (16, 16), 'rose_hi': (32, 16)}
+
+
 def build_rose(sign):
+    """Тот же спек, что в sg.ec.RoseWingModel: ствол + семь боковых побегов с розами."""
     root = Part()
-    bones = []
-    for (bx, by, bz, bw, bh, bd), pivot, tv in [
-        ((0.0, -1.5, -1.5, 5, 3, 3), (1.5, 5.5, 2.5), 0),
-        ((-0.1, -1.1, -2.0, 7, 3, 4), (4.7, -0.6, 0.1), 8),
-        ((0.0, -1.5, -1.5, 9, 3, 3), (6.5, 0.2, 0.1), 16),
-        ((0.0, -1.0, -1.0, 5, 2, 2), (8.5, 0.0, 0.0), 24),
-    ]:
-        p = Part(pivot)
-        add_box(p, bx, by, bz, bw, bh, bd, 0, tv, sign)
-        bones.append(p)
-    for a, b in zip(bones, bones[1:]):
-        a.children.append(b)
+    mats = {m: Part() for m in MATS}
+    for part in mats.values():
+        root.children.append(part)
 
-    for i, ((px, py, w, h), (tu, tv), pivot) in enumerate([
-        ((0.0, 0.0, 6, 8), (26, 20), (0.4, 0.0, 1.0)),
-        ((0.0, 0.0, 10, 14), (26, 34), (0.0, 1.5, 1.0)),
-        ((-2.0, 0.0, 11, 12), (46, 20), (0.0, 1.0, 0.0)),
-        ((0.0, -2.1, 11, 11), (46, 36), (0.0, 0.0, 0.0)),
-    ]):
-        strip_plate(bones[i], px, py, -0.5, w, h, tu, tv, pivot, sign)
+    def add(mat, x, y, z, w=1, h=1, d=1):
+        tu, tv = MATS[mat]
+        add_box(mats[mat], x, y, z, w, h, d, tu, tv, sign)
 
-    strip_plate(bones[1], 1.0, 1.0, -0.5, 8, 10, 26, 46, (0.0, 1.5, 1.0), sign)
-    strip_plate(bones[2], -1.0, 1.0, -0.5, 9, 9, 46, 50, (0.0, 1.0, 0.0), sign)
+    def rose(cx, cy, cz):
+        add('rose_core', cx, cy, cz)
+        add('rose_petal', cx - 1, cy, cz)
+        add('rose_petal', cx + 1, cy, cz)
+        add('rose_petal', cx, cy - 1, cz)
+        add('rose_petal', cx, cy + 1, cz)
+        add('rose_hi', cx, cy, cz + 1)
 
-    thorns = Part((6.5, 0.2, 0.1)); bones[2].children.append(thorns)
-    for x, y, z in [(1, 4, 2), (3, 2, 2), (5, 0, 2), (7, -1, 1), (9, -1, 1)]:
-        add_box(thorns, x, y, z, 1, 1, 1, 0, 28, sign)
-    twigs = Part((4.7, -0.6, 0.1)); bones[1].children.append(twigs)
-    for x, y, z in [(6, 2, 0), (10, -2, 0)]:
-        add_box(twigs, x, y, z, 3, 1, 1, 8, 28, sign)
-    roses = Part((6.5, 0.2, 0.1)); bones[2].children.append(roses)
-    for x, y, z in [(3, 5, 1), (7, 1, 1), (11, -2, 1), (14, -1, 0)]:
-        add_box(roses, x, y, z, 2, 2, 2, 46, 50, sign)
-        add_box(roses, x, y - 1, z, 2, 1, 2, 46, 50, sign)
-        add_box(roses, x - 1, y, z, 1, 2, 2, 46, 50, sign)
+    stem_x = 1.0
+    y = -14.0
+    first = True
+    while y <= 5.0:
+        thick = 2 if first else 1
+        add('wood', stem_x, y, 0, thick, 1, thick)
+        if int(y) % 4 == 0:
+            add('wood_light', stem_x, y, 1)
+        first = False
+        y += 1.2
 
-    root.children.append(bones[0])
+    for index, (sy, ang, length) in enumerate([(-13.0, 80, 10.0), (-10.0, 64, 13.0), (-7.0, 48, 15.0), (-4.0, 32, 17.0),
+                            (-1.0, 16, 16.0), (2.0, 2, 13.0), (4.5, -14, 9.0)]):
+        a = math.radians(ang)
+        dx, dy = math.sin(a), -math.cos(a)
+        steps = int(length / 1.6)
+        for st in range(1, steps):
+            px, py = stem_x + 1.0 + dx * 1.6 * st, sy + dy * 1.6 * st
+            add('wood', px, py, 0)
+            if st in (1, 4, 7) and st < steps - 1:
+                add('thorn', px, py - 1, 0)
+            if st == steps - 2:
+                add('leaf', px + 1, py, 1, 2, 1, 1)
+        if index % 2 == 1:
+            rose(stem_x + 1.0 + dx * 1.6 * (steps - 1), sy + dy * 1.6 * (steps - 1), 1)
     return root
 
 

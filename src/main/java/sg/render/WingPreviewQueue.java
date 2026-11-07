@@ -12,7 +12,7 @@ public final class WingPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("И")  List<WingPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
-   private static final float SPRITE_FACTOR = 1.85F;
+   private static final float SPRITE_FACTOR = 0.92F;
 
    public void queuePreview(WingSelection wings, float x, float y, float width, float height, float alpha) {
       WingPreviewQueue.PreviewAnimator previewAnimator = this.previewAnimators.computeIfAbsent(wings, variant -> new WingPreviewQueue.PreviewAnimator(variant.getAnimatedVariant().createAnimator()));
@@ -30,7 +30,7 @@ public final class WingPreviewQueue {
             continue;
          }
 
-         float side = Math.max(preview.width, preview.height) * SPRITE_FACTOR;
+         float side = Math.min(preview.width, preview.height) * SPRITE_FACTOR;
          float spriteX = clipX + preview.x - side * 0.5F;
          float spriteY = clipY + preview.y - side * 0.5F;
          UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, preview.wing.getAnimatedVariant().getTextureId());
