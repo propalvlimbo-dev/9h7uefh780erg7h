@@ -15,7 +15,7 @@ public enum WingSelection {
    FAIRY("Фея", "fairy"),
    SLIME("Слизень", "slime"),
    KANEKI_KAGUNE("Кагуне Канеки", "kaneki_kagune"),
-   ROSE("Роза", "rose");
+   ROSE("Роза", "rose_model");
 
    private final @com.google.gson.annotations.SerializedName("Я2")  String displayName;
    private final @com.google.gson.annotations.SerializedName("П")  Identifier textureId;

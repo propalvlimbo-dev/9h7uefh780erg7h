@@ -29,7 +29,6 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
    private static final float MIN_VISIBLE_ALPHA = 0.01F;
    private static final double WING_Y_OFFSET = -0.0625;
    private static final double CHEST_EQUIPMENT_Z_OFFSET = 0.0625;
-   private static final int FULL_BRIGHT_PACKED_LIGHT = 15728880;
 
    public void submit(PoseStack matrices, SubmitNodeCollector collector, int packedLight, AvatarRenderState state, float yRot, float xRot) {
       Minecraft client = Minecraft.getInstance();
@@ -67,15 +66,11 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                         boolean hasOutline = state.outlineColor != 0;
                         boolean invisible = state.isInvisible;
                         if (!invisible) {
-                           boolean rose = variant == AnimatedWingVariant.ROSE;
-                           RenderType wingRenderType = rose
-                              ? RenderTypes.entityTranslucent(variant.getTextureId())
-                              : RenderTypes.entityCutout(variant.getTextureId());
-                           int wingLight = rose ? FULL_BRIGHT_PACKED_LIGHT : packedLight;
+                           RenderType wingRenderType = RenderTypes.entityCutout(variant.getTextureId());
                            collector.submitCustomGeometry(matrices, wingRenderType, (geometryPose, geometryVertices) -> {
                               PoseStack geometryMatrices = new PoseStack();
                               geometryMatrices.mulPose(geometryPose.pose());
-                              variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, wingLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
+                              variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
                            });
                         }
 

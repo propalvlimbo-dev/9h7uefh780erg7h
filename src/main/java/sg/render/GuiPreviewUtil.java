@@ -32,6 +32,11 @@ public final class GuiPreviewUtil {
       guiRenderState.addPicturesInPictureState(renderState);
    }
 
+   /** PIP starts model X at the texture midpoint, so draw centers are relative to that origin. */
+   public static float centeredLocalX(float screenX, int viewportLeft, int viewportRight) {
+      return screenX - (viewportLeft + viewportRight) * 0.5F;
+   }
+
    public static int floor(float value) {
       return (int)Math.floor(value);
    }

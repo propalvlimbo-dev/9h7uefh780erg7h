@@ -12,11 +12,11 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '1827151a'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = '677d3519'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '3cf93851'; s = 5476 }
-  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '490ce064'; s = 10259 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = 'fd1c3a55'; s = 6569 }
   @{ p = 'src/main/java/sg/ec/WingAnimationMath.java'; v = 'efba952f'; s = 1576 }
   @{ p = 'src/main/java/sg/ec/WingModel.java'; v = 'd9cc7adf'; s = 1141 }
   @{ p = 'src/main/java/sg/ec/WingPreviewRenderState.java'; v = 'da620a65'; s = 1005 }
-  @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = '98a9af8a'; s = 5659 }
+  @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = 'f4e26b51'; s = 5304 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '8af92fcf'; s = 104670 }
   @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '2aa673a2'; s = 71987 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiCategory.java'; v = '4c583ed0'; s = 1161 }
@@ -61,14 +61,14 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/Sakura.java'; v = '9f775512'; s = 20935 }
   @{ p = 'src/main/java/sg/modules/impl/render/SkeletonESP.java'; v = 'd395fdce'; s = 11302 }
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'c6e1676c'; s = 101424 }
-  @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '8f6e3e49'; s = 4409 }
+  @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '1188070a'; s = 4415 }
   @{ p = 'src/main/java/sg/render/AttachedCosmeticsRenderLayer.java'; v = 'a2b4c0a3'; s = 6606 }
   @{ p = 'src/main/java/sg/render/AvianWingAnimator.java'; v = 'a9d33cf0'; s = 22853 }
   @{ p = 'src/main/java/sg/render/AvianWingModel.java'; v = 'dc34a954'; s = 10150 }
   @{ p = 'src/main/java/sg/render/BackpackColorVariant.java'; v = 'c60e418d'; s = 1384 }
   @{ p = 'src/main/java/sg/render/BackpackModel.java'; v = '9795b7bd'; s = 24534 }
   @{ p = 'src/main/java/sg/render/BackpackPreview.java'; v = '9761fe65'; s = 3678 }
-  @{ p = 'src/main/java/sg/render/BackpackPreviewQueue.java'; v = '4b7dfee5'; s = 2336 }
+  @{ p = 'src/main/java/sg/render/BackpackPreviewQueue.java'; v = '09540853'; s = 2370 }
   @{ p = 'src/main/java/sg/render/ClientCosmeticSelections.java'; v = '5b0d9497'; s = 15241 }
   @{ p = 'src/main/java/sg/render/ClientLogo.java'; v = '26014c9d'; s = 3464 }
   @{ p = 'src/main/java/sg/render/CosmeticAnimationClip.java'; v = 'ff557085'; s = 8489 }
@@ -87,11 +87,11 @@ $Files = @(
   @{ p = 'src/main/java/sg/render/FontMetadata.java'; v = '011ffef6'; s = 3031 }
   @{ p = 'src/main/java/sg/render/GeometryBoundsConsumer.java'; v = '2d9ed270'; s = 3285 }
   @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '650fe995'; s = 1460 }
-  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '3d2e04f5'; s = 1856 }
+  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '0ac9199e'; s = 2115 }
   @{ p = 'src/main/java/sg/render/HatCatalog.java'; v = '90d25941'; s = 7200 }
   @{ p = 'src/main/java/sg/render/HatDefinition.java'; v = 'd89c42b3'; s = 169 }
   @{ p = 'src/main/java/sg/render/HatPreview.java'; v = '3e557c8a'; s = 3380 }
-  @{ p = 'src/main/java/sg/render/HatPreviewQueue.java'; v = 'a7f03b1b'; s = 2207 }
+  @{ p = 'src/main/java/sg/render/HatPreviewQueue.java'; v = 'ff81be42'; s = 2241 }
   @{ p = 'src/main/java/sg/render/HeadCosmeticsRenderLayer.java'; v = '7d038b75'; s = 4898 }
   @{ p = 'src/main/java/sg/render/KaguneWingModel.java'; v = '9ce88980'; s = 15489 }
   @{ p = 'src/main/java/sg/render/LuaTransformMath.java'; v = 'e585397a'; s = 3903 }
@@ -108,9 +108,9 @@ $Files = @(
   @{ p = 'src/main/java/sg/render/WingModelPart.java'; v = '85b24bb8'; s = 9470 }
   @{ p = 'src/main/java/sg/render/WingMotionState.java'; v = 'f8021e48'; s = 4874 }
   @{ p = 'src/main/java/sg/render/WingOutlineQueue.java'; v = '4e82ce78'; s = 2725 }
-  @{ p = 'src/main/java/sg/render/WingPreview.java'; v = '6637688a'; s = 3663 }
-  @{ p = 'src/main/java/sg/render/WingPreviewQueue.java'; v = 'c65b63d8'; s = 3433 }
-  @{ p = 'src/main/java/sg/render/WingSelection.java'; v = '3c714c9a'; s = 1414 }
+  @{ p = 'src/main/java/sg/render/WingPreview.java'; v = '00b0f861'; s = 3814 }
+  @{ p = 'src/main/java/sg/render/WingPreviewQueue.java'; v = '95e839ad'; s = 3467 }
+  @{ p = 'src/main/java/sg/render/WingSelection.java'; v = 'a6e0ac1f'; s = 1420 }
   @{ p = 'src/main/java/sg/render/WorldProjection.java'; v = 'f38186fc'; s = 7079 }
   @{ p = 'src/main/java/sg/render/avatar/AsyncTextureAtlas.java'; v = '25a2f209'; s = 5341 }
   @{ p = 'src/main/java/sg/render/avatar/ClasspathReloadableTexture.java'; v = 'de683f49'; s = 2397 }
@@ -190,6 +190,7 @@ $Files = @(
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/model.geo.json'; v = 'b57c0ec0'; s = 46862 }
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/texture.png'; v = 'bea645b1'; s = 189 }
   @{ p = 'src/main/resources/assets/rose/images/mainmenu/gavs_loading_background.png'; v = 'b132975a'; s = 283635 }
+  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_model_wings.png'; v = 'f27c4aa3'; s = 4180 }
   @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings.png'; v = 'a3c37721'; s = 349439 }
   @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings_preview.png'; v = '47015256'; s = 50618 }
   @{ p = 'src/main/resources/rose.mixins.json'; v = 'd346f381'; s = 5350 }

@@ -21,7 +21,7 @@ public enum AnimatedWingVariant {
    FAIRY("Фея", "fairy", AnimatedWingVariant.WingModelFamily.INSECTOID),
    SLIME("Слизень", "slime", AnimatedWingVariant.WingModelFamily.INSECTOID),
    KANEKI_KAGUNE("Кагуне Канеки", "kaneki_kagune", AnimatedWingVariant.WingModelFamily.KAGUNE),
-   ROSE("Роза", "rose", AnimatedWingVariant.WingModelFamily.ROSE);
+   ROSE("Роза", "rose_model", AnimatedWingVariant.WingModelFamily.ROSE);
 
    private static WingModel cachedAvianModel;
    private static WingModel cachedInsectoidModel;

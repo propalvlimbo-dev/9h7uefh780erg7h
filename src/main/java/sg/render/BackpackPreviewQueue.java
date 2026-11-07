@@ -27,7 +27,7 @@ public final class BackpackPreviewQueue {
                new BackpackPreviewRenderState.Preview(
                   preview.variant,
                   alpha,
-                  preview.x - x0,
+                  GuiPreviewUtil.centeredLocalX(preview.x, x0, x1),
                   preview.y - y0,
                   preview.width,
                   preview.height

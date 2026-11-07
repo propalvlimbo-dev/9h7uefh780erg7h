@@ -48,7 +48,7 @@ public final class WingPreviewQueue {
                preview.animator.animator,
                preview.animator.advanceAndGetPartialTick(),
                alpha,
-               preview.x - x0,
+               GuiPreviewUtil.centeredLocalX(preview.x, x0, x1),
                preview.y - y0,
                preview.width,
                preview.height
