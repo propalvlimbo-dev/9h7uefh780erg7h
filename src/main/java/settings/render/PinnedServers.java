@@ -7,16 +7,12 @@ import net.minecraft.client.multiplayer.ServerData.Type;
 
 public final class PinnedServers {
    private static final List<PinnedServers.ServerEntry> сЪ = List.of(
-      new PinnedServers.ServerEntry(PinnedServers.МЕ, PinnedServers.МА, PinnedServers.МВ),
-      new PinnedServers.ServerEntry(PinnedServers.М7, PinnedServers.МР, PinnedServers.М3)
+      new PinnedServers.ServerEntry(PinnedServers.МЕ, PinnedServers.МА, PinnedServers.МВ)
    );
    private static final String МЕ = "Elytrix";
    private static final String МА = "mc.elytrix.pw";
    private static final int МВ = 1726228811;
    private static final String МO = ":25565";
-   private static final String М7 = "БравоХвХ";
-   private static final String МР = "mc.bravohvh.ru";
-   private static final int М3 = 1726298421;
 
    private static boolean х(List<ServerData> var0) {
       if (var0.size() < сЪ.size()) {

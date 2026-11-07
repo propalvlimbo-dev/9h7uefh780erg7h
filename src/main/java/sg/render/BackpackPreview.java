@@ -24,7 +24,6 @@ public final class BackpackPreview extends PictureInPictureRenderer<BackpackPrev
 
    protected void renderToTexture(BackpackPreviewRenderState state, PoseStack matrices, SubmitNodeCollector collector) {
       Minecraft.getInstance().gameRenderer.lighting().setupFor(Entry.ENTITY_IN_UI);
-      float halfTargetWidth = (state.x1() - state.x0()) * HORIZONTAL_CENTER_FACTOR;
 
       for (BackpackPreviewRenderState.Preview draw : state.previews()) {
          matrices.pushPose();
@@ -32,7 +31,7 @@ public final class BackpackPreview extends PictureInPictureRenderer<BackpackPrev
             this.bounds = this.measure(draw.variant());
          }
 
-         this.bounds.fit(matrices, draw.x() - halfTargetWidth, draw.y(), draw.width(), draw.height());
+         this.bounds.fit(matrices, draw.x(), draw.y(), draw.width(), draw.height());
          GeometryBoundsConsumer.orient(matrices, PREVIEW_X_ROTATION_DEGREES, PREVIEW_Y_ROTATION_DEGREES, false);
          collector.submitCustomGeometry(matrices, RenderTypes.entityTranslucent(BackpackModel.BODY_TEXTURE), (bodyPose, bodyVertices) -> {
             PoseStack bodyMatrices = new PoseStack();

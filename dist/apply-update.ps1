@@ -9,10 +9,11 @@ $Base = 'https://raw.githubusercontent.com/propalvlimbo-dev/9h7uefh780erg7h/aren
 $Files = @(
   @{ p = 'src/main/java/com/deluxe/modules/impl/misc/ModuleCategory.java'; v = 'fe5178db'; s = 1022 }
   @{ p = 'src/main/java/com/deluxe/util/time/ClickGuiTheme.java'; v = 'e7fc6242'; s = 5499 }
-  @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '1180f681'; s = 3894 }
+  @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '2edf446e'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = 'bfd9a003'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '5c352533'; s = 5476 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '9058632d'; s = 104670 }
+  @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '6974236d'; s = 71999 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiCategory.java'; v = 'efd11415'; s = 1161 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiScreen.java'; v = '8ec35a70'; s = 102308 }
   @{ p = 'src/main/java/sg/hud/HudElementRegistry.java'; v = '2aeec840'; s = 30904 }
@@ -53,6 +54,10 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/Sakura.java'; v = '673cf791'; s = 20935 }
   @{ p = 'src/main/java/sg/modules/impl/render/SkeletonESP.java'; v = 'e634365f'; s = 11302 }
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'dd0443b1'; s = 101424 }
+  @{ p = 'src/main/java/sg/render/BackpackPreview.java'; v = '9cfd9cf1'; s = 3678 }
+  @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = 'af2b9166'; s = 1499 }
+  @{ p = 'src/main/java/sg/render/HatPreview.java'; v = 'befefee9'; s = 3137 }
+  @{ p = 'src/main/java/sg/render/WingPreview.java'; v = 'f2c4385d'; s = 3626 }
   @{ p = 'src/main/java/sg/render/pipeline/AimRaycast.java'; v = '642a1093'; s = 2469 }
   @{ p = 'src/main/java/sg/rotation/AcceleratingAimRotation.java'; v = 'e4d02821'; s = 4909 }
   @{ p = 'src/main/java/sg/rotation/DefensiveJitterRotation.java'; v = '0775980c'; s = 13454 }
@@ -64,6 +69,10 @@ $Files = @(
   @{ p = 'src/main/java/sg/rotation/RotationController.java'; v = '5b6d65a6'; s = 15948 }
   @{ p = 'src/main/java/sg/rotation/SnapAimRotation.java'; v = '62173ceb'; s = 31390 }
   @{ p = 'src/main/java/sg/rotation/SpookyTimeSmoothMode.java'; v = '1d180298'; s = 3691 }
+  @{ p = 'src/main/resources/assets/rose/cosmetics/catalog.json'; v = '34555197'; s = 32671 }
+  @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/animation.json'; v = 'e348b200'; s = 2196 }
+  @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/model.geo.json'; v = '8f7c8920'; s = 46862 }
+  @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/texture.png'; v = '16dea3bf'; s = 189 }
   @{ p = 'src/main/resources/assets/rose/images/mainmenu/gavs_loading_background.png'; v = '1c8840dd'; s = 283635 }
   @{ p = 'src/main/resources/rose.mixins.json'; v = 'ecf0998c'; s = 5314 }
 )

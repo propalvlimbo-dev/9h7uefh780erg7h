@@ -169,6 +169,7 @@ public final class CosmeticsPanel {
    private static final String ВЭ衣 = "P";
    private static final float ВЭш = 0.5F;
    private static final float ВЭИ = 14.5F;
+   private static final float ВЭЛ = 26.0F;
    private static final float ВЭь = 0.01F;
    private static final float ВЭж = 20.0F;
    private static final float ВЭ弟 = 64.0F;
@@ -1121,7 +1122,7 @@ public final class CosmeticsPanel {
       UiDrawing.drawRoundedRect(var4, var5, var6, var7, ВЭЕ, this.пO);
       UiDrawing.drawOutline(var4, var5, var6, var7, 1.0F, ВЭП, this.пР);
       UiDrawing.drawRoundedRect(var4, var5 + ВЭ西, var6, 1.0F, 0.0F, this.пШ);
-      this.Ф(ВЭд, var4 + ВЭБ, var5 + ВЭС, ВЭз, ВЭц, 16, this.п3);
+      sg.render.ClientLogo.drawInBox(var4 + ВЭБ, var5 + ВЭС, ВЭз, ВЭц, this.п3);
       UiDrawing.drawText(ClientFonts.getMediumFont(), ClientLocalization.selectLocalizedText(ВЭя, В必с), var4 + В必В, var5 + В必Я, 12, this.пр);
       if (Minecraft.getInstance().player != null) {
          float var8 = В必Х;
@@ -1243,13 +1244,11 @@ public final class CosmeticsPanel {
    private void и(float var1, float var2) {
       float var3 = this.А.getGuiX();
       float var4 = this.А.getGuiY();
-      UiDrawing.drawText(
-         ClientFonts.getIconsFont(),
-         ColorMath.colorizeWithTheme(ВЭ1),
-         var3 + this.А.getSidebarWidth() * ВЭЬ - UiDrawing.getTextWidth(ClientFonts.getIconsFont(), ВЭ衣, 30) * ВЭш + 2.0F,
-         var4 + ВЭИ,
-         30,
-         -1
+      sg.render.ClientLogo.drawCentered(
+         var3 + this.А.getSidebarWidth() * ВЭЬ + 2.0F,
+         var4 + ВЭИ + ВЭЛ * 0.5F,
+         ВЭЛ,
+         this.п3
       );
       float var5 = this.А.getSidebarLabelAlpha();
       float var6 = UiDrawing.getGlobalAlpha();

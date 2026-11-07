@@ -55,12 +55,11 @@ public final class WingPreview extends PictureInPictureRenderer<WingPreviewRende
 
    protected void renderToTexture(WingPreviewRenderState state, PoseStack matrices, SubmitNodeCollector collector) {
       Minecraft.getInstance().gameRenderer.lighting().setupFor(Entry.ENTITY_IN_UI);
-      float halfTargetWidth = (state.x1() - state.x0()) * HORIZONTAL_CENTER_FACTOR;
 
       for (WingPreviewRenderState.WingDraw draw : state.wings()) {
          AnimatedWingVariant variant = draw.type();
          matrices.pushPose();
-         this.modelBounds.computeIfAbsent(variant.getModel(), model -> this.measure(variant)).fit(matrices, draw.x() - halfTargetWidth, draw.y(), draw.width() * PREVIEW_WIDTH_FACTOR, draw.height() * PREVIEW_HEIGHT_FACTOR);
+         this.modelBounds.computeIfAbsent(variant.getModel(), model -> this.measure(variant)).fit(matrices, draw.x(), draw.y(), draw.width() * PREVIEW_WIDTH_FACTOR, draw.height() * PREVIEW_HEIGHT_FACTOR);
          GeometryBoundsConsumer.orient(matrices, PREVIEW_X_ROTATION_DEGREES, PREVIEW_Y_ROTATION_DEGREES, false);
          collector.submitCustomGeometry(matrices, RenderTypes.entityTranslucent(variant.getTextureId()), (geometryPose, geometryVertices) -> {
             PoseStack geometryMatrices = new PoseStack();

@@ -1,6 +1,5 @@
 package sg.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
 import org.joml.Vector2f;
 
@@ -20,14 +19,13 @@ public record GuiCoordinateTransform(float clipX, float clipY, float offsetX, fl
    public static GuiCoordinateTransform of(float var0, float var1, float var2, float var3) {
       Vector2f var4 = WorldProjection.transformScreenPoint(var0, var1);
       Vector2f var5 = WorldProjection.transformScreenPoint(var0 + var2, var1 + var3);
-      float var6 = Minecraft.getInstance().getWindow().getGuiScale();
-      int var7 = (int)Math.floor(var4.x / var6);
-      int var8 = (int)Math.floor(var4.y / var6);
-      int var9 = (int)Math.ceil(var5.x / var6);
-      int var10 = (int)Math.ceil(var5.y / var6);
-      return new GuiCoordinateTransform(
-         var0, var1, var4.x / var6 - var7, var4.y / var6 - var8, (var5.x - var4.x) / (var2 * var6), (var5.y - var4.y) / (var3 * var6), var7, var8, var9, var10
-      );
+      int var7 = (int)Math.floor(var4.x);
+      int var8 = (int)Math.floor(var4.y);
+      int var9 = (int)Math.ceil(var5.x);
+      int var10 = (int)Math.ceil(var5.y);
+      float var11 = var2 <= 0.0F ? 1.0F : (var5.x - var4.x) / var2;
+      float var12 = var3 <= 0.0F ? 1.0F : (var5.y - var4.y) / var3;
+      return new GuiCoordinateTransform(var0, var1, var4.x - var7, var4.y - var8, var11, var12, var7, var8, var9, var10);
    }
 
    public ScreenRectangle clip() {
