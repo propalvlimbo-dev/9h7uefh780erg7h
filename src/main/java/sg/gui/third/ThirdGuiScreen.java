@@ -87,6 +87,8 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
    private static final int HIT_COLOR = 12;
    private static final int HIT_RANGE = 13;
    private static final int HIT_PICKER_ZONE_BASE = 14;
+   /** Область только для подсказки: клика по ней не бывает, она зарегистрирована первой и перекрывается остальными. */
+   private static final int HIT_HINT_ONLY = -1;
 
    private static final int PICKER_NONE = -1;
    private static final int PICKER_SATURATION = 0;
@@ -235,6 +237,21 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
      private static final float SEARCH_GAP = 16.0F;
     private static final float SEARCH_HINT_SIZE = 18.0F;
 
+   // Подсказка при наведении: небольшая плашка с текстом «что делает функция».
+   private static final int HINT_PLATE_COLOR = 0xF5141418;
+   private static final float HINT_MAX_WIDTH = 300.0F;
+   private static final float HINT_TITLE_SIZE = 17.5F;
+   private static final float HINT_BODY_SIZE = 15.5F;
+   private static final float HINT_LINE_HEIGHT = 19.0F;
+   private static final float HINT_TITLE_GAP = 5.0F;
+   private static final float HINT_PADDING = 11.0F;
+   private static final float HINT_CORNER = 10.0F;
+   private static final float HINT_ACCENT_WIDTH = 3.0F;
+   private static final float HINT_ACCENT_GAP = 9.0F;
+   private static final float HINT_CURSOR_OFFSET_X = 20.0F;
+   private static final float HINT_CURSOR_OFFSET_Y = 22.0F;
+   private static final float HINT_SCREEN_MARGIN = 10.0F;
+
    private final List<Hit> hits = new ArrayList<>();
    private final List<ClientModule> visibleModules = new ArrayList<>();
    private final List<ThirdGuiCategory> dockCategories = new ArrayList<>();
@@ -291,6 +308,9 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
    private long lastFrameNanos;
    private long lastTimeNanos = System.nanoTime();
    private long openedAtMillis;
+   private final ThirdGuiAnim hoverHintAlpha = new ThirdGuiAnim(0.0F, 15.0F);
+   private String hoverHintTitle;
+   private String hoverHintBody;
 
    private ThirdGuiScreen() {
        super(Component.literal("Rose Click Gui"));
@@ -461,6 +481,11 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
         this.drawSearchFooter();
       this.pop();
 
+      this.updateHoverHint();
+      if (this.openColorPicker == null) {
+         this.drawHoverHint(canvasWidth, canvasHeight);
+      }
+
       if (this.openColorPicker != null) {
          this.drawColorPicker();
       }
@@ -629,6 +654,11 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
 
       List<ValueSetting<?>> settings = this.visibleSettings(module);
       boolean live = !this.closing && reveal > CARD_REVEAL_THRESHOLD;
+      if (live) {
+         // Зарегистрирована раньше остальных: подсказка работает по всей карточке,
+         // а клики по переключателю, бинду и строкам всё равно находят свои области.
+         this.hit(x, y, CARD_WIDTH, height, HIT_HINT_ONLY, module, null, 0, true);
+      }
       if (live && !settings.isEmpty()) {
          this.hit(x, y, CARD_WIDTH, CARD_HEADER, HIT_HEADER, module, null, 0, true);
       }
@@ -1860,6 +1890,182 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
 
    private boolean inside(float x, float y, float rectX, float rectY, float width, float height) {
       return x >= rectX && x <= rectX + width && y >= rectY && y <= rectY + height;
+   }
+
+   /** Что показать при наведении: описание модуля или подсказку по настройке. */
+   private void updateHoverHint() {
+      String title = null;
+      String body = null;
+      boolean allowed = this.overPanel()
+         && this.openColorPicker == null
+         && this.searchAnimation.value < 0.05F
+         && this.bindingModule == null
+         && this.bindingSetting == null
+         && this.draggingSlider == null
+         && this.draggingRange == null
+         && this.draggingColor == null;
+
+      if (allowed) {
+         for (int index = this.hits.size() - 1; index >= 0; index--) {
+            Hit hit = this.hits.get(index);
+            if (!this.inside(this.mouseX, this.mouseY, hit.x(), hit.y(), hit.width(), hit.height())) {
+               continue;
+            }
+
+            if (hit.setting() != null) {
+               title = ClientLocalization.translate(hit.setting().getName());
+               body = hoverHintText(hit.setting());
+            } else if (hit.module() != null) {
+               title = ClientLocalization.translate(hit.module().getName());
+               body = ClientLocalization.translate(hit.module().getDescription());
+            }
+
+            break;
+         }
+      }
+
+      if (title != null) {
+         this.hoverHintTitle = title;
+         this.hoverHintBody = body;
+      }
+
+      this.hoverHintAlpha.set(title != null ? 1.0F : 0.0F).update(this.deltaSeconds);
+   }
+
+   /** Плашка в стиле панели: имя, тонкая рубиновая полоска и текст описания. */
+   private void drawHoverHint(float canvasWidth, float canvasHeight) {
+      float appear = this.hoverHintAlpha.value;
+      if (appear <= 0.02F || this.hoverHintTitle == null) {
+         return;
+      }
+
+      String body = this.hoverHintBody == null || this.hoverHintBody.isBlank() ? "Описание пока не задано" : this.hoverHintBody;
+      FontRenderer semibold = ThirdGuiFonts.semibold();
+      FontRenderer regular = ThirdGuiFonts.regular();
+      List<String> lines = wrapHint(regular, body, HINT_BODY_SIZE, HINT_MAX_WIDTH);
+
+      float titleWidth = width(semibold, this.hoverHintTitle, HINT_TITLE_SIZE);
+      float textWidth = 0.0F;
+      for (String line : lines) {
+         textWidth = Math.max(textWidth, width(regular, line, HINT_BODY_SIZE));
+      }
+
+      float contentWidth = Math.min(HINT_MAX_WIDTH, Math.max(titleWidth, textWidth));
+      float paddingLeft = HINT_PADDING + HINT_ACCENT_WIDTH + HINT_ACCENT_GAP;
+      float plateWidth = contentWidth + paddingLeft + HINT_PADDING;
+      float bodyHeight = Math.max(1, lines.size()) * HINT_LINE_HEIGHT;
+      float plateHeight = HINT_PADDING * 2.0F + HINT_TITLE_SIZE + HINT_TITLE_GAP + bodyHeight - (HINT_LINE_HEIGHT - HINT_BODY_SIZE);
+
+      float x = this.mouseX + HINT_CURSOR_OFFSET_X;
+      float y = this.mouseY + HINT_CURSOR_OFFSET_Y;
+      if (x + plateWidth > canvasWidth - HINT_SCREEN_MARGIN) {
+         x = this.mouseX - HINT_CURSOR_OFFSET_X - plateWidth;
+      }
+
+      if (y + plateHeight > canvasHeight - HINT_SCREEN_MARGIN) {
+         y = this.mouseY - HINT_CURSOR_OFFSET_Y - plateHeight;
+      }
+
+      x = Math.clamp(x, HINT_SCREEN_MARGIN, Math.max(HINT_SCREEN_MARGIN, canvasWidth - plateWidth - HINT_SCREEN_MARGIN));
+      y = Math.clamp(y, HINT_SCREEN_MARGIN, Math.max(HINT_SCREEN_MARGIN, canvasHeight - plateHeight - HINT_SCREEN_MARGIN));
+
+      UiDrawing.disableScissor();
+      UiDrawing.drawRoundedRect(x, y + 3.0F, plateWidth, plateHeight, HINT_CORNER, ThirdGuiColors.alpha(0xFF000000, 0.45F * appear));
+      UiDrawing.drawRoundedRect(x, y, plateWidth, plateHeight, HINT_CORNER, ThirdGuiColors.alpha(HINT_PLATE_COLOR, 0.97F * appear));
+      UiDrawing.drawOutline(x, y, plateWidth, plateHeight, 1.0F, HINT_CORNER, ThirdGuiColors.alpha(0xFFFFFFFF, 0.08F * appear));
+      UiDrawing.drawRoundedRect(
+         x + 1.0F,
+         y + HINT_PADDING,
+         HINT_ACCENT_WIDTH,
+         plateHeight - HINT_PADDING * 2.0F,
+         HINT_ACCENT_WIDTH / 2.0F,
+         ThirdGuiColors.alpha(ThirdGuiColors.accent(), 0.9F * appear)
+      );
+
+      float textX = x + paddingLeft;
+      textMid(semibold, this.hoverHintTitle, textX, y + HINT_PADDING + HINT_TITLE_SIZE * 0.5F, HINT_TITLE_SIZE,
+         ThirdGuiColors.alpha(ThirdGuiColors.text(), appear));
+      int bodyColor = ThirdGuiColors.alpha(ThirdGuiColors.lerp(ThirdGuiColors.description(), ThirdGuiColors.text(), 0.45F), appear);
+      float lineY = y + HINT_PADDING + HINT_TITLE_SIZE + HINT_TITLE_GAP;
+      for (String line : lines) {
+         textMid(regular, line, textX, lineY + HINT_BODY_SIZE * 0.5F, HINT_BODY_SIZE, bodyColor);
+         lineY += HINT_LINE_HEIGHT;
+      }
+   }
+
+   private static List<String> wrapHint(FontRenderer font, String text, float size, float maxWidth) {
+      List<String> lines = new ArrayList<>();
+
+      for (String paragraph : text.split("\n")) {
+         String trimmed = paragraph.trim();
+         if (trimmed.isEmpty()) {
+            continue;
+         }
+
+         StringBuilder line = new StringBuilder();
+
+         for (String word : trimmed.split(" ")) {
+            String candidate = line.length() == 0 ? word : line + " " + word;
+            if (line.length() > 0 && width(font, candidate, size) > maxWidth) {
+               lines.add(line.toString());
+               line.setLength(0);
+               line.append(word);
+            } else {
+               line.setLength(0);
+               line.append(candidate);
+            }
+         }
+
+         if (line.length() > 0) {
+            lines.add(line.toString());
+         }
+      }
+
+      return lines;
+   }
+
+   private static String hoverHintText(ValueSetting<?> setting) {
+      if (setting instanceof RangeSetting) {
+         return "Два ползунка: нижняя и верхняя граница";
+      }
+
+      if (setting instanceof FloatSetting) {
+         return "Ползунок: тяни мышью, ПКМ — сбросить";
+      }
+
+      if (setting instanceof BooleanSetting) {
+         return "Переключатель: включить или выключить";
+      }
+
+      if (setting instanceof MultiChoiceSetting) {
+         return "Можно выбрать несколько вариантов";
+      }
+
+      if (setting instanceof SingleChoiceSetting) {
+         return "Выбор одного варианта из списка";
+      }
+
+      if (setting instanceof KeybindSetting) {
+         return "Клавиша, которая включает настройку";
+      }
+
+      if (setting instanceof ColorSetting) {
+         return "Цвет: нажми, чтобы открыть палитру";
+      }
+
+      if (setting instanceof ActionSetting) {
+         return "Кнопка действия: нажми, чтобы выполнить";
+      }
+
+      if (setting instanceof TextSetting) {
+         return "Текстовое поле: введи значение";
+      }
+
+      if (setting instanceof SectionHeaderSetting) {
+         return "Группа настроек: нажми, чтобы свернуть";
+      }
+
+      return "Настройка модуля";
    }
 
    private void hit(float x, float y, float width, float height, int type, ClientModule module, ValueSetting<?> setting,
