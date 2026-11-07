@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MainMenuScreen extends Screen {
+    /** Отношение ширины к высоте спрайта Херобрина (708x1240). */
+    private static final float HERO_RATIO = 0.5710F;
     private static final String COMMUNITY_URL = "https://t.me/Rose";
     private final AccountManagerPanel accountManagerPanel = new AccountManagerPanel();
     private boolean flag = false;
@@ -495,14 +497,27 @@ public class MainMenuScreen extends Screen {
         this.animation.processData(this.flag ? 1.0 : 0.0);
         float animAlt = (float) this.animation.computeDouble();
 
-        // Fullscreen main menu background
-        // Фотография с медленным «дыханием»: зум и сдвиг по замкнутому циклу 60 секунд.
+        // Fullscreen main menu background: ад, живой зум по замкнутому циклу 60 секунд.
         double phase = (System.currentTimeMillis() % 60000L) / 60000.0 * Math.PI * 2.0;
-        float photoZoom = 1.035F + 0.025F * (float) Math.sin(phase);
-        float photoShiftX = (float) Math.sin(phase + 1.1) * 9.0F * scale;
-        float photoShiftY = (float) Math.cos(phase * 0.7) * 6.0F * scale;
-        Render2D.drawFullscreenTextureZoom("assets/deluxe/textures/gui/mainmenu/background/menu_soft.png",
+        float photoZoom = 1.030F + 0.020F * (float) Math.sin(phase);
+        float photoShiftX = (float) Math.sin(phase + 1.1) * 7.0F * scale;
+        float photoShiftY = (float) Math.cos(phase * 0.7) * 5.0F * scale;
+        Render2D.drawFullscreenTextureZoom("assets/deluxe/textures/gui/mainmenu/background/hell_bg.png",
                 screenW, screenH, 1.0F, photoZoom, photoShiftX, photoShiftY);
+
+        // Херобрин левитирует: плавно покачивается вверх-вниз и чуть плывёт в стороны.
+        double levitation = (System.currentTimeMillis() % 8400L) / 8400.0 * Math.PI * 2.0;
+        float figureHeight = screenH * 0.52F;
+        float figureWidth = figureHeight * HERO_RATIO;
+        float floatY = (float) Math.sin(levitation) * screenH * 0.010F;
+        float floatX = (float) Math.cos(levitation * 0.5) * screenH * 0.003F;
+        float breathe = 1.0F + (float) Math.sin(levitation) * 0.006F;
+        float drawnHeight = figureHeight * breathe;
+        float drawnWidth = figureWidth * breathe;
+        Render2D.drawTextureSmooth("assets/deluxe/textures/gui/mainmenu/background/herobrine.png",
+                screenW * 0.60F - drawnWidth * 0.5F + floatX,
+                screenH * 0.90F - drawnHeight + floatY,
+                drawnWidth, drawnHeight, -1);
 
         if (this.flag3) {
             float fadeWelcome = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, 100L, 600L));
@@ -519,7 +534,7 @@ public class MainMenuScreen extends Screen {
         float sidebarW = 329.5F * scale + Math.min(0.0F, sidebarX);
         if (sidebarW > 1.0F) {
             Render2D.renderElement2(drawContext, Math.max(0.0F, sidebarX), 0.0F, sidebarW, screenH);
-            UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/menu_blur.png", screenW, screenH, 1.0F);
+            UiTheme.processData6("assets/deluxe/textures/gui/mainmenu/background/hell_bg_blur.png", screenW, screenH, 1.0F);
             Render2D.renderElement(drawContext);
         }
 

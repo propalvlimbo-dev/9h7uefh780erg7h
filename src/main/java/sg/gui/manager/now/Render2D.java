@@ -1,6 +1,7 @@
 package sg.gui.manager.now;
 
 import java.util.ArrayDeque;
+import com.mojang.blaze3d.textures.FilterMode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.resources.Identifier;
@@ -63,6 +64,11 @@ public final class Render2D {
     public static void drawFullscreenTexture(String path, float w, float h, float opacity) {
         drawTexture(path, 0, 0, w, h, UiTheme.computeInt(-1, opacity));
     }
+    /** Текстура с линейной фильтрацией: без «квадратиков» при увеличении. */
+    public static void drawTextureSmooth(String path, float x, float y, float w, float h, int color) {
+        UiDrawing.drawTexture(px(x), px(y), px(w), px(h), 0.0F,
+                new Vector4f(0.0F, 0.0F, 1.0F, 1.0F), applyAlpha(color), toIdentifier(path), FilterMode.LINEAR);
+    }
     /** Полноэкранная картинка с масштабом и сдвигом — для «живого» зума фона. */
     public static void drawFullscreenTextureZoom(String path, float w, float h, float opacity,
                                                  float zoomFactor, float offsetX, float offsetY) {
@@ -71,7 +77,8 @@ public final class Render2D {
         float x = (w - drawnW) * 0.5F + offsetX;
         float y = (h - drawnH) * 0.5F + offsetY;
         UiDrawing.drawTexture(px(x), px(y), px(drawnW), px(drawnH), 0.0F,
-                applyAlpha(UiTheme.computeInt(-1, opacity)), toIdentifier(path));
+                new Vector4f(0.0F, 0.0F, 1.0F, 1.0F),
+                applyAlpha(UiTheme.computeInt(-1, opacity)), toIdentifier(path), FilterMode.LINEAR);
     }
     public static void drawLoadingIndicator(long start, float w, float h) {
         ClientLogo.drawSpin3DByTime(px(w / 2.0F), px(h / 2.0F), px(42.0F), applyAlpha(UiTheme.intVal7), 2600L);
