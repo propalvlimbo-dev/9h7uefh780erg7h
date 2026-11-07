@@ -21,7 +21,7 @@ public final class GuiPreviewUtil {
 
    public static void submit(GuiGraphicsExtractor graphics, PictureInPictureRenderState renderState) {
       GuiRenderState guiRenderState = ((GuiGraphicsExtractorAccessor)graphics).rose$getGuiRenderState();
-      guiRenderState.submitPicturesInPictureState(renderState);
+      guiRenderState.addPicturesInPictureState(renderState);
    }
 
    public static int floor(float value) {

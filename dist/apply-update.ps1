@@ -87,7 +87,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/render/FontMetadata.java'; v = '011ffef6'; s = 3031 }
   @{ p = 'src/main/java/sg/render/GeometryBoundsConsumer.java'; v = '2d9ed270'; s = 3285 }
   @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '650fe995'; s = 1460 }
-  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '949c7c76'; s = 1582 }
+  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '487cf5aa'; s = 1579 }
   @{ p = 'src/main/java/sg/render/HatCatalog.java'; v = '90d25941'; s = 7200 }
   @{ p = 'src/main/java/sg/render/HatDefinition.java'; v = 'd89c42b3'; s = 169 }
   @{ p = 'src/main/java/sg/render/HatPreview.java'; v = '3e557c8a'; s = 3380 }
