@@ -70,49 +70,49 @@ MATS = {'wood': (0, 0), 'wood_light': (48, 16), 'thorn': (16, 0), 'leaf': (32, 0
 
 
 def build_rose(sign):
-    """Тот же спек, что в sg.ec.RoseWingModel: ствол + семь боковых побегов с розами."""
+    """Крылья «Роза»: три кольца лепестков-лучей, сердцевина, колючий стебель, листья."""
     root = Part()
-    mats = {m: Part() for m in MATS}
-    for part in mats.values():
+    parts = {m: Part() for m in ('wood', 'wood_light', 'thorn', 'leaf', 'leaf_dark',
+                                 'rose_core', 'rose_petal', 'rose_hi')}
+    for part in parts.values():
         root.children.append(part)
 
     def add(mat, x, y, z, w=1, h=1, d=1):
-        tu, tv = MATS[mat]
-        add_box(mats[mat], x, y, z, w, h, d, tu, tv, sign)
+        add_box(parts[mat], x, y, z, w, h, d, MATS[mat][0], MATS[mat][1], sign)
 
-    def rose(cx, cy, cz):
-        add('rose_core', cx, cy, cz)
-        add('rose_petal', cx - 1, cy, cz)
-        add('rose_petal', cx + 1, cy, cz)
-        add('rose_petal', cx, cy - 1, cz)
-        add('rose_petal', cx, cy + 1, cz)
-        add('rose_hi', cx, cy, cz + 1)
+    cx, cy = 3.0, -3.0
 
-    stem_x = 1.0
-    y = -14.0
-    first = True
-    while y <= 5.0:
-        thick = 2 if first else 1
-        add('wood', stem_x, y, 0, thick, 1, thick)
-        if int(y) % 4 == 0:
-            add('wood_light', stem_x, y, 1)
-        first = False
-        y += 1.2
+    def ring(count, radius, length, width, mats, start, end, z=0):
+        for i in range(count):
+            t = i / max(1, count - 1)
+            ang = math.radians(start + (end - start) * t)
+            dx, dy = math.sin(ang), -math.cos(ang)
+            sx, sy = cx + dx * radius * 0.35, cy + dy * radius * 0.35
+            steps = max(3, int(length / 2.0))
+            for st in range(steps):
+                f = st / (steps - 1)
+                w = max(1, round(width * (1.0 - 0.55 * f)))
+                add(mats[0] if f < 0.5 else mats[1], sx + dx * 2.0 * st - w * 0.5,
+                    sy + dy * 2.0 * st, z, w, 2 if f < 0.75 else 1, 1)
+            if z == 0 and i % 3 == 1:
+                add('thorn', sx + dx * (2.0 * steps) - 0.5, sy + dy * (2.0 * steps), 1)
 
-    for index, (sy, ang, length) in enumerate([(-13.0, 80, 10.0), (-10.0, 64, 13.0), (-7.0, 48, 15.0), (-4.0, 32, 17.0),
-                            (-1.0, 16, 16.0), (2.0, 2, 13.0), (4.5, -14, 9.0)]):
-        a = math.radians(ang)
-        dx, dy = math.sin(a), -math.cos(a)
-        steps = int(length / 1.6)
-        for st in range(1, steps):
-            px, py = stem_x + 1.0 + dx * 1.6 * st, sy + dy * 1.6 * st
-            add('wood', px, py, 0)
-            if st in (1, 4, 7) and st < steps - 1:
-                add('thorn', px, py - 1, 0)
-            if st == steps - 2:
-                add('leaf', px + 1, py, 1, 2, 1, 1)
-        if index % 2 == 1:
-            rose(stem_x + 1.0 + dx * 1.6 * (steps - 1), sy + dy * 1.6 * (steps - 1), 1)
+    ring(9, 16, 13, 5, ('rose_hi', 'rose_petal'), -100, 120, z=0)
+    ring(7, 11, 9, 4, ('rose_petal', 'rose_core'), -92, 110, z=1)
+    ring(5, 7, 6, 3, ('rose_petal', 'rose_core'), -80, 95, z=2)
+    add('rose_petal', cx - 1, cy - 1, 3, 2, 2, 1)
+    add('rose_hi', cx, cy, 4)
+
+    y = -12.0
+    while y <= 7.0:
+        add('wood', 0.0, y, -1, 2 if y < -9 else 1, 1, 2)
+        y += 1.6
+    for ty in (-10.0, -6.0, -2.0, 2.0):
+        add('thorn', -1.0, ty, 0)
+        add('thorn', 2.0, ty, 0)
+    add('leaf', -2.0, 4.0, 0, 2, 1, 1)
+    add('leaf_dark', -3.0, 2.0, 0, 2, 1, 1)
+    add('leaf', 1.0, 6.0, 0, 2, 1, 1)
     return root
 
 

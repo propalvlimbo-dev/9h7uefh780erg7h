@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.resources.Identifier;
 import sg.render.pipeline.UiDrawing;
 
 public final class WingPreviewQueue {
@@ -12,7 +13,11 @@ public final class WingPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("И")  List<WingPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
-   private static final float SPRITE_FACTOR = 0.92F;
+   private static final float SPRITE_FACTOR = 0.86F;
+   /** Готовые 3D-рендеры моделей: показываются вместо UV-атласа, чтобы в ячейке читался силуэт. */
+   private static final Map<WingSelection, Identifier> PREVIEW_SPRITES = Map.of(
+      WingSelection.ROSE, Identifier.fromNamespaceAndPath("rose", "textures/wings/rose_wings_preview.png")
+   );
 
    public void queuePreview(WingSelection wings, float x, float y, float width, float height, float alpha) {
       WingPreviewQueue.PreviewAnimator previewAnimator = this.previewAnimators.computeIfAbsent(wings, variant -> new WingPreviewQueue.PreviewAnimator(variant.getAnimatedVariant().createAnimator()));
@@ -33,7 +38,8 @@ public final class WingPreviewQueue {
          float side = Math.min(preview.width, preview.height) * SPRITE_FACTOR;
          float spriteX = clipX + preview.x - side * 0.5F;
          float spriteY = clipY + preview.y - side * 0.5F;
-         UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, preview.wing.getAnimatedVariant().getTextureId());
+         Identifier sprite = PREVIEW_SPRITES.getOrDefault(preview.wing, preview.wing.getAnimatedVariant().getTextureId());
+         UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, sprite);
       }
    }
 
