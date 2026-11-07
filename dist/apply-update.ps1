@@ -1,4 +1,4 @@
-# rose client — автообновление исходников
+﻿# rose client — автообновление исходников
 # Запуск: правый клик по файлу -> "Выполнить с помощью PowerShell"
 # либо:  powershell -ExecutionPolicy Bypass -File .\apply-update.ps1
 param([string]$Root = "C:\Users\elytr\IdeaProjects\rose-client")
