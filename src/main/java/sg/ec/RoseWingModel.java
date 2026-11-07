@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import sg.render.SimpleWingAnimator;
 import sg.render.WingAnimator;
-import sg.render.WingModel;
 import sg.render.WingModelPart;
 
 /**
