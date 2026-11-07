@@ -507,16 +507,16 @@ public class MainMenuScreen extends Screen {
 
         // Херобрин левитирует: плавно покачивается вверх-вниз и чуть плывёт в стороны.
         double levitation = (System.currentTimeMillis() % 8400L) / 8400.0 * Math.PI * 2.0;
-        float figureHeight = screenH * 0.52F;
+        float figureHeight = screenH * 0.34F;
         float figureWidth = figureHeight * HERO_RATIO;
-        float floatY = (float) Math.sin(levitation) * screenH * 0.010F;
-        float floatX = (float) Math.cos(levitation * 0.5) * screenH * 0.003F;
-        float breathe = 1.0F + (float) Math.sin(levitation) * 0.006F;
+        float floatY = (float) Math.sin(levitation) * screenH * 0.008F;
+        float floatX = (float) Math.cos(levitation * 0.5) * screenH * 0.0025F;
+        float breathe = 1.0F + (float) Math.sin(levitation) * 0.004F;
         float drawnHeight = figureHeight * breathe;
         float drawnWidth = figureWidth * breathe;
         Render2D.drawTextureSmooth("assets/deluxe/textures/gui/mainmenu/background/herobrine.png",
-                screenW * 0.60F - drawnWidth * 0.5F + floatX,
-                screenH * 0.90F - drawnHeight + floatY,
+                screenW * 0.58F - drawnWidth * 0.5F + floatX,
+                screenH * 0.80F - drawnHeight + floatY,
                 drawnWidth, drawnHeight, -1);
 
         if (this.flag3) {
