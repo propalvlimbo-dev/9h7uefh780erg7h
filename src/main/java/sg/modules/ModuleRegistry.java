@@ -610,6 +610,7 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       this.add(this.wardenEsp);
       this.add(this.dragonFly);
       this.add(this.discordRpc);
+      this.discordRpc.enable();
       this.add(this.ircModule);
       this.ircModule.enable();
       if (FabricLoader.getInstance().isDevelopmentEnvironment()) {

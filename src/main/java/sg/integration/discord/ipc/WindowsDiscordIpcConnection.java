@@ -18,20 +18,22 @@ public class WindowsDiscordIpcConnection extends DiscordIpcConnection {
 
    private void readFully(ByteBuffer buffer) throws IOException {
       buffer.rewind();
+      byte[] chunk = new byte[buffer.remaining()];
+      int offset = 0;
 
-      while (this.pipe.length() < buffer.remaining()) {
-         Thread.onSpinWait();
-
-         try {
-            Thread.sleep(100L);
-         } catch (InterruptedException var3) {
-            var3.printStackTrace();
+      // Named pipe: RandomAccessFile.length() всегда 0, поэтому ждать «длину» нельзя —
+      // читаем блокирующим потоком, пока не наберём кадр целиком.
+      while (offset < chunk.length) {
+         int read = this.pipe.read(chunk, offset, chunk.length - offset);
+         if (read < 0) {
+            throw new IOException("Discord IPC pipe closed");
          }
+
+         offset += read;
       }
 
-      while (buffer.hasRemaining()) {
-         this.pipe.getChannel().read(buffer);
-      }
+      buffer.put(chunk);
+      buffer.rewind();
    }
 
    public WindowsDiscordIpcConnection(String pipePath, Consumer<DiscordIpcFrame> frameConsumer) throws IOException {
@@ -62,10 +64,12 @@ public class WindowsDiscordIpcConnection extends DiscordIpcConnection {
             int var3 = Integer.reverseBytes(var1.getInt(0));
             ByteBuffer var4 = ByteBuffer.allocate(var3);
             this.readFully(var4);
-            String var5 = Charset.defaultCharset().decode(var4.rewind()).toString();
+            String var5 = Charset.forName("UTF-8").decode(var4.rewind()).toString();
             this.frameConsumer.accept(new DiscordIpcFrame(var2, JsonParser.parseString(var5).getAsJsonObject()));
          }
       } catch (Exception var6) {
+         // Пайп закрылся или Discord перезапустился: сообщаем клиенту, чтобы он переподключился.
+         DiscordIpcClient.handleConnectionFailure();
       }
    }
 

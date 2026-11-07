@@ -22,7 +22,7 @@ public final class DiscordPresenceConfig {
    private final @com.google.gson.annotations.SerializedName("必")  long updateIntervalMillis;
    private final @com.google.gson.annotations.SerializedName("щ")  long reconnectIntervalMillis;
    private final @com.google.gson.annotations.SerializedName("А")  List<DiscordActivityButton> buttons;
-   private static final String SINGLEPLAYER_LABEL = "Singleplayer";
+   private static final String SINGLEPLAYER_LABEL = "Одиночная игра";
 
    public String getStateText() {
       return this.stateText;
@@ -67,14 +67,11 @@ public final class DiscordPresenceConfig {
    public String resolveState(Minecraft minecraft) {
       if (!this.showServerAddress) {
          return this.stateText;
-      } else {
-         String var2 = this.resolveServerAddress(minecraft);
-         if (DiscordActivityButton.isBlank(var2)) {
-            return this.stateText;
-         } else {
-            return DiscordActivityButton.isBlank(this.stateText) ? var2 : this.stateText;
-         }
       }
+
+      // В игре показываем адрес сервера, в меню — запасной текст.
+      String address = this.resolveServerAddress(minecraft);
+      return DiscordActivityButton.isBlank(address) ? this.stateText : address;
    }
 
    public String getSmallImageKey() {

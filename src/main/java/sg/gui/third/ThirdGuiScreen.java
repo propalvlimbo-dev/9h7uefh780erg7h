@@ -436,12 +436,12 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
       int framebufferHeight = window.getScreenHeight();
        this.scale = Math.max(MIN_SCALE, Math.min(framebufferWidth / REFERENCE_WIDTH, framebufferHeight / REFERENCE_HEIGHT)
           * BASE_SCALE * (window.getGuiScale() / REFERENCE_SCALE));
-       this.scale = Math.min(this.scale, Math.min(framebufferWidth / (PANEL_WIDTH + 60.0F),
-          framebufferHeight / (PANEL_HEIGHT + 150.0F + DOCK_HEIGHT + DOCK_GAP)));
+       this.scale = Math.min(this.scale, Math.min(framebufferWidth / (PANEL_WIDTH + 2.0F * (DOCK_HEIGHT + DOCK_GAP)),
+          framebufferHeight / (PANEL_HEIGHT + 80.0F)));
       float canvasWidth = framebufferWidth / this.scale;
       float canvasHeight = framebufferHeight / this.scale;
       this.panelX = (canvasWidth - PANEL_WIDTH) / 2.0F;
-      this.panelY = (canvasHeight - PANEL_HEIGHT) / 2.0F + (DOCK_HEIGHT + DOCK_GAP) / 2.0F;
+      this.panelY = (canvasHeight - PANEL_HEIGHT) / 2.0F;
 
       Vector2f framebufferMouse = WorldProjection.guiToScreen(rawMouseX, rawMouseY);
       this.mouseX = framebufferMouse.x / this.scale;
@@ -757,7 +757,9 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
 
    private void drawRow(ClientModule module, ValueSetting<?> setting, float x, float y, float rowHeight, boolean live) {
       SettingView view = this.view(setting);
-      view.hover.set(this.overPanel() && this.inside(this.mouseX, this.mouseY, x, y, CARD_WIDTH, rowHeight) ? 1.0F : 0.0F);
+      // Заголовки групп («Мокрый мир» и т. п.) не подсвечиваем: строка говорит сама за себя.
+      boolean quietRow = setting instanceof SectionHeaderSetting;
+      view.hover.set(!quietRow && this.overPanel() && this.inside(this.mouseX, this.mouseY, x, y, CARD_WIDTH, rowHeight) ? 1.0F : 0.0F);
       view.hover.update(this.deltaSeconds);
       if (view.hover.value > 0.01F) {
          UiDrawing.drawRoundedRect(x + ROW_HOVER_INSET, y + 2.0F, CARD_WIDTH - ROW_HOVER_INSET * 2.0F,
@@ -773,6 +775,10 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
          UiDrawing.drawRoundedRect(x + 1.0F, y + rowHeight / 2.0F - 0.5F, CARD_WIDTH - 2.0F, 1.0F, 0.0F, COLLAPSE_DIVIDER_COLOR);
          ThirdGuiScreen.textMid(semibold, ClientLocalization.translate(setting.getName()),
             x + NAME_INSET, y + rowHeight / 2.0F - 8.0F, 14.0F, ThirdGuiColors.PILL_TEXT);
+         if (live) {
+            // Пустая область-перехватчик: строка группы уже подписана, подсказку не показываем.
+            this.hit(x, y, CARD_WIDTH, rowHeight, HIT_HINT_ONLY, null, null, 0, true);
+         }
       } else if (setting instanceof BooleanSetting booleanSetting) {
          view.toggle.set(booleanSetting.getValue() ? 1.0F : 0.0F);
          view.toggle.update(this.deltaSeconds);
@@ -1018,36 +1024,39 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
    // Dock
    // ------------------------------------------------------------------------------------------
 
-   /** Hover label sits above the floating dock, or below it when the screen edge is too close. */
-   private float dockTooltipY(float dockY) {
-      float above = dockY - 36.0F;
-      return above < 4.0F ? dockY + DOCK_HEIGHT + 8.0F : above;
+   /** Подпись категории висит слева от рейла, если там хватает места, иначе справа. */
+   private float dockTooltipX(float dockX, float labelWidth) {
+      float left = dockX - 10.0F - labelWidth;
+      return left > 4.0F ? left : dockX + DOCK_HEIGHT + 10.0F;
    }
 
+   /** Вертикальный рейл категорий вдоль левой кромки панели. */
    private void drawDock() {
       List<ThirdGuiCategory> categories = this.dockCategories;
       float extraSlots = categories.size() - DOCK_BASE_CATEGORY_COUNT;
-      float dockWidth = DOCK_BASE_WIDTH + DOCK_ICON_SLOT * extraSlots;
-      float dockX = this.panelX + (PANEL_WIDTH - dockWidth) / 2.0F;
-      float dockY = this.panelY - DOCK_GAP - DOCK_HEIGHT;
-      float centerY = dockY + DOCK_HEIGHT / 2.0F;
+      float railWidth = DOCK_HEIGHT;
+      float railHeight = DOCK_BASE_WIDTH + DOCK_ICON_SLOT * extraSlots;
+      float dockX = Math.max(4.0F, this.panelX - DOCK_GAP - railWidth);
+      float dockY = this.panelY + (PANEL_HEIGHT - railHeight) / 2.0F;
+      float centerX = dockX + railWidth / 2.0F;
 
-      this.drawSoftShadow(dockX, dockY + 8.0F, dockWidth, DOCK_HEIGHT, 18.0F, 22.0F, 0x99000000);
-      UiDrawing.drawRoundedRect(dockX, dockY, dockWidth, DOCK_HEIGHT, 18.0F, ThirdGuiColors.dock());
-      UiDrawing.drawOutline(dockX, dockY, dockWidth, DOCK_HEIGHT, 1.0F, 18.0F, DOCK_OUTLINE);
+      this.drawSoftShadow(dockX + 8.0F, dockY, railWidth, railHeight, 18.0F, 22.0F, 0x99000000);
+      UiDrawing.drawRoundedRect(dockX, dockY, railWidth, railHeight, 18.0F, ThirdGuiColors.dock());
+      UiDrawing.drawOutline(dockX, dockY, railWidth, railHeight, 1.0F, 18.0F, DOCK_OUTLINE);
 
-       sg.render.ClientLogo.drawCentered(dockX + 32.0F, centerY, 35.5F, LOGO_COLOR);
-      UiDrawing.drawRoundedRect(dockX + DOCK_SEPARATOR_OFFSET, centerY - DOCK_SEPARATOR_HEIGHT / 2.0F, 1.0F,
-         DOCK_SEPARATOR_HEIGHT, 0.0F, DOCK_SEPARATOR);
+      sg.render.ClientLogo.drawCentered(centerX, dockY + 32.0F, 35.5F, LOGO_COLOR);
+      UiDrawing.drawRoundedRect(centerX - DOCK_SEPARATOR_HEIGHT / 2.0F, dockY + DOCK_SEPARATOR_OFFSET,
+         DOCK_SEPARATOR_HEIGHT, 1.0F, 0.0F, DOCK_SEPARATOR);
 
       for (int index = 0; index < categories.size(); index++) {
          ThirdGuiCategory entry = categories.get(index);
          int slot = entry.ordinal();
-          float iconX = dockX + DOCK_ICON_ORIGIN + DOCK_ICON_SLOT * index;
-          if (entry.isEditor() && (index == 0 || !categories.get(index - 1).isEditor())) {
-             UiDrawing.drawRoundedRect(iconX - DOCK_ICON_SLOT / 2.0F, centerY - 11.0F, 1.0F, 22.0F, 0.0F, DOCK_SEPARATOR);
-          }
-         boolean hover = !this.closing && this.inside(this.mouseX, this.mouseY, iconX - DOCK_ICON_SLOT_HALF, dockY, DOCK_HOVER_SLOT, DOCK_HEIGHT);
+         float iconY = dockY + DOCK_ICON_ORIGIN + DOCK_ICON_SLOT * index;
+         if (entry.isEditor() && (index == 0 || !categories.get(index - 1).isEditor())) {
+            UiDrawing.drawRoundedRect(centerX - 11.0F, iconY - DOCK_ICON_SLOT / 2.0F, 22.0F, 1.0F, 0.0F, DOCK_SEPARATOR);
+         }
+         boolean hover = !this.closing
+            && this.inside(this.mouseX, this.mouseY, dockX, iconY - DOCK_ICON_SLOT_HALF, railWidth, DOCK_HOVER_SLOT);
          this.categoryHover[slot].set(hover ? 1.0F : 0.0F);
          this.categoryHover[slot].update(this.deltaSeconds);
          this.categoryActive[slot].set(entry == this.category ? 1.0F : 0.0F);
@@ -1056,33 +1065,36 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
             ThirdGuiColors.lerp(ThirdGuiColors.ICON_IDLE, DOCK_ICON_HOVER, this.categoryHover[slot].value),
             ThirdGuiColors.accent(), this.categoryActive[slot].value);
          float k = 1.0F + DOCK_HOVER_GROW * this.categoryHover[slot].value + DOCK_ACTIVE_GROW * this.categoryActive[slot].value;
-         ThirdGuiIcons.draw(entry.icon(), iconX, centerY - DOCK_ICON_LIFT * this.categoryHover[slot].value,
+         ThirdGuiIcons.draw(entry.icon(), centerX + DOCK_ICON_LIFT * this.categoryHover[slot].value, iconY,
             DOCK_ICON_SIZE * k, color);
-          this.hit(iconX - DOCK_ICON_SLOT_HALF, dockY, DOCK_HOVER_SLOT, DOCK_HEIGHT, HIT_DOCK, null, null, index, false);
-          if (hover) {
-             String title = ClientLocalization.translate(entry.title());
-             float labelWidth = ThirdGuiScreen.width(ThirdGuiFonts.semibold(), title, 15.0F) + 22.0F;
-             UiDrawing.drawRoundedRect(iconX - labelWidth / 2.0F, this.dockTooltipY(dockY), labelWidth, 28.0F, 8.0F, ThirdGuiColors.dock());
-             ThirdGuiScreen.textCenter(ThirdGuiFonts.semibold(), title, iconX, this.dockTooltipY(dockY) + 14.0F, 15.0F, ThirdGuiColors.text());
-          }
+         this.hit(dockX, iconY - DOCK_ICON_SLOT_HALF, railWidth, DOCK_HOVER_SLOT, HIT_DOCK, null, null, index, false);
+         if (hover) {
+            String title = ClientLocalization.translate(entry.title());
+            float labelWidth = ThirdGuiScreen.width(ThirdGuiFonts.semibold(), title, 15.0F) + 22.0F;
+            float labelX = this.dockTooltipX(dockX, labelWidth);
+            float labelY = iconY - 14.0F;
+            UiDrawing.drawRoundedRect(labelX, labelY, labelWidth, 28.0F, 8.0F, ThirdGuiColors.dock());
+            ThirdGuiScreen.textMid(ThirdGuiFonts.semibold(), title, labelX + 11.0F, labelY + 14.0F, 15.0F,
+               ThirdGuiColors.text());
+         }
       }
 
       float tail = DOCK_ICON_SLOT * extraSlots;
-      UiDrawing.drawRoundedRect(dockX + DOCK_DIVIDER_OFFSET + tail, centerY - DOCK_SEPARATOR_HEIGHT / 2.0F, 1.0F,
-         DOCK_SEPARATOR_HEIGHT, 0.0F, DOCK_SEPARATOR);
+      UiDrawing.drawRoundedRect(centerX - DOCK_SEPARATOR_HEIGHT / 2.0F, dockY + DOCK_DIVIDER_OFFSET + tail,
+         DOCK_SEPARATOR_HEIGHT, 1.0F, 0.0F, DOCK_SEPARATOR);
 
-      boolean chevronHover = !this.closing && this.inside(this.mouseX, this.mouseY, dockX + DOCK_CHEVRON_SLOT + tail, dockY,
-         DOCK_HOVER_SLOT, DOCK_HEIGHT);
+      boolean chevronHover = !this.closing && this.inside(this.mouseX, this.mouseY, dockX,
+         dockY + DOCK_CHEVRON_SLOT + tail, railWidth, DOCK_HOVER_SLOT);
       this.chevronHover.set(chevronHover ? 1.0F : 0.0F);
       this.chevronHover.update(this.deltaSeconds);
-      ThirdGuiIcons.draw(ThirdGuiIcons.caret(), dockX + DOCK_CHEVRON_OFFSET + tail, centerY,
+      ThirdGuiIcons.draw(ThirdGuiIcons.caret(), centerX, dockY + DOCK_CHEVRON_OFFSET + tail,
          DOCK_CHEVRON_SIZE * (1.0F + DOCK_CHEVRON_GROW * this.chevronHover.value),
          ThirdGuiColors.lerp(ThirdGuiColors.ICON_IDLE, ThirdGuiColors.text(), this.chevronHover.value));
-      this.hit(dockX + DOCK_CHEVRON_SLOT + tail, dockY, DOCK_HOVER_SLOT, DOCK_HEIGHT, HIT_CHEVRON, null, null, 0, false);
+      this.hit(dockX, dockY + DOCK_CHEVRON_SLOT + tail, railWidth, DOCK_HOVER_SLOT, HIT_CHEVRON, null, null, 0, false);
 
-      this.drawRotatedIcon(ThirdGuiIcons.notch(), dockX + DOCK_SPINNER_OFFSET + tail, centerY,
+      this.drawRotatedIcon(ThirdGuiIcons.notch(), centerX, dockY + DOCK_SPINNER_OFFSET + tail,
          DOCK_CHEVRON_SIZE, this.time * 5.0F, ThirdGuiColors.accent());
-      this.drawAvatar(dockX + DOCK_AVATAR_OFFSET + tail, centerY);
+      this.drawAvatar(centerX, dockY + DOCK_AVATAR_OFFSET + tail);
    }
 
    private void drawAvatar(float centerX, float centerY) {
@@ -2059,10 +2071,6 @@ public class ThirdGuiScreen extends Screen implements MinecraftAccess {
 
       if (setting instanceof TextSetting) {
          return "Текстовое поле: введи значение";
-      }
-
-      if (setting instanceof SectionHeaderSetting) {
-         return "Группа настроек: нажми, чтобы свернуть";
       }
 
       return "Настройка модуля";

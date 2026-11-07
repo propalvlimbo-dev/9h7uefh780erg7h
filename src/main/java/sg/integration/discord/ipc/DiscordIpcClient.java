@@ -97,6 +97,13 @@ public class DiscordIpcClient {
       return true;
    }
 
+   /** Вызывается из потока чтения, когда пайп умер: соединение считается закрытым. */
+   public static void handleConnectionFailure() {
+      if (connection != null) {
+         disconnect();
+      }
+   }
+
    public static void disconnect() {
       if (connection != null) {
          connection.close();

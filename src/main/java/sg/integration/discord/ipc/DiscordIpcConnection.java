@@ -49,7 +49,7 @@ public abstract class DiscordIpcConnection {
 
    public void send(DiscordIpcOpcode opcode, JsonObject payload) {
       payload.addProperty("nonce", UUID.randomUUID().toString());
-      byte[] var3 = payload.toString().getBytes();
+      byte[] var3 = payload.toString().getBytes(java.nio.charset.StandardCharsets.UTF_8);
       ByteBuffer var4 = ByteBuffer.allocate(var3.length + 8);
       var4.putInt(Integer.reverseBytes(opcode.ordinal()));
       var4.putInt(Integer.reverseBytes(var3.length));
