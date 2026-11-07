@@ -12,7 +12,7 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '1827151a'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = '677d3519'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '3cf93851'; s = 5476 }
-  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '3ccd3d7d'; s = 13826 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '490ce064'; s = 10259 }
   @{ p = 'src/main/java/sg/ec/WingAnimationMath.java'; v = 'efba952f'; s = 1576 }
   @{ p = 'src/main/java/sg/ec/WingModel.java'; v = 'd9cc7adf'; s = 1141 }
   @{ p = 'src/main/java/sg/ec/WingPreviewRenderState.java'; v = 'da620a65'; s = 1005 }
@@ -61,7 +61,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/Sakura.java'; v = '9f775512'; s = 20935 }
   @{ p = 'src/main/java/sg/modules/impl/render/SkeletonESP.java'; v = 'd395fdce'; s = 11302 }
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'c6e1676c'; s = 101424 }
-  @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '877d5b70'; s = 4451 }
+  @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '8f6e3e49'; s = 4409 }
   @{ p = 'src/main/java/sg/render/AttachedCosmeticsRenderLayer.java'; v = 'a2b4c0a3'; s = 6606 }
   @{ p = 'src/main/java/sg/render/AvianWingAnimator.java'; v = 'a9d33cf0'; s = 22853 }
   @{ p = 'src/main/java/sg/render/AvianWingModel.java'; v = 'dc34a954'; s = 10150 }
@@ -87,7 +87,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/render/FontMetadata.java'; v = '011ffef6'; s = 3031 }
   @{ p = 'src/main/java/sg/render/GeometryBoundsConsumer.java'; v = '2d9ed270'; s = 3285 }
   @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '650fe995'; s = 1460 }
-  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '487cf5aa'; s = 1579 }
+  @{ p = 'src/main/java/sg/render/GuiPreviewUtil.java'; v = '3d2e04f5'; s = 1856 }
   @{ p = 'src/main/java/sg/render/HatCatalog.java'; v = '90d25941'; s = 7200 }
   @{ p = 'src/main/java/sg/render/HatDefinition.java'; v = 'd89c42b3'; s = 169 }
   @{ p = 'src/main/java/sg/render/HatPreview.java'; v = '3e557c8a'; s = 3380 }
