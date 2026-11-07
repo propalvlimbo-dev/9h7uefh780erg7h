@@ -83,6 +83,10 @@ public abstract class SettingWidget<T extends ValueSetting<?>> {
    }
 
    @Generated
+   public boolean isMouseOver(float mouseX, float mouseY) {
+      return mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+   }
+
    public float getWidth() {
       return this.width;
    }

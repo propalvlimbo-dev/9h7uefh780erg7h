@@ -501,7 +501,7 @@ public class MainMenuScreen extends Screen {
         float photoZoom = 1.035F + 0.025F * (float) Math.sin(phase);
         float photoShiftX = (float) Math.sin(phase + 1.1) * 9.0F * scale;
         float photoShiftY = (float) Math.cos(phase * 0.7) * 6.0F * scale;
-        Render2D.drawFullscreenTextureZoom("assets/deluxe/textures/gui/mainmenu/background/menu.png",
+        Render2D.drawFullscreenTextureZoom("assets/deluxe/textures/gui/mainmenu/background/menu_soft.png",
                 screenW, screenH, 1.0F, photoZoom, photoShiftX, photoShiftY);
 
         if (this.flag3) {

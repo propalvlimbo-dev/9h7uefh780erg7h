@@ -1,6 +1,8 @@
 package sg.gui.widgets;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import lombok.Generated;
 import settings.render.ClientLocalization;
 import sg.ec.ClientFonts;
@@ -30,6 +32,9 @@ import sg.settings.SingleChoiceSetting;
 import sg.settings.TimeOfDaySetting;
 import sg.gui.widgets.SingleChoiceSettingWidget;
 import sg.settings.FloatSetting;
+import com.deluxe.modules.impl.player.InputBinding;
+import org.joml.Vector2f;
+import sg.settings.ChoiceOption;
 import sg.render.WorldProjection;
 import sg.render.pipeline.UiDrawing;
 import sg.settings.BooleanSetting;
@@ -370,6 +375,88 @@ public class ModuleCard extends ClickGuiWidget {
             UiDrawing.drawText(ClientFonts.getMediumFont(), description, descriptionX, this.y + UNCLIPPED_DESCRIPTION_OFFSET_Y, 13, ThemeEditor.getColorArgb(ThemeColorSlot.SUR_TEXT));
          }
       }
+   }
+
+   /** Что показать при наведении: подсказка модуля или его настройки. */
+   public HoverHint.Content hintAt(float mouseX, float mouseY) {
+      if (!WorldProjection.containsPoint(mouseX, mouseY, this.x, this.y, this.width, this.height)) {
+         return null;
+      }
+
+      if (this.areSettingsVisible() && this.settingsExpansionAnimation.getValue() > CLICK_DISPATCH_EXPANSION_THRESHOLD) {
+         for (SettingWidget<? extends ValueSetting<?>> widget : this.settingWidgets) {
+            if (widget.isMouseOver(mouseX, mouseY)) {
+               ValueSetting<?> setting = widget.getSetting();
+               return new HoverHint.Content(
+                  "setting:" + this.module.getName() + ":" + setting.getName(),
+                  ClientLocalization.translate(setting.getName()),
+                  settingHint(setting, this.module)
+               );
+            }
+         }
+      }
+
+      StringBuilder body = new StringBuilder(ClientLocalization.translate(this.module.getDescription()));
+      body.append("\nЛКМ — включить или выключить");
+      if (!this.module.getSettingsList().isEmpty()) {
+         body.append("\nПКМ — открыть настройки");
+      }
+
+      int keyCode = this.module.getKeybind().getKeyCode();
+      if (keyCode != -1) {
+         body.append("\nКлавиша: ").append(InputBinding.keyboard(keyCode).getDisplayName());
+      }
+
+      return new HoverHint.Content(
+         "module:" + this.module.getName(), ClientLocalization.translate(this.module.getName()), body.toString()
+      );
+   }
+
+   private static String settingHint(ValueSetting<?> setting, ClientModule module) {
+      if (setting instanceof FloatSetting floatSetting) {
+         Vector2f bounds = floatSetting.getBounds();
+         return "Ползунок: от " + trimNumber(bounds.x) + " до " + trimNumber(bounds.y) + "\nЛКМ — потянуть, ПКМ — сбросить";
+      }
+
+      if (setting instanceof BooleanSetting) {
+         return "Переключатель: ЛКМ — включить или выключить";
+      }
+
+      if (setting instanceof SingleChoiceSetting choice) {
+         List<ChoiceOption> options = choice.getValue();
+         if (options != null && !options.isEmpty()) {
+            StringBuilder text = new StringBuilder("Варианты:");
+
+            for (ChoiceOption option : options) {
+               text.append(' ').append(ClientLocalization.translate(option.getName())).append(',');
+            }
+
+            text.setLength(text.length() - 1);
+            return text.toString();
+         }
+      }
+
+      if (setting instanceof KeybindSetting) {
+         return "Привязка клавиши: назначь кнопку, которая включает настройку";
+      }
+
+      if (setting instanceof ColorSetting) {
+         return "Цвет: ЛКМ — открыть палитру";
+      }
+
+      if (setting instanceof ActionSetting) {
+         return "Кнопка действия: ЛКМ — выполнить";
+      }
+
+      if (setting instanceof RangeSetting) {
+         return "Два ползунка: нижняя и верхняя граница";
+      }
+
+      return "Настройка модуля «" + ClientLocalization.translate(module.getName()) + "»";
+   }
+
+   private static String trimNumber(float value) {
+      return value == Math.floor(value) ? Long.toString((long)value) : String.format(Locale.ROOT, "%.1f", value);
    }
 
    @Override

@@ -30,6 +30,7 @@ import sg.render.pipeline.UiDrawing;
 import sg.render.pipeline.ThemeWave;
 import sg.settings.EntityEspSettingsPanel;
 import sg.theme.ThemeColorSlot;
+import sg.gui.widgets.HoverHint;
 import sg.gui.widgets.ModuleCard;
 import sg.gui.widgets.ModuleKeybindWidget;
 import sg.util.time.ThemeEditor;
@@ -872,12 +873,33 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
                this.renderSearch();
             }
 
+            this.renderHoverHint();
             UiDrawing.resetGlobalAlpha();
             WorldProjection.unscaleAroundRect(this.Щ - this.guiLeftInset(), this.у, this.totalGuiWidth(), this.ф, var7);
             this.Щ = var43;
             this.у = var44;
          }
       }
+   }
+
+   private void renderHoverHint() {
+      if (!ClickGuiPreferences.йЩ()) {
+         HoverHint.reset();
+         return;
+      }
+
+      HoverHint.Content content = null;
+
+      for (ModuleCard card : this.В_c1edc18e) {
+         if (card != null && this.visibleInCurrentView(card)) {
+            content = card.hintAt(this.и, this.field_9);
+            if (content != null) {
+               break;
+            }
+         }
+      }
+
+      HoverHint.render(this.и, this.field_9, this.Щ, this.у, this.Щ + this.field_2, this.у + this.ф, content);
    }
 
    private void renderFavoritesButton() {
