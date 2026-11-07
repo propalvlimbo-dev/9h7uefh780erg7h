@@ -12,6 +12,8 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '2edf446e'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = 'bfd9a003'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '5c352533'; s = 5476 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '7869190b'; s = 4847 }
+  @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = 'd5126da0'; s = 6444 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '9058632d'; s = 104670 }
   @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '25d30d4d'; s = 71987 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiCategory.java'; v = 'efd11415'; s = 1161 }
@@ -30,6 +32,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/mixin/ItemInHandRendererAnimationMixin.java'; v = '22402e82'; s = 38866 }
   @{ p = 'src/main/java/sg/mixin/LocalPlayerMovementEventsMixin.java'; v = '8c990819'; s = 6973 }
   @{ p = 'src/main/java/sg/mixin/MinecraftLifecycleEventsMixin.java'; v = '688d835a'; s = 7644 }
+  @{ p = 'src/main/java/sg/mixin/PictureInPictureRendererEntityEspMixin.java'; v = '58402602'; s = 6467 }
   @{ p = 'src/main/java/sg/modules/ModuleCategory.java'; v = '004a275e'; s = 737 }
   @{ p = 'src/main/java/sg/modules/ModuleRegistry.java'; v = 'ff58abf8'; s = 37653 }
   @{ p = 'src/main/java/sg/modules/impl/misc/AimingItems.java'; v = '53d470fa'; s = 7466 }
@@ -54,10 +57,16 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/Sakura.java'; v = '673cf791'; s = 20935 }
   @{ p = 'src/main/java/sg/modules/impl/render/SkeletonESP.java'; v = 'e634365f'; s = 11302 }
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'dd0443b1'; s = 101424 }
+  @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '4c0755e7'; s = 4409 }
+  @{ p = 'src/main/java/sg/render/AttachedCosmeticsRenderLayer.java'; v = '5cea42eb'; s = 7343 }
   @{ p = 'src/main/java/sg/render/BackpackPreview.java'; v = '9cfd9cf1'; s = 3678 }
+  @{ p = 'src/main/java/sg/render/CosmeticGlow.java'; v = 'b44f362c'; s = 1909 }
   @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '0d96543d'; s = 1460 }
-  @{ p = 'src/main/java/sg/render/HatPreview.java'; v = 'befefee9'; s = 3137 }
+  @{ p = 'src/main/java/sg/render/HatPreview.java'; v = 'c6b4c476'; s = 3380 }
+  @{ p = 'src/main/java/sg/render/HatPreviewQueue.java'; v = 'fd68e7c3'; s = 1861 }
+  @{ p = 'src/main/java/sg/render/PreviewDiag.java'; v = '504749ca'; s = 1807 }
   @{ p = 'src/main/java/sg/render/WingPreview.java'; v = 'f2c4385d'; s = 3626 }
+  @{ p = 'src/main/java/sg/render/WingSelection.java'; v = '5eb6ba2a'; s = 1414 }
   @{ p = 'src/main/java/sg/render/pipeline/AimRaycast.java'; v = '642a1093'; s = 2469 }
   @{ p = 'src/main/java/sg/rotation/AcceleratingAimRotation.java'; v = 'e4d02821'; s = 4909 }
   @{ p = 'src/main/java/sg/rotation/DefensiveJitterRotation.java'; v = '0775980c'; s = 13454 }
@@ -74,6 +83,9 @@ $Files = @(
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/model.geo.json'; v = '8f7c8920'; s = 46862 }
   @{ p = 'src/main/resources/assets/rose/cosmetics/hats/rose/texture.png'; v = '16dea3bf'; s = 189 }
   @{ p = 'src/main/resources/assets/rose/images/mainmenu/gavs_loading_background.png'; v = '1c8840dd'; s = 283635 }
+  @{ p = 'src/main/resources/assets/rose/textures/cosmetics/rose_hat_glow.png'; v = 'b0952d56'; s = 148 }
+  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings.png'; v = '3dc8637a'; s = 1198 }
+  @{ p = 'src/main/resources/assets/rose/textures/wings/rose_wings_glow.png'; v = '29145efe'; s = 327 }
   @{ p = 'src/main/resources/rose.mixins.json'; v = 'ecf0998c'; s = 5314 }
 )
 

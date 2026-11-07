@@ -70,6 +70,22 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                               geometryMatrices.mulPose(geometryPose.pose());
                               variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
                            });
+                           if (variant == AnimatedWingVariant.ROSE && renderAlpha > 0.01F) {
+                              float glowAlpha = sg.render.CosmeticGlow.pulse() * renderAlpha;
+                              float glowScale = sg.render.CosmeticGlow.shellScale();
+                              matrices.pushPose();
+                              matrices.scale(glowScale, glowScale, glowScale);
+                              collector.submitCustomGeometry(matrices, RenderTypes.entityTranslucent(sg.render.CosmeticGlow.WINGS), (geometryPose, geometryVertices) -> {
+                                 PoseStack geometryMatrices = new PoseStack();
+                                 geometryMatrices.mulPose(geometryPose.pose());
+                                 variant.getModel().render(
+                                    renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices,
+                                    packedLight, OverlayTexture.NO_OVERLAY,
+                                    sg.render.CosmeticGlow.red(), sg.render.CosmeticGlow.green(), sg.render.CosmeticGlow.blue(), glowAlpha
+                                 );
+                              });
+                              matrices.popPose();
+                           }
                         }
 
                         if (hasOutline) {

@@ -25,6 +25,11 @@ public final class HatPreview extends PictureInPictureRenderer<HatPreviewRenderS
    protected void renderToTexture(HatPreviewRenderState state, PoseStack matrices, SubmitNodeCollector collector) {
       Minecraft.getInstance().gameRenderer.lighting().setupFor(Entry.ENTITY_IN_UI);
 
+      if (!state.hats().isEmpty()) {
+         HatPreviewRenderState.HatDraw firstDraw = state.hats().getFirst();
+         PreviewDiag.rendered(state.hats().size(), firstDraw.x(), firstDraw.y(), firstDraw.width(), firstDraw.height());
+      }
+
       for (HatPreviewRenderState.HatDraw draw : state.hats()) {
          HatDefinition hat = draw.hat();
          matrices.pushPose();

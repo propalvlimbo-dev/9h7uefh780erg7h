@@ -25,6 +25,7 @@ public final class HatPreviewQueue {
                )
             )
             .toList();
+         PreviewDiag.submitted(transform.x1(), transform.y1(), transform.x2(), transform.y2(), draws.size());
          graphics.guiRenderState.addPicturesInPictureState(new HatPreviewRenderState(draws, transform.x1(), transform.y1(), transform.x2(), transform.y2(), 1.0F, transform.clip()));
       }
    }

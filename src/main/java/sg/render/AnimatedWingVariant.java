@@ -5,6 +5,7 @@ import net.minecraft.resources.Identifier;
 import sg.ec.WingModel;
 import sg.ec.AllayWingModel;
 import sg.ec.InsectoidWingModel;
+import sg.ec.RoseWingModel;
 
 public enum AnimatedWingVariant {
    ANGEL("Ангел", "angel", AnimatedWingVariant.WingModelFamily.AVIAN),
@@ -19,12 +20,14 @@ public enum AnimatedWingVariant {
    MONARCH_BUTTERFLY("Бабочка монарх", "monarch_butterfly", AnimatedWingVariant.WingModelFamily.INSECTOID),
    FAIRY("Фея", "fairy", AnimatedWingVariant.WingModelFamily.INSECTOID),
    SLIME("Слизень", "slime", AnimatedWingVariant.WingModelFamily.INSECTOID),
-   KANEKI_KAGUNE("Кагуне Канеки", "kaneki_kagune", AnimatedWingVariant.WingModelFamily.KAGUNE);
+   KANEKI_KAGUNE("Кагуне Канеки", "kaneki_kagune", AnimatedWingVariant.WingModelFamily.KAGUNE),
+   ROSE("Роза", "rose", AnimatedWingVariant.WingModelFamily.ROSE);
 
    private static WingModel cachedAvianModel;
    private static WingModel cachedInsectoidModel;
    private static WingModel cachedKaguneModel;
    private static WingModel cachedAllayModel;
+   private static WingModel cachedRoseModel;
    private final @com.google.gson.annotations.SerializedName("Х弟")  String displayName;
    private final @com.google.gson.annotations.SerializedName("сД")  Identifier textureId;
    @SerializedName("В")
@@ -47,7 +50,7 @@ public enum AnimatedWingVariant {
    public WingAnimator createAnimator() {
       return switch (this.modelFamily) {
          case AVIAN, ALLAY -> new AvianWingAnimator();
-         case INSECTOID, KAGUNE -> new SimpleWingAnimator();
+         case INSECTOID, KAGUNE, ROSE -> new SimpleWingAnimator();
       };
    }
 
@@ -81,6 +84,13 @@ public enum AnimatedWingVariant {
 
             yield cachedAllayModel;
          }
+         case ROSE -> {
+            if (cachedRoseModel == null) {
+               cachedRoseModel = new RoseWingModel();
+            }
+
+            yield cachedRoseModel;
+         }
       };
    }
 
@@ -109,6 +119,7 @@ public enum AnimatedWingVariant {
       AVIAN,
       INSECTOID,
       KAGUNE,
-      ALLAY;
+      ALLAY,
+      ROSE;
    }
 }

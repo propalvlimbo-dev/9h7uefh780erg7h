@@ -121,6 +121,22 @@ public final class AttachedCosmeticsRenderLayer extends RenderLayer<AvatarRender
          var6x.mulPose(var4x.pose());
          CosmeticModelRenderer.render(var6x, var5x, var2.model(), var2.animation(), var12, var6, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, var7);
       });
+      if ("rose".equals(var2.name()) && var7 > 0.01F) {
+         float glowAlpha = CosmeticGlow.pulse() * var7;
+         float glowScale = CosmeticGlow.shellScale();
+         var4.pushPose();
+         var4.scale(glowScale, glowScale, glowScale);
+         var5.submitCustomGeometry(var4, RenderTypes.entityTranslucent(CosmeticGlow.HAT), (var4x, var5x) -> {
+            PoseStack var6x = new PoseStack();
+            var6x.mulPose(var4x.pose());
+            CosmeticModelRenderer.render(
+               var6x, var5x, var2.model(), var2.animation(), var12, var6, OverlayTexture.NO_OVERLAY,
+               CosmeticGlow.red(), CosmeticGlow.green(), CosmeticGlow.blue(), glowAlpha
+            );
+         });
+         var4.popPose();
+      }
+
       var4.popPose();
    }
 

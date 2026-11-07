@@ -20,6 +20,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import sg.ec.HatPreviewRenderState;
+import sg.render.PreviewDiag;
 import sg.render.pipeline.PreviewFade;
 import sg.gui.cosmetics.CosmeticsPanel;
 
@@ -59,6 +61,17 @@ public abstract class PictureInPictureRendererEntityEspMixin {
          || var9 * var4 > Я弟в
          || !Float.isFinite(var1.scale())
          || var1.scale() <= 0.0F) {
+         if (var1 instanceof HatPreviewRenderState) {
+            PreviewDiag.cancelled(
+               "iconified=" + var6.isIconified()
+                  + " guiScale=" + var4
+                  + " width=" + var7
+                  + " height=" + var9
+                  + " stateScale=" + var1.scale()
+                  + " window=" + var6.getScreenWidth() + "x" + var6.getScreenHeight()
+            );
+         }
+
          if (var1 instanceof GuiEntityRenderState var11) {
             PreviewFade.discardPreview(var11.renderState());
             CosmeticsPanel.ЬО();
@@ -118,6 +131,13 @@ public abstract class PictureInPictureRendererEntityEspMixin {
    )
    private int applyEntityEspPreviewAlphaToModel(int var1) {
       return this.entityEspPreviewColor;
+   }
+
+   @Inject(method = "prepare", at = @At("TAIL"))
+   private void rose$logHatPreview(PictureInPictureRenderState var1, GuiRenderState var2, FeatureRenderDispatcher var3, int var4, CallbackInfo var5) {
+      if (var1 instanceof HatPreviewRenderState) {
+         PreviewDiag.prepared("guiScale=" + var4 + " rect=" + var1.x0() + "," + var1.y0() + "-" + var1.x1() + "," + var1.y1());
+      }
    }
 
    @Inject(
