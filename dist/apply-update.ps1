@@ -27,9 +27,10 @@ $Files = @(
   @{ p = 'src/main/java/sg/mixin/HudCustomizationMixin.java'; v = 'a5956e01'; s = 7990 }
   @{ p = 'src/main/java/sg/mixin/InventoryScreenAnimationMixin.java'; v = '839e82a5'; s = 7986 }
   @{ p = 'src/main/java/sg/mixin/ItemInHandRendererAnimationMixin.java'; v = '22402e82'; s = 38866 }
+  @{ p = 'src/main/java/sg/mixin/LocalPlayerMovementEventsMixin.java'; v = 'afeed636'; s = 6973 }
   @{ p = 'src/main/java/sg/mixin/MinecraftLifecycleEventsMixin.java'; v = '688d835a'; s = 7644 }
   @{ p = 'src/main/java/sg/modules/ModuleCategory.java'; v = '004a275e'; s = 737 }
-  @{ p = 'src/main/java/sg/modules/ModuleRegistry.java'; v = 'bf4a786c'; s = 38784 }
+  @{ p = 'src/main/java/sg/modules/ModuleRegistry.java'; v = 'bf4a786c'; s = 37653 }
   @{ p = 'src/main/java/sg/modules/impl/misc/AimingItems.java'; v = '53d470fa'; s = 7466 }
   @{ p = 'src/main/java/sg/modules/impl/misc/DiscordRPC.java'; v = 'bf4dd87e'; s = 1251 }
   @{ p = 'src/main/java/sg/modules/impl/misc/KillMessage.java'; v = 'f29f2b2f'; s = 13023 }

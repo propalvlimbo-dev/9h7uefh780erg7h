@@ -43,28 +43,6 @@ public abstract class LocalPlayerMovementEventsMixin extends AbstractClientPlaye
    @Shadow
    protected abstract void updateAutoJump(float deltaX, float deltaZ);
 
-   @ModifyExpressionValue(
-      method = "pick(Lnet/minecraft/world/entity/Entity;DDF)Lnet/minecraft/world/phys/HitResult;",
-      at = @At(
-         value = "INVOKE",
-         target = "Lnet/minecraft/world/entity/projectile/ProjectileUtil;getEntityHitResult(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/world/phys/AABB;Ljava/util/function/Predicate;D)Lnet/minecraft/world/phys/EntityHitResult;"
-      )
-   )
-   private static EntityHitResult filterCrosshairTarget(EntityHitResult hitResult) {
-      if (hitResult == null) {
-         return null;
-      }
-
-      boolean noFriendDamageEnabled = RoseClient.getInstance().getServices().getModules().getNoFriendDamage().isEnabled();
-      boolean friendTarget = RoseClient.getInstance().getServices().getFriends().О(hitResult.getEntity().getName().getString());
-      if (noFriendDamageEnabled && friendTarget) {
-         return null;
-      }
-
-      boolean noEntityTraceEnabled = RoseClient.getInstance().getServices().getModules().getNoEntityTrace().isEnabled();
-      return noEntityTraceEnabled ? null : hitResult;
-   }
-
    @Inject(method = "moveTowardsClosestSpace", at = @At("HEAD"), cancellable = true)
    public void pushOutOfBlocks(double x, double z, CallbackInfo callback) {
       if (RoseClient.getInstance().getServices().getModules().getNoPush().isEnabled() && RoseClient.getInstance().getServices().getModules().getNoPush().Ю.isSelected(BLOCKS_PUSH_OPTION_NAME)) {

@@ -169,12 +169,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final PearlBoost pearlBoost = new PearlBoost();
    @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
    private final PacketDebug packetDebug = new PacketDebug();
    @SerializedName("В")
    private final ScoreboardHealth scoreboardHealth = new ScoreboardHealth();
@@ -204,11 +198,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    private final ImpactNova impactNova = new ImpactNova();
    @SerializedName("В")
    private final FreeCam freeCam = new FreeCam();
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
    @SerializedName("В")
    private final NoWeb noWeb = new NoWeb();
    @SerializedName("В")
@@ -245,8 +234,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    private final WaterSpeed waterSpeed = new WaterSpeed();
    @SerializedName("В")
    private final Removals removals = new Removals();
-   @SerializedName("В")
-   @SerializedName("В")
    @SerializedName("В")
    private final TapeMouse tapeMouse = new TapeMouse();
    @SerializedName("В")
@@ -285,8 +272,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    private final ViewModel viewModel = new ViewModel();
    @SerializedName("В")
    private final GuiMove guiMove = new GuiMove();
-   @SerializedName("В")
-   @SerializedName("В")
    @SerializedName("В")
    private final FogAtmosphere fogAtmosphere = new FogAtmosphere();
    @SerializedName("В")
@@ -334,14 +319,9 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final NoInteract noInteract = new NoInteract();
    @SerializedName("В")
-   @SerializedName("Я")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
    private final ElytraSwap elytraSwap = new ElytraSwap();
    @SerializedName("В")
    private final HeadSwap headSwap = new HeadSwap();
-   @SerializedName("В")
    @SerializedName("В")
    private final GrimGlide grimGlide = new GrimGlide();
    @SerializedName("В")
@@ -371,9 +351,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final WardenESP wardenEsp = new WardenESP();
    @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
-   @SerializedName("В")
    private final Picture picture = new Picture();
    @SerializedName("В")
    private final FunTime funTime = new FunTime();
@@ -382,14 +359,9 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("Я")
    private final InventorySort inventorySort = new InventorySort();
    @SerializedName("В")
-   @SerializedName("В")
    private final AutoRespawn autoRespawn = new AutoRespawn();
    @SerializedName("В")
-   @SerializedName("В")
    private final AutoMessage autoMessage = new AutoMessage();
-   @SerializedName("Я")
-   @SerializedName("В")
-   @SerializedName("В")
    @SerializedName("В")
    private final EcExploit ecExploit = new EcExploit();
    @SerializedName("В")
@@ -398,7 +370,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    private final AutoTool autoTool = new AutoTool();
    @SerializedName("В")
    private final HitWave hitWave = new HitWave();
-   @SerializedName("В")
    @SerializedName("В")
    private final KeyFinder keyFinder = new KeyFinder();
    @SerializedName("В")
@@ -495,7 +466,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    @SerializedName("В")
    private final EntityESP entityEsp = new EntityESP();
 
-   @Generated
 
    @Generated
 
@@ -677,14 +647,12 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.removals;
    }
 
-   @Generated
 
    @Generated
    public KillSpray getKillSpray() {
       return this.killSpray;
    }
 
-   @Generated
 
    @Generated
    public AspectRatio getAspectRatio() {
@@ -716,7 +684,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.fastBreak;
    }
 
-   @Generated
 
    @Generated
    public HitEffect getHitEffect() {
@@ -749,7 +716,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
 
-   @Generated
 
    @Generated
    public FireworkESP getFireworkESP() {
@@ -786,7 +752,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.entityEsp;
    }
 
-   @Generated
 
    @Generated
    public AntiServerSwap getAntiServerSwap() {
@@ -818,9 +783,7 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.shulkerView;
    }
 
-   @Generated
 
-   @Generated
 
    @Generated
    public LongJump getLongJump() {
@@ -837,7 +800,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.autoPotionSwap;
    }
 
-   @Generated
 
    @Generated
    public ShaderMist getShaderMist() {
@@ -870,7 +832,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
    }
 
 
-   @Generated
 
    @Generated
    public TPLoot getTPLoot() {
@@ -922,7 +883,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.clickFriend;
    }
 
-   @Generated
 
    @Generated
    public ElytraFly getElytraFly() {
@@ -939,7 +899,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.playerEmotes;
    }
 
-   @Generated
 
    @Generated
    public Optimization getOptimization() {
@@ -951,7 +910,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.arrows;
    }
 
-   @Generated
 
    @Generated
    public GroundLoot getGroundLoot() {
@@ -983,7 +941,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.tapeMouse;
    }
 
-   @Generated
 
    @Generated
    public AutoTool getAutoTool() {
@@ -1075,7 +1032,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.impactNova;
    }
 
-   @Generated
 
    @Generated
    public AutoDuel getAutoDuel() {
@@ -1107,14 +1063,12 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.antiAim;
    }
 
-   @Generated
 
    @Generated
    public TargetStrafe getTargetStrafe() {
       return this.targetStrafe;
    }
 
-   @Generated
 
    @Generated
    public Ambience getAmbience() {
@@ -1196,7 +1150,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.motionBlur;
    }
 
-   @Generated
 
    @Generated
    public AirJump getAirJump() {
@@ -1238,7 +1191,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.worldParticles;
    }
 
-   @Generated
 
    @Generated
    public AutoContract getAutoContract() {
@@ -1250,7 +1202,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.tntTimer;
    }
 
-   @Generated
 
    @Generated
    public SkeletonESP getSkeletonESP() {
@@ -1292,7 +1243,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.wardenEsp;
    }
 
-   @Generated
 
    @Generated
    public KitHelper getKitHelper() {
@@ -1354,9 +1304,7 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.fireFly;
    }
 
-   @Generated
 
-   @Generated
 
    @Generated
    public SwingAnimations getSwingAnimations() {
@@ -1378,7 +1326,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.autoWarden;
    }
 
-   @Generated
 
    @Generated
    public UseTracker getUseTracker() {
@@ -1390,7 +1337,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.pvpSafe;
    }
 
-   @Generated
 
    @Generated
    public AimingItems getAimingItems() {
@@ -1412,14 +1358,12 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.party;
    }
 
-   @Generated
 
    @Generated
    public AutoMessage getAutoMessage() {
       return this.autoMessage;
    }
 
-   @Generated
 
    @Generated
    public Hands getHands() {
@@ -1440,7 +1384,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.freeLook;
    }
 
-   @Generated
 
    @Generated
    public MusicPlayer getMusicPlayer() {
@@ -1457,7 +1400,6 @@ public class ModuleRegistry extends ArrayList<ClientModule> {
       return this.rwFixer;
    }
 
-   @Generated
 
    @Generated
    public NoInteract getNoInteract() {
