@@ -169,7 +169,6 @@ public final class CosmeticsPanel {
    private static final String ВЭ衣 = "P";
    private static final float ВЭш = 0.5F;
    private static final float ВЭИ = 14.5F;
-   private static final float ВЭЛ = 26.0F;
    private static final float ВЭь = 0.01F;
    private static final float ВЭж = 20.0F;
    private static final float ВЭ弟 = 64.0F;
@@ -1244,10 +1243,11 @@ public final class CosmeticsPanel {
    private void и(float var1, float var2) {
       float var3 = this.А.getGuiX();
       float var4 = this.А.getGuiY();
+      float logoSize = 26.0F;
       sg.render.ClientLogo.drawCentered(
          var3 + this.А.getSidebarWidth() * ВЭЬ + 2.0F,
-         var4 + ВЭИ + ВЭЛ * 0.5F,
-         ВЭЛ,
+         var4 + ВЭИ + logoSize * 0.5F,
+         logoSize,
          this.п3
       );
       float var5 = this.А.getSidebarLabelAlpha();

@@ -13,7 +13,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = 'bfd9a003'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '5c352533'; s = 5476 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '9058632d'; s = 104670 }
-  @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '6974236d'; s = 71999 }
+  @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '25d30d4d'; s = 71987 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiCategory.java'; v = 'efd11415'; s = 1161 }
   @{ p = 'src/main/java/sg/gui/third/ThirdGuiScreen.java'; v = '8ec35a70'; s = 102308 }
   @{ p = 'src/main/java/sg/hud/HudElementRegistry.java'; v = '2aeec840'; s = 30904 }
