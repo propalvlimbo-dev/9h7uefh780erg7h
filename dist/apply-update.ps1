@@ -149,7 +149,8 @@ foreach ($f in $Files) {
   $dir = Split-Path -Parent $dest
   if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
   try {
-    Invoke-WebRequest -UseBasicParsing -Uri "$Base/$($f.p)?v=$($f.v)" -OutFile $dest
+    $cb = [guid]::NewGuid().ToString('N')
+    Invoke-WebRequest -UseBasicParsing -Uri "$Base/$($f.p)?v=$($f.v)&cb=$cb" -Headers @{ 'Cache-Control' = 'no-cache'; 'Pragma' = 'no-cache' } -OutFile $dest
     $len = (Get-Item $dest).Length
     if ($len -eq $f.s) { $ok++; Write-Host ("  OK   {0,-9} {1}" -f $len, $f.p) -ForegroundColor DarkGreen }
     else { $bad++; Write-Host ("  SIZE {0} != {1}  {2}" -f $len, $f.s, $f.p) -ForegroundColor Red }
