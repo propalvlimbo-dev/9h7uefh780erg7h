@@ -55,7 +55,7 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/SkeletonESP.java'; v = 'e634365f'; s = 11302 }
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'dd0443b1'; s = 101424 }
   @{ p = 'src/main/java/sg/render/BackpackPreview.java'; v = '9cfd9cf1'; s = 3678 }
-  @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = 'af2b9166'; s = 1499 }
+  @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '0d96543d'; s = 1460 }
   @{ p = 'src/main/java/sg/render/HatPreview.java'; v = 'befefee9'; s = 3137 }
   @{ p = 'src/main/java/sg/render/WingPreview.java'; v = 'f2c4385d'; s = 3626 }
   @{ p = 'src/main/java/sg/render/pipeline/AimRaycast.java'; v = '642a1093'; s = 2469 }
