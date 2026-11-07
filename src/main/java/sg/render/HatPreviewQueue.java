@@ -3,30 +3,29 @@ package sg.render;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import sg.ec.HatPreviewRenderState;
+import sg.render.pipeline.UiDrawing;
 
 public final class HatPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("сч")  List<HatPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
+   private static final float SPRITE_FACTOR = 1.85F;
 
    public void clearPreviews() {
       this.previews.clear();
    }
 
    public void submitPreviews(GuiGraphicsExtractor graphics, float clipX, float clipY, float clipWidth, float clipHeight) {
-      if (!this.previews.isEmpty()) {
-         GuiCoordinateTransform transform = GuiCoordinateTransform.of(clipX, clipY, clipWidth, clipHeight);
-         List draws = this.previews
-            .stream()
-            .map(
-               preview -> new HatPreviewRenderState.HatDraw(
-                  preview.hat, preview.alpha, transform.localX(preview.x), transform.localY(preview.y), preview.width * transform.scaleX(), preview.height * transform.scaleY()
-               )
-            )
-            .toList();
-         PreviewDiag.submitted(transform.x1(), transform.y1(), transform.x2(), transform.y2(), draws.size());
-         graphics.guiRenderState.addPicturesInPictureState(new HatPreviewRenderState(draws, transform.x1(), transform.y1(), transform.x2(), transform.y2(), 1.0F, transform.clip()));
+      for (HatPreviewQueue.PreviewEntry preview : this.previews) {
+         int alpha = Math.clamp(Math.round(preview.alpha * 255.0F), 0, 255);
+         if (alpha <= 0) {
+            continue;
+         }
+
+         float side = Math.max(preview.width, preview.height) * SPRITE_FACTOR;
+         float spriteX = clipX + preview.x - side * 0.5F;
+         float spriteY = clipY + preview.y - side * 0.5F;
+         UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, preview.hat.texture());
       }
    }
 

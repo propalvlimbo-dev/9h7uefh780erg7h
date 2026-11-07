@@ -5,13 +5,14 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import sg.ec.WingPreviewRenderState;
+import sg.render.pipeline.UiDrawing;
 
 public final class WingPreviewQueue {
    private final @com.google.gson.annotations.SerializedName("衣")  Map<WingSelection, WingPreviewQueue.PreviewAnimator> previewAnimators = new EnumMap<>(WingSelection.class);
    private final @com.google.gson.annotations.SerializedName("И")  List<WingPreviewQueue.PreviewEntry> previews = new ArrayList<>();
    private static final float HORIZONTAL_CENTER_FACTOR = 0.5F;
    private static final float VERTICAL_CENTER_FACTOR = 0.5F;
+   private static final float SPRITE_FACTOR = 1.85F;
 
    public void queuePreview(WingSelection wings, float x, float y, float width, float height, float alpha) {
       WingPreviewQueue.PreviewAnimator previewAnimator = this.previewAnimators.computeIfAbsent(wings, variant -> new WingPreviewQueue.PreviewAnimator(variant.getAnimatedVariant().createAnimator()));
@@ -23,24 +24,16 @@ public final class WingPreviewQueue {
    }
 
    public void submitPreviews(GuiGraphicsExtractor graphics, float clipX, float clipY, float clipWidth, float clipHeight) {
-      if (!this.previews.isEmpty()) {
-         GuiCoordinateTransform transform = GuiCoordinateTransform.of(clipX, clipY, clipWidth, clipHeight);
-         List draws = this.previews
-            .stream()
-            .map(
-               preview -> new WingPreviewRenderState.WingDraw(
-                  preview.wing.getAnimatedVariant(),
-                  preview.preview.animator,
-                  preview.preview.advanceAndGetPartialTick(),
-                  preview.alpha,
-                  transform.localX(preview.x),
-                  transform.localY(preview.y),
-                  preview.width * transform.scaleX(),
-                  preview.height * transform.scaleY()
-               )
-            )
-            .toList();
-         graphics.guiRenderState.addPicturesInPictureState(new WingPreviewRenderState(draws, transform.x1(), transform.y1(), transform.x2(), transform.y2(), 1.0F, transform.clip()));
+      for (WingPreviewQueue.PreviewEntry preview : this.previews) {
+         int alpha = Math.clamp(Math.round(preview.alpha * 255.0F), 0, 255);
+         if (alpha <= 0) {
+            continue;
+         }
+
+         float side = Math.max(preview.width, preview.height) * SPRITE_FACTOR;
+         float spriteX = clipX + preview.x - side * 0.5F;
+         float spriteY = clipY + preview.y - side * 0.5F;
+         UiDrawing.drawTexture(spriteX, spriteY, side, side, 0.0F, alpha << 24 | 0xFFFFFF, preview.wing.getAnimatedVariant().getTextureId());
       }
    }
 

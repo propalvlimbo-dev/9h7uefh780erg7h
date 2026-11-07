@@ -51,6 +51,8 @@ public final class RoseWingModel extends WingModel {
          addAll(bones[1], plates[1]);
          addAll(bones[2], plates[2]);
          addAll(bones[3], plates[3]);
+         addAll(bones[1], plate(26, 46, 1.0F, 1.0F, 8, 10, 0.0F, 1.5F, 1.0F, sign));
+         addAll(bones[2], plate(46, 50, -1.0F, 1.0F, 9, 9, 0.0F, 1.0F, 0.0F, sign));
 
          WingModelPart thorns = side == 0 ? this.leftThorns : this.rightThorns;
          WingModelPart twigs = side == 0 ? this.leftTwigs : this.rightTwigs;
@@ -89,11 +91,18 @@ public final class RoseWingModel extends WingModel {
 
       for (int strip = 0; strip < strips; strip++) {
          float offset = strip * step;
-         float wave = (float)Math.sin((strip + 1) * 1.9F + width * 0.7F);
-         float taper = 1.0F - 0.32F * Math.abs((float)strip / Math.max(1, strips - 1) - 0.42F) * 2.0F;
-         int stripHeight = Math.max(3, Math.round(height * taper * (0.86F + 0.16F * wave)));
+         float position = (float)strip / Math.max(1, strips - 1);
+         // длина пера: длиннее к середине пластины, с разбросом по «бородкам»
+         float wave = (float)Math.sin((strip + 1) * 2.37F + width * 0.9F);
+         float taper = 1.0F - 0.42F * Math.abs(position - 0.42F) * 2.0F;
+         float jitter = 0.62F + 0.38F * (0.5F + 0.5F * wave);
+         int stripHeight = Math.max(2, Math.round(height * taper * jitter));
+         // ступенька: чётные перья чуть длиннее — кромка получается рваной, а не пилой
+         float dropY = (strip % 2 == 0) ? 0.0F : -1.0F;
          float minX = sign > 0 ? x + offset : -(x + offset + step);
-         ExtrudedWingModelPart part = ExtrudedWingModelPart.create(minX, y, PLATE_Z, Math.max(1, (int)step), stripHeight, textureU, textureV, 64, 64);
+         ExtrudedWingModelPart part = ExtrudedWingModelPart.create(
+            minX, y + dropY, PLATE_Z + 0.5F * (strip % 2), Math.max(1, (int)step), stripHeight, textureU, textureV, 64, 64
+         );
          part.setPivot(sign > 0 ? pivotX : -pivotX, pivotY, pivotZ);
          parts[strip] = part;
       }

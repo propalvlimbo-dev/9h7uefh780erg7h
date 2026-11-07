@@ -12,7 +12,7 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '2edf446e'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = 'bfd9a003'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '5c352533'; s = 5476 }
-  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '787bb5e7'; s = 7102 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '1bfc32f9'; s = 7748 }
   @{ p = 'src/main/java/sg/ec/WingsRenderLayer.java'; v = 'c8a7dfc4'; s = 5445 }
   @{ p = 'src/main/java/sg/gui/click/ClickGuiScreen.java'; v = '9058632d'; s = 104670 }
   @{ p = 'src/main/java/sg/gui/cosmetics/CosmeticsPanel.java'; v = '25d30d4d'; s = 71987 }
@@ -59,12 +59,14 @@ $Files = @(
   @{ p = 'src/main/java/sg/modules/impl/render/SwingAnimations.java'; v = 'dd0443b1'; s = 101424 }
   @{ p = 'src/main/java/sg/render/AnimatedWingVariant.java'; v = '492d4e3e'; s = 4450 }
   @{ p = 'src/main/java/sg/render/BackpackPreview.java'; v = '9cfd9cf1'; s = 3678 }
+  @{ p = 'src/main/java/sg/render/BackpackPreviewQueue.java'; v = '2fdf4271'; s = 1981 }
   @{ p = 'src/main/java/sg/render/CosmeticRoseShader.java'; v = 'e707ff2e'; s = 2325 }
   @{ p = 'src/main/java/sg/render/GuiCoordinateTransform.java'; v = '0d96543d'; s = 1460 }
   @{ p = 'src/main/java/sg/render/HatPreview.java'; v = 'c6b4c476'; s = 3380 }
-  @{ p = 'src/main/java/sg/render/HatPreviewQueue.java'; v = 'fd68e7c3'; s = 1861 }
+  @{ p = 'src/main/java/sg/render/HatPreviewQueue.java'; v = '93e619cc'; s = 1625 }
   @{ p = 'src/main/java/sg/render/PreviewDiag.java'; v = '504749ca'; s = 1807 }
   @{ p = 'src/main/java/sg/render/WingPreview.java'; v = '7b0ae679'; s = 3734 }
+  @{ p = 'src/main/java/sg/render/WingPreviewQueue.java'; v = '56078a42'; s = 3022 }
   @{ p = 'src/main/java/sg/render/WingSelection.java'; v = '5eb6ba2a'; s = 1414 }
   @{ p = 'src/main/java/sg/render/pipeline/AimRaycast.java'; v = '642a1093'; s = 2469 }
   @{ p = 'src/main/java/sg/rotation/AcceleratingAimRotation.java'; v = 'e4d02821'; s = 4909 }

@@ -54,11 +54,14 @@ def strip_plate(parent, x, y, z, w, h, tu, tv, pivot, sign):
     strips = max(2, w // 2)
     step = w / strips
     for i in range(strips):
-        wave = math.sin((i + 1) * 1.9 + w * 0.7)
-        taper = 1.0 - 0.32 * abs(i / max(1, strips - 1) - 0.42) * 2.0
-        sh = max(3, round(h * taper * (0.86 + 0.16 * wave)))
+        pos = i / max(1, strips - 1)
+        wave = math.sin((i + 1) * 2.37 + w * 0.9)
+        taper = 1.0 - 0.42 * abs(pos - 0.42) * 2.0
+        jitter = 0.62 + 0.38 * (0.5 + 0.5 * wave)
+        sh = max(2, round(h * taper * jitter))
+        drop = 0.0 if i % 2 == 0 else -1.0
         p = Part(pivot)
-        add_plate(p, x + i * step, y, z, max(1, int(step)), sh, tu, tv, sign)
+        add_plate(p, x + i * step, y + drop, z + 0.5 * (i % 2), max(1, int(step)), sh, tu, tv, sign)
         parent.children.append(p)
 
 
@@ -84,6 +87,9 @@ def build_rose(sign):
         ((0.0, -2.1, 11, 11), (46, 36), (0.0, 0.0, 0.0)),
     ]):
         strip_plate(bones[i], px, py, -0.5, w, h, tu, tv, pivot, sign)
+
+    strip_plate(bones[1], 1.0, 1.0, -0.5, 8, 10, 26, 46, (0.0, 1.5, 1.0), sign)
+    strip_plate(bones[2], -1.0, 1.0, -0.5, 9, 9, 46, 50, (0.0, 1.0, 0.0), sign)
 
     thorns = Part((6.5, 0.2, 0.1)); bones[2].children.append(thorns)
     for x, y, z in [(1, 4, 2), (3, 2, 2), (5, 0, 2), (7, -1, 1), (9, -1, 1)]:
