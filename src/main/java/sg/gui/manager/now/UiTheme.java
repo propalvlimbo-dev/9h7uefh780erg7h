@@ -6,19 +6,21 @@ import java.util.List;
 public final class UiTheme {
     public static boolean flag = false;
 
-    // Original menu palette, isolated from the ClickGUI theme.
+    // Меню в бело-рубиновой палитре: белый текст, рубиновые акценты.
     public static final int intVal = 0xFFFFFFFF;       // Pure white
-    public static final int intVal7 = 0xFF5B5BF0;      // Deluxe primary accent (Indigo/Purple #5B5BF0)
-    public static final int intVal8 = 0xFF6D6DF6;      // Deluxe hover accent
+    public static final int intVal7 = 0xFFE4294B;      // Рубиновый акцент (#E4294B)
+    public static final int intVal8 = 0xFFFF6B85;      // Акцент при наведении (#FF6B85)
     public static final int intVal10 = 0xFFFFFFFF;     // High contrast white
-    public static final int intVal23 = 0xFFFF453A;     // Red / Remove
-    public static final int intVal28 = 0xFFB0B3C6;     // Inactive icon color
+    public static final int intVal23 = 0xFFFF5C6E;     // Red / Remove
+    public static final int intVal28 = 0xFFC9BFC6;     // Inactive icon color (тёплый серый)
     public static final int intVal29 = 0x99FFFFFF;     // 60% opacity white text
     public static final int intVal30 = 0x55FFFFFF;     // 33% opacity white / placeholder
     public static final int intVal31 = 0x22FFFFFF;     // Divider line
     public static final int intVal33 = 0x33FFFFFF;     // Inactive border
     public static final int intVal34 = 0x88FFFFFF;     // Active border
-    public static final int intVal35 = 0xFFFF4B4B;     // Red alert/delete
+    public static final int intVal35 = 0xFFFF6B85;     // Ruby alert accent
+    public static final int intVal36 = 0xFFC1123A;     // Глубокий рубин (тени акцента)
+    public static final int intVal37 = 0x66E4294B;     // Рубиновое свечение 40%
 
     public static boolean matchesCriteria(float mx, float my, float x, float y, float w, float h) {
         return mx >= x && mx <= x + w && my >= y && my <= y + h;

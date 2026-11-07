@@ -97,7 +97,7 @@ public class RangeSettingWidget extends SettingWidget<RangeSetting> {
       );
       UiDrawing.drawRoundedRect(this.x, this.y + TRACK_OFFSET_Y, this.width, TRACK_HEIGHT, 2.0F, ColorMath.packArgb(34, 38, 47, TRACK_ALPHA));
       float selectedTrackWidth = this.width * this.getBoundFractions().y - this.width * this.getBoundFractions().x;
-      UiDrawing.drawRoundedRect(this.x + this.width * this.getBoundFractions().x, this.y + SELECTED_TRACK_OFFSET_Y, selectedTrackWidth, SELECTED_TRACK_HEIGHT, 2.0F, ColorMath.packArgb(128, 179, 255, SELECTED_TRACK_ALPHA));
+      UiDrawing.drawRoundedRect(this.x + this.width * this.getBoundFractions().x, this.y + SELECTED_TRACK_OFFSET_Y, selectedTrackWidth, SELECTED_TRACK_HEIGHT, 2.0F, ColorMath.packArgb(228, 41, 75, SELECTED_TRACK_ALPHA));
       UiDrawing.drawRoundedRect(this.x + this.width * this.getBoundFractions().x - LOWER_KNOB_OFFSET_X, this.y + LOWER_KNOB_OFFSET_Y, LOWER_KNOB_WIDTH, LOWER_KNOB_HEIGHT, LOWER_KNOB_CORNER_RADIUS, ColorMath.packArgb(255, 255, 255, LOWER_KNOB_ALPHA));
       UiDrawing.drawRoundedRect(this.x + this.width * this.getBoundFractions().y - UPPER_KNOB_OFFSET_X, this.y + UPPER_KNOB_OFFSET_Y, UPPER_KNOB_WIDTH, UPPER_KNOB_HEIGHT, UPPER_KNOB_CORNER_RADIUS, ColorMath.packArgb(255, 255, 255, UPPER_KNOB_ALPHA));
       float previousLowerBound = this.setting.getValue().x;

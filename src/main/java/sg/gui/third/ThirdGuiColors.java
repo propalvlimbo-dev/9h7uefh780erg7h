@@ -4,7 +4,7 @@ package sg.gui.third;
  * Original Third palette, independent of the First GUI's selected theme.
  */
 public final class ThirdGuiColors {
-   public static final int ACCENT = 0xFF5B7BF5;
+   public static final int ACCENT = 0xFFE4294B;
    public static final int PANEL = 0xF2101012;
    public static final int CARD = 0xFF18181B;
    public static final int BORDER = 0x12FFFFFF;
@@ -14,10 +14,10 @@ public final class ThirdGuiColors {
    public static final int PILL_TEXT = 0xFF85858C;
    public static final int CHECK_OFF = 0xFF222226;
    public static final int TRACK = 0x1EFFFFFF;
-   public static final int SLIDER_FILL = 0xFF3E4C94;
+   public static final int SLIDER_FILL = 0xFF8A1B33;
    public static final int DOCK = 0xFF1A1A1D;
    public static final int ICON_IDLE = 0xFF86868C;
-   public static final int RED = 0xFFFF7A6B;
+   public static final int RED = 0xFFFF6B85;
    public static final int GREEN = 0xFF4ADE80;
    public static final int WHITE = 0xFFFFFFFF;
 

@@ -7,6 +7,8 @@ import sg.util.time.ColorMath;
 
 public final class ThemePresets {
    private static final LinkedHashMap<String, int[]> palettes = new LinkedHashMap<>();
+   private static final String ROSE_PRESET_NAME = "Rose";
+   private static final double ROSE_SOLID_ALPHA = 255.0;
    private static final String OCEAN_PRESET_NAME = "Ocean";
    private static final double OCEAN_MAIN_ALPHA = 255.0;
    private static final double OCEAN_MAIN_TWO_ALPHA = 255.0;
@@ -35,6 +37,38 @@ public final class ThemePresets {
    private static final double OCEAN_WINDOW_SHADOW_ALPHA = 175.0;
 
    static {
+      // Бело-рубиновая палитра Rose: белый текст, рубиновые акценты, тёмная основа.
+      registerPalette(
+         ROSE_PRESET_NAME,
+         new int[]{
+            ColorMath.packArgb(228, 41, 75, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(255, 107, 133, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(255, 255, 255, 13.0),
+            ColorMath.packArgb(13, 10, 14, 205.0),
+            ColorMath.packArgb(0, 0, 0, 175.0),
+            ColorMath.packArgb(255, 255, 255, 16.0),
+            ColorMath.packArgb(228, 41, 75, 135.0),
+            ColorMath.packArgb(228, 41, 75, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(22, 14, 18, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(255, 179, 192, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(40, 24, 30, 205.0),
+            ColorMath.packArgb(236, 232, 234, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(132, 120, 126, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(132, 120, 126, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(244, 240, 242, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(228, 224, 227, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(124, 112, 118, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(124, 112, 118, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(255, 255, 255, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(112, 96, 106, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(255, 255, 255, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(200, 188, 194, ROSE_SOLID_ALPHA),
+            ColorMath.packArgb(13, 10, 14, 180.0),
+            ColorMath.packArgb(13, 10, 14, 150.0),
+            ColorMath.packArgb(13, 10, 14, 175.0)
+         }
+      );
+
       registerPalette(
          OCEAN_PRESET_NAME,
          new int[]{

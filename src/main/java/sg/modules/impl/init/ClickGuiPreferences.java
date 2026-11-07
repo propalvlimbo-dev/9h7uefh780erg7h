@@ -69,7 +69,9 @@ public final class ClickGuiPreferences {
    }
 
    public static boolean йЩ() {
-      return Вж;
+      // Подсказки держим включёнными всегда: в старых конфигах флаг мог сохраниться выключенным,
+      // а пункта для его включения в интерфейсе нет.
+      return true;
    }
 
    public static void т(boolean var0) {

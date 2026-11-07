@@ -156,13 +156,23 @@ public class MainMenuScreen extends Screen {
         float local7244_10 = this.slideInPC(0);
         Render2D.processData46(local7244_10);
         float local7244_11 = local7244_8 - (1.0F - local7244_10) * 16.0F * local7244_2;
+        String breadcrumbPrefix = "Rose  /  ";
+        float breadcrumbSize = 6.5F * local7244_2;
         FontText.processData3(
                 FontFace.SEMI,
-                "Rose  /  Главная",
+                breadcrumbPrefix,
                 local7244_11,
                 local7244_3 + 127.5F * local7244_2,
-                6.5F * local7244_2,
-                UiTheme.intVal29
+                breadcrumbSize,
+                UiTheme.intVal30
+        );
+        FontText.processData3(
+                FontFace.SEMI,
+                "Главная",
+                local7244_11 + textWidth(FontFace.SEMI, breadcrumbPrefix, breadcrumbSize),
+                local7244_3 + 127.5F * local7244_2,
+                breadcrumbSize,
+                UiTheme.intVal
         );
         FontText.processData3(
                 FontFace.SEMI, "Рады видеть тебя,", local7244_11, local7244_3 + 142.0F * local7244_2, 20.0F * local7244_2, UiTheme.intVal
@@ -302,6 +312,16 @@ public class MainMenuScreen extends Screen {
                 0.5F,
                 UiTheme.computeInt(UiTheme.intVal, 0.078F + 0.09F * local7245_16)
         );
+        if (local7245_16 > 0.01F) {
+            Render2D.processData51(
+                    local7245_15,
+                    local7245_2 + 3.5F * local7245_3,
+                    1.5F * local7245_3,
+                    btnH - 7.0F * local7245_3,
+                    0.75F * local7245_3,
+                    UiTheme.computeInt(UiTheme.intVal7, 0.85F * local7245_16)
+            );
+        }
 
         float iconSize = local7245_6 * local7245_3;
         float iconY = local7245_2 + (btnH - iconSize) / 2.0F;
@@ -355,6 +375,18 @@ public class MainMenuScreen extends Screen {
                 local7248_6 && UiTheme.matchesCriteria(local7248_4, local7248_5, local7248_9, local7248_2, 226.5F * local7248_3, 37.0F * local7248_3)
         );
         local7248_9 += local7248_10 * 2.0F * local7248_3;
+        // мягкое рубиновое свечение вокруг главной кнопки
+        for (int glowStep = 3; glowStep >= 1; glowStep--) {
+            float glowPad = glowStep * 2.0F * local7248_3;
+            Render2D.processData51(
+                    local7248_9 - glowPad,
+                    local7248_2 - glowPad,
+                    226.5F * local7248_3 + glowPad * 2.0F,
+                    37.0F * local7248_3 + glowPad * 2.0F,
+                    (6.0F + glowPad) * local7248_3,
+                    UiTheme.computeInt(UiTheme.intVal7, 0.05F + 0.03F * local7248_10)
+            );
+        }
         Render2D.processData51(
                 local7248_9,
                 local7248_2,
@@ -416,15 +448,34 @@ public class MainMenuScreen extends Screen {
     private void drawChrome(float local7251_1, float local7251_2, float local7251_3, float local7251_4, float local7251_5) {
         float local7251_6 = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, this.flag3 ? 260L : 60L, 420L));
         Render2D.processData46(local7251_6);
+        float logoCenterX = local7251_1 + 60.5F * local7251_3;
+        float logoCenterY = 40.0F * local7251_3 - (1.0F - local7251_6) * 8.0F * local7251_3 + 10.0F * local7251_3;
+        // рубиновый ореол
         sg.render.ClientLogo.drawSpin3DByTime(
-                Render2D.px(local7251_1 + 60.5F * local7251_3),
-                Render2D.px(40.0F * local7251_3 - (1.0F - local7251_6) * 8.0F * local7251_3 + 10.0F * local7251_3),
+                Render2D.px(logoCenterX),
+                Render2D.px(logoCenterY),
+                Render2D.px(23.5F * local7251_3),
+                UiTheme.computeInt(UiTheme.intVal7, 0.30F * local7251_6),
+                4000L
+        );
+        // белый знак
+        sg.render.ClientLogo.drawSpin3DByTime(
+                Render2D.px(logoCenterX),
+                Render2D.px(logoCenterY),
                 Render2D.px(20.0F * local7251_3),
-                UiTheme.computeInt(UiTheme.intVal7, local7251_6),
+                UiTheme.computeInt(UiTheme.intVal, local7251_6),
                 4000L
         );
         Render2D.updateState();
 
+        Render2D.processData51(
+                local7251_1 + 51.5F * local7251_3,
+                local7251_2 - 70.0F * local7251_3,
+                226.5F * local7251_3,
+                1.0F * local7251_3,
+                0.0F,
+                UiTheme.computeInt(UiTheme.intVal, 0.07F * local7251_6)
+        );
         float local7251_7 = UiTheme.computeFloat2(UiTheme.computeFloat3(this.timeMillis, this.flag3 ? 700L : 300L, 420L));
         Render2D.processData46(local7251_7);
         float local7251_8 = this.hoverPC(
@@ -577,6 +628,12 @@ public class MainMenuScreen extends Screen {
         } else {
             this.accountManagerPanel.updateState();
         }
+    }
+
+    /** Ширина строки в единицах меню (не в пикселях экрана). */
+    private static float textWidth(FontFace face, String text, float size) {
+        float guiScale = Math.max(1.0F, (float) Minecraft.getInstance().getWindow().getGuiScale());
+        return FontText.computeFloat(face, text, Render2D.px(size)) / guiScale;
     }
 
     private record DataRecord(float x, float y, float w, float h, Runnable action) {

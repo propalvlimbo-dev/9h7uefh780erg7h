@@ -18,8 +18,8 @@ public final class HoverHint {
    private static final float TITLE_LINE = 13.0F;
    private static final int TITLE_SIZE = 13;
    private static final int BODY_SIZE = 12;
-   private static final float MAX_WIDTH = 190.0F;
-   private static final long DELAY_MS = 200L;
+   private static final float MAX_WIDTH = 205.0F;
+   private static final long DELAY_MS = 140L;
    private static final float FADE_SPEED = 130.0F;
    private static final float RADIUS = 6.0F;
 
@@ -84,6 +84,9 @@ public final class HoverHint {
       UiDrawing.drawRoundedRect(x, y + 2.0F, width, height, RADIUS, glow);
       UiDrawing.drawRoundedRect(x, y, width, height, RADIUS, background);
       UiDrawing.drawOutline(x, y, width, height, 1.0F, RADIUS, border);
+      // рубиновая полоска слева — акцент подсказки
+      int accent = ColorMath.withAlpha(ThemeEditor.getColorArgb(ThemeColorSlot.MAIN), 0.9F * appear);
+      UiDrawing.drawRoundedRect(x + 1.0F, y + 6.0F, 1.8F, height - 12.0F, 0.9F, accent);
       UiDrawing.drawText(ClientFonts.getMediumFont(), content.title(), x + PADDING, y + PADDING - 1.0F, TITLE_SIZE, titleColor);
 
       for (int i = 0; i < lines.size(); i++) {

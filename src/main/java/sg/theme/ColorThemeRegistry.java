@@ -49,12 +49,15 @@ public class ColorThemeRegistry extends CopyOnWriteArrayList<ColorTheme> {
    private static final String READ_COLORS_ARRAY_VALUE_KEY = "colors";
    private static final String IMPORT_EXCLUDED_PRESET_AUTHOR = "Готовые";
    private static final String BUILTIN_THEME_AUTHOR = "Rose";
-   private static final String PREFERRED_LISTED_THEME_NAME = "Ocean";
+   private static final String PREFERRED_LISTED_THEME_NAME = "Rose";
    private static final String REPAIRED_INTERFACE_GROUP = "Interface";
    private static final String APPLIED_INTERFACE_GROUP = "Interface";
-   private static final String PREFERRED_FALLBACK_PALETTE_NAME = "Ocean";
-   private static final String EXTERNAL_FALLBACK_PALETTE_NAME = "Ocean";
+   private static final String PREFERRED_FALLBACK_PALETTE_NAME = "Rose";
+   private static final String EXTERNAL_FALLBACK_PALETTE_NAME = "Rose";
    private static final String LEGACY_PRESET_AUTHOR_TO_REMOVE = "Готовые";
+   /** Версия палитры: при смене старые сохранённые цвета один раз перекрываются новой темой. */
+   private static final String PALETTE_VERSION = "rose-white-ruby-1";
+   private static final String WRITE_PALETTE_VERSION_KEY = "palette";
 
    public synchronized String getSelectedListedThemeName() {
       return this.selectedListedTheme == null ? "" : this.selectedListedTheme.getName();
@@ -146,6 +149,37 @@ public class ColorThemeRegistry extends CopyOnWriteArrayList<ColorTheme> {
    }
 
    public synchronized void loadSelectionState(JsonObject stateJson) {
+      if (stateJson == null) {
+         return;
+      }
+
+      String savedVersion = stateJson.has(WRITE_PALETTE_VERSION_KEY) ? stateJson.get(WRITE_PALETTE_VERSION_KEY).getAsString() : "";
+      boolean paletteOutdated = !PALETTE_VERSION.equals(savedVersion);
+      this.applySelectionState(stateJson);
+      if (paletteOutdated) {
+         this.applyRenderedPalette();
+      }
+   }
+
+   /** Один раз приводит клиент к бело-рубиновой палитре, даже если в конфиге остались старые цвета. */
+   private void applyRenderedPalette() {
+      ColorTheme theme = this.findListedTheme(PREFERRED_LISTED_THEME_NAME);
+      if (theme == null) {
+         theme = this.findDefaultListedTheme();
+      }
+
+      this.activePresetOverride = null;
+      this.presetRainbowEnabled = false;
+      this.selectedListedTheme = theme;
+      if (theme != null) {
+         this.applyColorsToSettings(theme.getColors());
+      }
+
+      this.lastCommittedColorsSnapshot = this.captureColorsSnapshot();
+      this.notifyChanged();
+   }
+
+   private synchronized void applySelectionState(JsonObject stateJson) {
       if (stateJson != null) {
          this.restoringState = true;
 
@@ -198,6 +232,7 @@ public class ColorThemeRegistry extends CopyOnWriteArrayList<ColorTheme> {
       stateJson.addProperty(WRITE_PRESET_OVERRIDE_KEY, this.activePresetOverride != null);
       stateJson.addProperty(WRITE_RAINBOW_KEY, this.isRainbowEnabled());
       stateJson.addProperty(WRITE_ACTIVE_THEME_NAME_KEY, this.getActiveThemeName());
+      stateJson.addProperty(WRITE_PALETTE_VERSION_KEY, PALETTE_VERSION);
       JsonArray colorsJson = new JsonArray();
 
       for (int argb : this.captureColorsSnapshot()) {
