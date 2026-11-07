@@ -19,8 +19,9 @@ import sg.render.WingAnimator;
 public final class RoseWingModel extends WingModel {
    private static final float SPINE_INSET = 1.0F;
    private static final float WING_TIP = 27.0F;
-   private static final float WING_TOP = 10.0F;
-   private static final float WING_BOTTOM = -18.0F;
+   private static final float WING_TOP = -18.0F;
+   private static final float WING_BOTTOM = 10.0F;
+   private static final float WING_SCALE = 0.82F;
    private static final float WING_Z = 0.0F;
    private static final float PIVOT_Y = 4.0F;
    private static final float PIVOT_Z = 2.5F;
@@ -73,6 +74,7 @@ public final class RoseWingModel extends WingModel {
    ) {
       matrices.pushPose();
       matrices.translate(0.0F, PIVOT_Y / MODEL_UNITS_PER_BLOCK, PIVOT_Z / MODEL_UNITS_PER_BLOCK);
+      matrices.scale(WING_SCALE, WING_SCALE, WING_SCALE);
       float mirror = side > 0 ? -1.0F : 1.0F;
       matrices.mulPose(Axis.ZP.rotation(WingAnimationMath.toRadians((float)rotationDegrees.z * mirror)));
       matrices.mulPose(Axis.YP.rotation(WingAnimationMath.toRadians((float)rotationDegrees.y * mirror)));
@@ -113,16 +115,15 @@ public final class RoseWingModel extends WingModel {
                normal.negate();
             }
 
-            float textureU0 = side > 0 ? u0 : 1.0F - u0;
-            float textureU1 = side > 0 ? u1 : 1.0F - u1;
-            SurfacePoint frontFirst = side > 0 ? innerTop : outerTop;
-            float frontFirstU = side > 0 ? textureU0 : textureU1;
-            SurfacePoint frontSecond = side > 0 ? outerTop : innerTop;
-            float frontSecondU = side > 0 ? textureU1 : textureU0;
-            SurfacePoint frontThird = side > 0 ? outerBottom : innerBottom;
-            float frontThirdU = side > 0 ? textureU1 : textureU0;
-            SurfacePoint frontFourth = side > 0 ? innerBottom : outerBottom;
-            float frontFourthU = side > 0 ? textureU0 : textureU1;
+            // Keep the source texture's spine at u=0 on both sides; signed X mirrors the wing.
+            SurfacePoint frontFirst = side > 0 ? outerTop : innerTop;
+            float frontFirstU = side > 0 ? u1 : u0;
+            SurfacePoint frontSecond = side > 0 ? innerTop : outerTop;
+            float frontSecondU = side > 0 ? u0 : u1;
+            SurfacePoint frontThird = side > 0 ? innerBottom : outerBottom;
+            float frontThirdU = side > 0 ? u0 : u1;
+            SurfacePoint frontFourth = side > 0 ? outerBottom : innerBottom;
+            float frontFourthU = side > 0 ? u1 : u0;
             this.emitSurfaceVertex(pose, vertices, frontFirst, frontFirstU, v0, normal, packedLight, packedOverlay, red, green, blue, alpha, 1.0F);
             this.emitSurfaceVertex(pose, vertices, frontSecond, frontSecondU, v0, normal, packedLight, packedOverlay, red, green, blue, alpha, 1.0F);
             this.emitSurfaceVertex(pose, vertices, frontThird, frontThirdU, v1, normal, packedLight, packedOverlay, red, green, blue, alpha, 1.0F);

@@ -12,7 +12,7 @@ $Files = @(
   @{ p = 'src/main/java/settings/render/PinnedServers.java'; v = '1827151a'; s = 3640 }
   @{ p = 'src/main/java/sg/command/CommandRegistry.java'; v = '677d3519'; s = 35360 }
   @{ p = 'src/main/java/sg/command/impl/TargetCommand.java'; v = '3cf93851'; s = 5476 }
-  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = 'fd3b604c'; s = 13792 }
+  @{ p = 'src/main/java/sg/ec/RoseWingModel.java'; v = '3ccd3d7d'; s = 13826 }
   @{ p = 'src/main/java/sg/ec/WingAnimationMath.java'; v = 'efba952f'; s = 1576 }
   @{ p = 'src/main/java/sg/ec/WingModel.java'; v = 'd9cc7adf'; s = 1141 }
   @{ p = 'src/main/java/sg/ec/WingPreviewRenderState.java'; v = 'da620a65'; s = 1005 }
