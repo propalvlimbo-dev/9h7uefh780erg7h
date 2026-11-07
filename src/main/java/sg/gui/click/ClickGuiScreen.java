@@ -73,7 +73,6 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
    private final CopyOnWriteArrayList<ModuleKeybindWidget> В_b1d77d5c = new CopyOnWriteArrayList<>();
    @SerializedName("В")
    private final ArrayList<ModuleCard> В_c1edc18e = new ArrayList<>();
-   private HoverHint.Content pendingHint;
    @SerializedName("В")
    private final AutoBuyPanel В_ec501b46 = new AutoBuyPanel(this);
    @SerializedName("В")
@@ -883,28 +882,8 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
       }
    }
 
-   /** Подсказка рисуется последней и без обрезки — так её не режет ни скролл, ни панели. */
-   private void renderHintTopmost() {
-      HoverHint.Content content = this.pendingHint;
-      this.pendingHint = null;
-      if (content == null) {
-         return;
-      }
-
-      Matrix4f previous = UiDrawing.getTransform();
-      UiDrawing.disableScissor();
-      UiDrawing.setTransform(new Matrix4f());
-
-      try {
-         HoverHint.render(this.и, this.field_9, 0.0F, 0.0F, this.width, this.height, content);
-      } finally {
-         UiDrawing.setTransform(previous);
-      }
-   }
-
    private void renderHoverHint() {
       if (!ClickGuiPreferences.йЩ()) {
-         this.pendingHint = null;
          HoverHint.reset();
          return;
       }
@@ -920,10 +899,20 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
          }
       }
 
-      this.pendingHint = content;
-
       if (content == null) {
          HoverHint.reset();
+         return;
+      }
+
+      // Рисуем сразу: без обрезки скроллом и в той же системе координат, что и карточки.
+      Matrix4f previous = UiDrawing.getTransform();
+      UiDrawing.disableScissor();
+      UiDrawing.setTransform(new Matrix4f(this.В_20497804));
+
+      try {
+         HoverHint.render(this.и, this.field_9, this.Щ, this.у, this.Щ + this.field_2, this.у + this.ф, content);
+      } finally {
+         UiDrawing.setTransform(previous);
       }
    }
 
@@ -1394,7 +1383,6 @@ public class ClickGuiScreen extends Screen implements MinecraftAccess {
       ThemeWave.INSTANCE.renderTransition();
       this.renderSearchOverlayTopmost();
       this.renderProfileOverlay();
-      this.renderHintTopmost();
    }
 
    @Override
