@@ -61,7 +61,10 @@ public final class WingPreview extends PictureInPictureRenderer<WingPreviewRende
          matrices.pushPose();
          this.modelBounds.computeIfAbsent(variant.getModel(), model -> this.measure(variant)).fit(matrices, draw.x(), draw.y(), draw.width() * PREVIEW_WIDTH_FACTOR, draw.height() * PREVIEW_HEIGHT_FACTOR);
          GeometryBoundsConsumer.orient(matrices, PREVIEW_X_ROTATION_DEGREES, PREVIEW_Y_ROTATION_DEGREES, false);
-         collector.submitCustomGeometry(matrices, RenderTypes.entityTranslucent(variant.getTextureId()), (geometryPose, geometryVertices) -> {
+         collector.submitCustomGeometry(
+            matrices,
+            variant == AnimatedWingVariant.ROSE ? CosmeticRoseShader.RENDER_TYPE : RenderTypes.entityTranslucent(variant.getTextureId()),
+            (geometryPose, geometryVertices) -> {
             PoseStack geometryMatrices = new PoseStack();
             geometryMatrices.last().set(geometryPose);
             variant.getModel().render(draw.animator(), draw.delta(), geometryMatrices, geometryVertices, PREVIEW_PACKED_LIGHT, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, draw.alpha());

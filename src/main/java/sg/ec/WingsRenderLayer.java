@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -65,27 +66,14 @@ public final class WingsRenderLayer extends RenderLayer<AvatarRenderState, Playe
                         boolean hasOutline = state.outlineColor != 0;
                         boolean invisible = state.isInvisible;
                         if (!invisible) {
-                           collector.submitCustomGeometry(matrices, RenderTypes.entityCutout(variant.getTextureId()), (geometryPose, geometryVertices) -> {
+                           RenderType wingRenderType = variant == AnimatedWingVariant.ROSE
+                              ? sg.render.CosmeticRoseShader.RENDER_TYPE
+                              : RenderTypes.entityCutout(variant.getTextureId());
+                           collector.submitCustomGeometry(matrices, wingRenderType, (geometryPose, geometryVertices) -> {
                               PoseStack geometryMatrices = new PoseStack();
                               geometryMatrices.mulPose(geometryPose.pose());
                               variant.getModel().render(renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, renderAlpha);
                            });
-                           if (variant == AnimatedWingVariant.ROSE && renderAlpha > 0.01F) {
-                              float glowAlpha = sg.render.CosmeticGlow.pulse() * renderAlpha;
-                              float glowScale = sg.render.CosmeticGlow.shellScale();
-                              matrices.pushPose();
-                              matrices.scale(glowScale, glowScale, glowScale);
-                              collector.submitCustomGeometry(matrices, RenderTypes.entityTranslucent(sg.render.CosmeticGlow.WINGS), (geometryPose, geometryVertices) -> {
-                                 PoseStack geometryMatrices = new PoseStack();
-                                 geometryMatrices.mulPose(geometryPose.pose());
-                                 variant.getModel().render(
-                                    renderWingState.getAnimator(), partialTick, geometryMatrices, geometryVertices,
-                                    packedLight, OverlayTexture.NO_OVERLAY,
-                                    sg.render.CosmeticGlow.red(), sg.render.CosmeticGlow.green(), sg.render.CosmeticGlow.blue(), glowAlpha
-                                 );
-                              });
-                              matrices.popPose();
-                           }
                         }
 
                         if (hasOutline) {
